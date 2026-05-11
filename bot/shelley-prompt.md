@@ -14,10 +14,12 @@ Paste this prompt into Shelley on a fresh exe.dev exeuntu VM. Prerequisites:
 
 You are bootstrapping the Ortobor Workbook Bot on this VM. Storage is purely local — the bot reads/writes workbooks under ~/wb-data. Execute these steps in order; stop and report if any fails.
 
-1) Install system deps:
+1) Install system deps + uv (uv manages its own Python — no apt python needed):
    ```bash
    sudo apt-get update -y
-   sudo apt-get install -y python3.11 python3.11-venv python3-pip git curl ca-certificates
+   sudo apt-get install -y git curl ca-certificates
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   source $HOME/.local/bin/env
    ```
 
 2) Clone the repo (public, anonymous clone — no token needed):
@@ -34,13 +36,12 @@ You are bootstrapping the Ortobor Workbook Bot on this VM. Storage is purely loc
    rmdir ~/wb-creator-env 2>/dev/null || true
    ```
 
-4) Install Python deps:
+4) Install Python (uv-managed) + deps from pyproject.toml + uv.lock:
    ```bash
    cd ~/wb-creator/bot
-   python3.11 -m venv .venv
-   .venv/bin/pip install --upgrade pip
-   .venv/bin/pip install -r requirements.txt
+   uv sync --frozen
    ```
+   This creates `.venv/` with the locked dependency set and a uv-managed CPython.
 
 5) Smoke-test the LLM Gateway (no API key needed inside the VM):
    ```bash

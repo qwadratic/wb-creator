@@ -112,7 +112,8 @@ exe.dev VM    Telegram      Anthropic
 | File | Role |
 |---|---|
 | `bot.py` | Everything — handlers, LLM client, local storage, extractors, FSM wiring |
-| `requirements.txt` | Pinned deps |
+| `pyproject.toml` | Declared deps (Python ≥ 3.11) — managed by `uv` |
+| `uv.lock` | Pinned dep tree — commit-tracked for reproducibility |
 | `.env.example` | Template — copy to `.env`, fill in tokens |
 | `shelley-prompt.md` | Paste into Shelley to provision a fresh VM |
 | `README.md` | This file |
@@ -123,7 +124,7 @@ exe.dev VM    Telegram      Anthropic
 |---|---|
 | Live logs | `ssh $VMNAME.exe.xyz 'tail -f ~/wb-bot.log'` |
 | Restart bot | `ssh $VMNAME.exe.xyz 'systemctl --user restart wb-bot.service'` |
-| Pull latest code | `ssh $VMNAME.exe.xyz 'cd ~/wb-creator && git pull && systemctl --user restart wb-bot'` |
+| Pull latest code | `ssh $VMNAME.exe.xyz 'cd ~/wb-creator && git pull && cd bot && uv sync --frozen && systemctl --user restart wb-bot'` |
 | Rotate Telegram token | `ssh $VMNAME.exe.xyz`, edit `~/wb-creator/bot/.env`, restart service |
 | Backup workbooks | `rsync -av $VMNAME.exe.xyz:~/wb-data/workbooks/ ./workbooks-backup-$(date +%F)/` |
 | Seed VM with existing workbooks | See "Optional: seed the VM" section in `shelley-prompt.md` |
