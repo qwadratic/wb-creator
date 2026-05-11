@@ -34,3 +34,6 @@ Thumbs.db
 # Local-only working state
 /tmp/
 bot/.data/
+
+# Workbook content lives on the operator's machine + VM, not in the repo
+workbooks/

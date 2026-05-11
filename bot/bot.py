@@ -67,16 +67,16 @@ load_dotenv()
 log = logging.getLogger("wb-bot")
 
 TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
-GITHUB_REPO = os.environ["GITHUB_REPO"]               # "owner/repo"
-GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
 LLM_GATEWAY = os.getenv("LLM_GATEWAY", "1") == "1"
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
 MODEL = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-6")
 DATA_DIR = Path(os.getenv("BOT_DATA_DIR", "/home/exedev/wb-data")).expanduser()
+WORKBOOKS_DIR = DATA_DIR / "workbooks"
 ALLOWED_IDS = {int(x) for x in os.getenv("ALLOWED_TG_IDS", "").split(",") if x.strip()}
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
 
 DATA_DIR.mkdir(parents=True, exist_ok=True)
+WORKBOOKS_DIR.mkdir(parents=True, exist_ok=True)
 
 logging.basicConfig(
     level=LOG_LEVEL,
@@ -223,67 +223,31 @@ async def llm_call(
 
 
 # ──────────────────────────────────────────────────────────────────────────
-# GitHub
+# Local-fs storage
 # ──────────────────────────────────────────────────────────────────────────
-GH_API = "https://api.github.com"
+def workbook_path(slug: str) -> Path:
+    return WORKBOOKS_DIR / slug / f"workbook-{slug}.html"
 
 
-async def gh_get_sha(repo: str, path: str) -> str | None:
-    async with httpx.AsyncClient(timeout=30.0) as c:
-        r = await c.get(
-            f"{GH_API}/repos/{repo}/contents/{path}",
-            headers={"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"},
-        )
-        if r.status_code == 200:
-            return r.json().get("sha")
-        return None
+def save_workbook(slug: str, html: str) -> Path:
+    p = workbook_path(slug)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(html, encoding="utf-8")
+    return p
 
 
-async def gh_put_file(repo: str, path: str, content_bytes: bytes, message: str) -> str:
-    """Create or update a file. Returns html_url of the file."""
-    sha = await gh_get_sha(repo, path)
-    payload = {
-        "message": message,
-        "content": base64.b64encode(content_bytes).decode("ascii"),
-    }
-    if sha:
-        payload["sha"] = sha
-    async with httpx.AsyncClient(timeout=60.0) as c:
-        r = await c.put(
-            f"{GH_API}/repos/{repo}/contents/{path}",
-            headers={"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"},
-            json=payload,
-        )
-        if r.status_code >= 400:
-            raise RuntimeError(f"GitHub error {r.status_code}: {r.text[:400]}")
-        return r.json().get("content", {}).get("html_url", "")
+def load_workbook(slug: str) -> str | None:
+    p = workbook_path(slug)
+    return p.read_text(encoding="utf-8") if p.exists() else None
 
 
-async def gh_list_workbooks(repo: str) -> list[str]:
-    """Return list of topic slugs under workbooks/."""
-    async with httpx.AsyncClient(timeout=30.0) as c:
-        r = await c.get(
-            f"{GH_API}/repos/{repo}/contents/workbooks",
-            headers={"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"},
-        )
-        if r.status_code >= 400:
-            return []
-        return sorted(
-            entry["name"]
-            for entry in r.json()
-            if entry["type"] == "dir" and not entry["name"].startswith("_")
-        )
-
-
-async def gh_get_file(repo: str, path: str) -> str | None:
-    async with httpx.AsyncClient(timeout=30.0) as c:
-        r = await c.get(
-            f"{GH_API}/repos/{repo}/contents/{path}",
-            headers={"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"},
-        )
-        if r.status_code != 200:
-            return None
-        return base64.b64decode(r.json()["content"]).decode("utf-8", errors="ignore")
+def list_workbook_slugs() -> list[str]:
+    if not WORKBOOKS_DIR.exists():
+        return []
+    return sorted(
+        d.name for d in WORKBOOKS_DIR.iterdir()
+        if d.is_dir() and not d.name.startswith("_") and (d / f"workbook-{d.name}.html").exists()
+    )
 
 
 # ──────────────────────────────────────────────────────────────────────────
@@ -500,19 +464,12 @@ async def _generate_and_publish(chat_id: int, ctx: ContextTypes.DEFAULT_TYPE) ->
         )
         html = _strip_md_fences(html)
         s.workbook_html = html
-        s.workbook_path = f"workbooks/{s.slug}/out/workbook-{s.slug}.html"
-
-        url = await gh_put_file(
-            GITHUB_REPO,
-            s.workbook_path,
-            html.encode("utf-8"),
-            f"workbook: add {s.slug} ({s.fmt}/{s.preset})",
-        )
+        s.workbook_path = str(save_workbook(s.slug, html))
 
         await bot.send_document(
             chat_id,
             document=InputFile(io.BytesIO(html.encode("utf-8")), filename=f"workbook-{s.slug}.html"),
-            caption=f"✓ Готово: *{s.title}*\n[Переглянути на GitHub]({url})\n\n"
+            caption=f"✓ Готово: *{s.title}* (`{s.slug}`)\n\n"
                     f"Далі: надішліть фото для обкладинки, або текст із правками, або /done.",
             parse_mode=ParseMode.MARKDOWN,
         )
@@ -561,16 +518,10 @@ async def on_photo(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
 
     new_html = _inject_cover_image(s.workbook_html, data_url)
     s.workbook_html = new_html
-    url = await gh_put_file(
-        GITHUB_REPO,
-        s.workbook_path,
-        new_html.encode("utf-8"),
-        f"workbook: replace cover for {s.slug}",
-    )
+    save_workbook(s.slug, new_html)
     await update.message.reply_document(
         InputFile(io.BytesIO(new_html.encode("utf-8")), filename=f"workbook-{s.slug}.html"),
-        caption=f"🖼 Обкладинку замінено.\n[GitHub]({url})",
-        parse_mode=ParseMode.MARKDOWN,
+        caption="🖼 Обкладинку замінено.",
     )
 
 
@@ -616,16 +567,10 @@ async def on_freeform_feedback(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -
     try:
         new_html = _strip_md_fences(await llm_call(system=edit_system, messages=[{"role": "user", "content": msg}]))
         s.workbook_html = new_html
-        url = await gh_put_file(
-            GITHUB_REPO,
-            s.workbook_path,
-            new_html.encode("utf-8"),
-            f"workbook: edit {s.slug} — {instr[:60]}",
-        )
+        save_workbook(s.slug, new_html)
         await update.message.reply_document(
             InputFile(io.BytesIO(new_html.encode("utf-8")), filename=f"workbook-{s.slug}.html"),
-            caption=f"✓ Правки застосовано.\n[GitHub]({url})\n\nНаступна правка або /done.",
-            parse_mode=ParseMode.MARKDOWN,
+            caption="✓ Правки застосовано.\n\nНаступна правка або /done.",
         )
     except Exception as exc:
         log.exception("edit failed")
@@ -636,7 +581,7 @@ async def on_freeform_feedback(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -
 async def cmd_list(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
     if not auth_ok(update):
         return
-    slugs = await gh_list_workbooks(GITHUB_REPO)
+    slugs = list_workbook_slugs()
     if not slugs:
         await update.message.reply_text("Поки що порожньо. /new щоб створити перший.")
         return
@@ -654,16 +599,15 @@ async def on_open(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
     q = update.callback_query
     await q.answer()
     slug = q.data.split(":", 1)[1]
-    path = f"workbooks/{slug}/out/workbook-{slug}.html"
-    html = await gh_get_file(GITHUB_REPO, path)
+    html = load_workbook(slug)
     if not html:
-        await q.edit_message_text(f"⚠️ Не знайдено: {path}")
+        await q.edit_message_text(f"⚠️ Не знайдено: {slug}")
         return
     s = session(ctx)
     s.slug = slug
     s.title = slug.replace("-", " ").title()
     s.workbook_html = html
-    s.workbook_path = path
+    s.workbook_path = str(workbook_path(slug))
     await q.message.reply_document(
         InputFile(io.BytesIO(html.encode("utf-8")), filename=f"workbook-{slug}.html"),
         caption=f"📂 *{slug}* — надішліть фото для обкладинки або текст із правками, або /improve {slug} для режиму ітерацій.",
@@ -678,15 +622,14 @@ async def cmd_improve(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> int:
         await update.message.reply_text("Використання: /improve <slug>")
         return ConversationHandler.END
     slug = args[0]
-    path = f"workbooks/{slug}/out/workbook-{slug}.html"
-    html = await gh_get_file(GITHUB_REPO, path)
+    html = load_workbook(slug)
     if not html:
-        await update.message.reply_text(f"⚠️ Не знайдено: {path}")
+        await update.message.reply_text(f"⚠️ Не знайдено: {slug}")
         return ConversationHandler.END
     s = session(ctx)
     s.slug = slug
     s.workbook_html = html
-    s.workbook_path = path
+    s.workbook_path = str(workbook_path(slug))
     s.thread = []
     await update.message.reply_text(
         f"🛠 Режим ітерацій: *{slug}*\n\n"
@@ -728,16 +671,10 @@ async def on_improve_turn(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> int
         new_html = _strip_md_fences(await llm_call(system=edit_system, messages=msgs))
         s.thread.append({"role": "assistant", "content": new_html})
         s.workbook_html = new_html
-        url = await gh_put_file(
-            GITHUB_REPO,
-            s.workbook_path,
-            new_html.encode("utf-8"),
-            f"workbook: improve {s.slug} — {instr[:60]}",
-        )
+        save_workbook(s.slug, new_html)
         await update.message.reply_document(
             InputFile(io.BytesIO(new_html.encode("utf-8")), filename=f"workbook-{s.slug}.html"),
-            caption=f"✓ {instr[:80]}\n[GitHub]({url})",
-            parse_mode=ParseMode.MARKDOWN,
+            caption=f"✓ {instr[:120]}",
         )
     except Exception as exc:
         log.exception("improve turn failed")
@@ -785,7 +722,7 @@ def build_app() -> Application:
 
 def main() -> None:
     app = build_app()
-    log.info("starting bot — model=%s gateway=%s repo=%s", MODEL, LLM_GATEWAY, GITHUB_REPO)
+    log.info("starting bot — model=%s gateway=%s data_dir=%s", MODEL, LLM_GATEWAY, DATA_DIR)
     app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
