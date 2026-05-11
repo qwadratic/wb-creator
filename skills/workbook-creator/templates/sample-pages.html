@@ -1,0 +1,306 @@
+<!-- 
+  SAMPLE PAGES — справочный пример всех типов элементов воркбука.
+  Используй как reference при генерации.
+  Все CSS-классы соответствуют base.css.
+-->
+
+<!-- ===== ОБЛОЖКА ===== -->
+<div class="cover">
+  <div class="cover-decoration"></div>
+  <div>
+    <div class="cover-title">НАЗВА ВОРКБУКУ</div>
+    <div class="cover-subtitle">Практичний посібник до курсу</div>
+  </div>
+  <div class="cover-meta">
+    <div style="margin-bottom:3mm;">Студент: ___________________________________</div>
+    <div style="margin-bottom:3mm;">Дата початку: _______________________________</div>
+    <div>Група: ______________________________________</div>
+  </div>
+</div>
+
+<!-- ===== ВВЕДЕНИЕ ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">НАЗВА ВОРКБУКУ</span>
+    <span class="header-block">ВСТУП</span>
+  </div>
+  <div class="page-content">
+    <div class="section-heading">Як працювати з воркбуком</div>
+
+    <div class="key-idea">
+      Воркбук — це ваш робочий інструмент для мислення. Він не замінює матеріали курсу, а допомагає вам осмислити, структурувати і застосувати знання на практиці.
+    </div>
+
+    <div class="intro-item">
+      <div class="intro-number">1</div>
+      <div class="intro-text"><strong>Читайте ключову ідею</strong> — вона задає контекст розділу</div>
+    </div>
+    <div class="intro-item">
+      <div class="intro-number">2</div>
+      <div class="intro-text"><strong>Виконуйте завдання</strong> — заповнюйте таблиці, чек-листи, схеми</div>
+    </div>
+    <div class="intro-item">
+      <div class="intro-number">3</div>
+      <div class="intro-text"><strong>Відповідайте на питання</strong> — аналізуйте, а не відтворюйте</div>
+    </div>
+    <div class="intro-item">
+      <div class="intro-number">4</div>
+      <div class="intro-text"><strong>Занотовуйте спостереження</strong> — у блоках для нотаток</div>
+    </div>
+
+    <div style="margin-top: 8mm;">
+      <div class="subsection-heading">Умовні позначення</div>
+      <div style="display:flex;align-items:center;gap:3mm;margin-bottom:3mm;">
+        <span class="task-label label-question">Питання</span>
+        <span style="font-size:8.5pt;color:#4a5568;">— питання для роздумів</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:3mm;margin-bottom:3mm;">
+        <span class="task-label label-checklist">Чек-лист</span>
+        <span style="font-size:8.5pt;color:#4a5568;">— перелік для перевірки</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:3mm;margin-bottom:3mm;">
+        <span class="task-label label-chain">Ланцюжок</span>
+        <span style="font-size:8.5pt;color:#4a5568;">— причинно-наслідковий зв'язок</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:3mm;margin-bottom:3mm;">
+        <span class="task-label label-sketch">Схема</span>
+        <span style="font-size:8.5pt;color:#4a5568;">— місце для зарисовки</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:3mm;margin-bottom:3mm;">
+        <span class="task-label label-practice">Практика</span>
+        <span style="font-size:8.5pt;color:#4a5568;">— застосування знань</span>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span class="footer-page">1</span>
+    <span class="footer-watermark">@автор</span>
+  </div>
+</div>
+
+<!-- ===== ТИТУЛЬНАЯ СТРАНИЦА БЛОКА ===== -->
+<div class="block-title-page">
+  <div class="block-number">01</div>
+  <div class="block-title">Назва першого блоку</div>
+  <div class="block-description">Короткий опис того, що студент вивчить у цьому блоці. Два-три речення максимум.</div>
+</div>
+
+<!-- ===== КОНТЕНТНАЯ СТРАНИЦА (все типы заданий) ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">НАЗВА ВОРКБУКУ</span>
+    <span class="header-block">БЛОК 1</span>
+  </div>
+  <div class="page-content">
+    <div class="section-heading">1.1 Назва розділу</div>
+
+    <div class="key-idea">
+      Ключова ідея розділу. Одне-два речення, які формулюють суть. Не переказує весь матеріал — тільки головну тезу.
+    </div>
+
+    <!-- ТАБЛИЦА -->
+    <div class="task-block">
+      <span class="task-label label-practice">Таблиця</span>
+      <div class="task-question">Заповніть таблицю порівняння:</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:30%">Критерій</th>
+              <th style="width:35%">Варіант А</th>
+              <th style="width:35%">Варіант Б</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Перевага</td>
+              <td style="min-height:10mm;"></td>
+              <td style="min-height:10mm;"></td>
+            </tr>
+            <tr>
+              <td>Недолік</td>
+              <td style="min-height:10mm;"></td>
+              <td style="min-height:10mm;"></td>
+            </tr>
+            <tr>
+              <td>Коли застосовувати</td>
+              <td style="min-height:10mm;"></td>
+              <td style="min-height:10mm;"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ВОПРОС (MEDIUM) -->
+    <div class="task-block">
+      <span class="task-label label-question">Питання</span>
+      <div class="task-question">
+        <span class="question-icon">?</span>
+        Чому цей підхід вважається ефективнішим за альтернативні?
+      </div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+    <!-- ЧЕК-ЛИСТ -->
+    <div class="task-block">
+      <span class="task-label label-checklist">Чек-лист</span>
+      <div class="task-question">Відмітьте ознаки, які відповідають правильному виконанню:</div>
+      <ul class="checklist">
+        <li><div class="checkbox"></div><div class="checklist-line"></div></li>
+        <li><div class="checkbox"></div><div class="checklist-line"></div></li>
+        <li><div class="checkbox"></div><div class="checklist-line"></div></li>
+        <li><div class="checkbox"></div><div class="checklist-line"></div></li>
+      </ul>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span class="footer-page">3</span>
+    <span class="footer-watermark">@автор</span>
+  </div>
+</div>
+
+<!-- ===== КОНТЕНТНАЯ СТРАНИЦА 2 (цепочка + sketch) ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">НАЗВА ВОРКБУКУ</span>
+    <span class="header-block">БЛОК 1</span>
+  </div>
+  <div class="page-content">
+    <div class="subsection-heading">1.1 Назва розділу (продовження)</div>
+
+    <!-- ЦЕПОЧКА -->
+    <div class="task-block">
+      <span class="task-label label-chain">Ланцюжок</span>
+      <div class="task-question">Побудуйте причинно-наслідковий ланцюжок. Заповніть пусті блоки:</div>
+      <div class="chain">
+        <div class="chain-item">Вихідна подія або причина</div>
+        <div class="chain-arrow">↓</div>
+        <div class="chain-empty">Що відбувається далі?</div>
+        <div class="chain-arrow">↓</div>
+        <div class="chain-item">Проміжний результат</div>
+        <div class="chain-arrow">↓</div>
+        <div class="chain-empty">Кінцевий наслідок?</div>
+      </div>
+    </div>
+
+    <!-- SKETCH -->
+    <div class="task-block" style="border-bottom:none;">
+      <span class="task-label label-sketch">Схема</span>
+      <div class="task-question">Намалюйте схему процесу:</div>
+      <div class="sketch-box">
+        <div class="sketch-label">СХЕМА ПРОЦЕСУ</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span class="footer-page">4</span>
+    <span class="footer-watermark">@автор</span>
+  </div>
+</div>
+
+<!-- ===== СТРАНИЦА ВЫВОДОВ ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">НАЗВА ВОРКБУКУ</span>
+    <span class="header-block">БЛОК 1</span>
+  </div>
+  <div class="page-content">
+    <div class="section-heading">Висновки по блоку 1</div>
+
+    <div class="task-block">
+      <span class="task-label label-question">Питання</span>
+      <div class="task-question">
+        <span class="question-icon">?</span>
+        Яка найважливіша ідея, яку ви винесли з цього блоку?
+      </div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+    <div class="task-block">
+      <span class="task-label label-practice">Практика</span>
+      <div class="task-question">Як ви можете застосувати ці знання у своїй роботі протягом наступного тижня?</div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+    <div class="task-block" style="border-bottom:none;">
+      <span class="task-label label-notes">Нотатки</span>
+      <div class="notes-hint">Запишіть свої спостереження та ідеї з цього блоку</div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span class="footer-page">5</span>
+    <span class="footer-watermark">@автор</span>
+  </div>
+</div>
+
+<!-- ===== РЕФЛЕКСИЯ ===== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-title">НАЗВА ВОРКБУКУ</span>
+    <span class="header-block">РЕФЛЕКСІЯ</span>
+  </div>
+  <div class="page-content">
+    <div class="section-heading">Рефлексія</div>
+
+    <div class="reflection-block">
+      <div class="reflection-label">Що нового я дізнався/дізналась?</div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+    <div class="reflection-block">
+      <div class="reflection-label">Що я зміню у своїй практиці?</div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+    <div class="reflection-block">
+      <div class="reflection-label">Мій план перших кроків</div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+    <div class="reflection-block">
+      <div class="reflection-label">Питання, які залишились</div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span class="footer-page">6</span>
+    <span class="footer-watermark">@автор</span>
+  </div>
+</div>
+
+<!-- ===== ФИНАЛЬНАЯ СТРАНИЦА ===== -->
+<div class="page">
+  <div class="page-content final-page">
+    <div class="final-quote">
+      «Знання — це не те, що ви запам'ятали. Знання — це те, що ви можете застосувати.»
+    </div>
+    <div class="final-author">Дякуємо за роботу з воркбуком!</div>
+  </div>
+</div>

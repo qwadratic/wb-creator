@@ -1,0 +1,503 @@
+/* ============================================================
+   WORKBOOK BASE CSS — v2.0
+   Все цвета и шрифты через CSS-переменные.
+   Пользователь задаёт их через сайдбар настроек.
+   ============================================================ */
+
+/* === CSS ПЕРЕМЕННЫЕ (DEFAULTS) === */
+:root {
+  /* Цвета — основная палитра */
+  --primary:       #0d1b5e;
+  --primary-mid:   #1e40af;
+  --primary-light: #dbeafe;
+  --accent:        #2563eb;
+  --success:       #059669;
+  --warning:       #d97706;
+  --danger:        #dc2626;
+
+  /* Серые */
+  --gray-100: #f7f8fa;
+  --gray-200: #e8ecf0;
+  --gray-400: #a0aec0;
+  --gray-700: #4a5568;
+  --text:     #1a202c;
+
+  /* Шрифты */
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body:    'Inter', sans-serif;
+
+  /* Метки заданий — вычисляются из палитры */
+  --label-question-bg:   var(--primary-light);
+  --label-question-text: var(--primary-mid);
+  --label-checklist-bg:  #d1fae5;
+  --label-checklist-text:#065f46;
+  --label-chain-bg:      #fef3c7;
+  --label-chain-text:    #92400e;
+  --label-sketch-bg:     #fce7f3;
+  --label-sketch-text:   #9d174d;
+  --label-practice-bg:   #ede9fe;
+  --label-practice-text: #4c1d95;
+}
+
+/* === RESET === */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  font-size: 9pt;
+  color: var(--text);
+  background: #e5e7eb;
+}
+
+/* === СТРАНИЦЫ === */
+.page, .cover, .block-title-page {
+  width: 210mm;
+  height: 297mm;
+  box-sizing: border-box;
+  overflow: hidden;
+  page-break-after: always;
+  background: white;
+  margin: 0 auto 5mm auto; /* для предпросмотра в браузере */
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+}
+
+/* === КОЛОНТИТУЛЫ === */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5mm 15mm 3mm 15mm;
+  border-bottom: 1px solid var(--gray-200);
+  font-size: 7pt;
+  font-family: var(--font-heading);
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.page-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3mm 15mm 4mm 15mm;
+  border-top: 1px solid var(--gray-200);
+  font-size: 7pt;
+  color: var(--gray-400);
+  flex-shrink: 0;
+}
+
+/* === КОНТЕНТНАЯ ОБЛАСТЬ === */
+.page-content {
+  flex: 1;
+  padding: 8mm 15mm 8mm 15mm;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* === ОБЛОЖКА === */
+.cover {
+  background: linear-gradient(160deg, var(--primary) 0%, var(--primary-mid) 60%, var(--accent) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20mm 18mm 18mm 18mm;
+  position: relative;
+  color: white;
+}
+
+.cover-title {
+  font-family: var(--font-heading);
+  font-size: 28pt;
+  font-weight: 800;
+  line-height: 1.15;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.cover-subtitle {
+  font-family: var(--font-body);
+  font-size: 12pt;
+  color: rgba(255,255,255,0.85);
+  margin-top: 4mm;
+  line-height: 1.4;
+}
+
+.cover-meta {
+  font-size: 9pt;
+  color: rgba(255,255,255,0.7);
+}
+
+.cover-decoration {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60%;
+  height: 100%;
+  background: radial-gradient(ellipse at top right, rgba(255,255,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* === ТИТУЛЬНАЯ СТРАНИЦА БЛОКА === */
+.block-title-page {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-mid) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20mm 18mm;
+  color: white;
+}
+
+.block-number {
+  font-family: var(--font-heading);
+  font-size: 64pt;
+  font-weight: 800;
+  color: rgba(255,255,255,0.15);
+  line-height: 1;
+  margin-bottom: 5mm;
+}
+
+.block-title {
+  font-family: var(--font-heading);
+  font-size: 22pt;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.block-description {
+  font-size: 10pt;
+  color: rgba(255,255,255,0.8);
+  margin-top: 4mm;
+  line-height: 1.5;
+  max-width: 80%;
+}
+
+/* === ЗАГОЛОВКИ === */
+.section-heading {
+  font-family: var(--font-heading);
+  font-size: 16pt;
+  font-weight: 800;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  margin-bottom: 5mm;
+  page-break-inside: avoid;
+}
+
+.subsection-heading {
+  font-family: var(--font-heading);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--primary-mid);
+  margin-bottom: 2mm;
+  margin-top: 4mm;
+  page-break-inside: avoid;
+}
+
+/* === КЛЮЧЕВАЯ ИДЕЯ === */
+.key-idea {
+  background: color-mix(in srgb, var(--accent) 8%, white);
+  border-left: 4px solid var(--accent);
+  padding: 4mm 5mm;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 5mm;
+  font-size: 9pt;
+  color: var(--primary);
+  line-height: 1.5;
+  page-break-inside: avoid;
+}
+
+/* === ЗАДАНИЯ === */
+.task-block {
+  margin-bottom: 5mm;
+  padding-bottom: 5mm;
+  border-bottom: 1px solid var(--gray-200);
+  page-break-inside: avoid;
+}
+
+.task-block:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.task-label {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 1.5mm 3mm;
+  border-radius: 3px;
+  display: inline-block;
+  margin-bottom: 2mm;
+}
+
+.label-question   { background: var(--label-question-bg);   color: var(--label-question-text); }
+.label-checklist  { background: var(--label-checklist-bg);  color: var(--label-checklist-text); }
+.label-chain      { background: var(--label-chain-bg);      color: var(--label-chain-text); }
+.label-sketch     { background: var(--label-sketch-bg);     color: var(--label-sketch-text); }
+.label-practice   { background: var(--label-practice-bg);   color: var(--label-practice-text); }
+.label-notes      { background: var(--gray-100);            color: var(--gray-700); }
+
+.task-question {
+  font-size: 9pt;
+  color: #2d3748;
+  line-height: 1.5;
+  margin-bottom: 3mm;
+}
+
+/* === ПОЛЯ ДЛЯ ОТВЕТОВ === */
+.answer-line {
+  height: 10mm;
+  border-bottom: 1.5px solid #cbd5e0;
+  margin-bottom: 2mm;
+}
+
+.answer-line-short {
+  height: 12mm;
+  border-bottom: 1.5px solid #cbd5e0;
+  margin-bottom: 4mm;
+}
+
+/* === SKETCH === */
+.sketch-box {
+  border: 2px dashed var(--gray-400);
+  border-radius: 8px;
+  min-height: 90mm;
+  padding: 8mm;
+  background: #fafbfc;
+  margin: 3mm 0;
+  page-break-inside: avoid;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.sketch-label {
+  font-size: 7.5pt;
+  font-weight: 600;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+/* === ЧЕК-ЛИСТ === */
+.checklist {
+  list-style: none;
+  margin: 2mm 0;
+  page-break-inside: avoid;
+}
+
+.checklist li {
+  display: flex;
+  align-items: center;
+  gap: 3mm;
+  padding: 2mm 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 9pt;
+}
+
+.checkbox {
+  width: 5mm;
+  height: 5mm;
+  border: 2px solid var(--gray-700);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.checklist-line {
+  flex: 1;
+  border-bottom: 1px solid #cbd5e0;
+  height: 6mm;
+}
+
+/* === ЦЕПОЧКА РАССУЖДЕНИЙ === */
+.chain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 3mm 0;
+  page-break-inside: avoid;
+}
+
+.chain-item {
+  background: var(--primary);
+  color: white;
+  padding: 3mm 6mm;
+  border-radius: 6px;
+  font-size: 8.5pt;
+  font-weight: 600;
+  text-align: center;
+  width: 85%;
+}
+
+.chain-empty {
+  border: 2px dashed var(--gray-400);
+  background: white;
+  color: var(--gray-400);
+  padding: 3mm 6mm;
+  border-radius: 6px;
+  font-size: 8pt;
+  text-align: center;
+  width: 85%;
+  min-height: 10mm;
+}
+
+.chain-arrow {
+  font-size: 14pt;
+  color: var(--gray-700);
+  line-height: 1;
+  padding: 1mm 0;
+}
+
+/* === ТАБЛИЦЫ === */
+.table-wrapper {
+  margin: 3mm 0;
+  page-break-inside: avoid;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.5pt;
+}
+
+thead tr {
+  background: var(--primary);
+  color: white;
+}
+
+thead th {
+  padding: 3mm 4mm;
+  font-weight: 600;
+  text-align: left;
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--gray-200);
+}
+
+tbody tr:nth-child(even) {
+  background: var(--gray-100);
+}
+
+tbody td {
+  padding: 3mm 4mm;
+  color: var(--gray-700);
+  min-height: 10mm;
+}
+
+/* === ИКОНКА ВОПРОСА === */
+.question-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 5mm;
+  height: 5mm;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  font-size: 7pt;
+  font-weight: 700;
+  margin-right: 2mm;
+  flex-shrink: 0;
+}
+
+/* === СТРАНИЦА ВВЕДЕНИЯ === */
+.intro-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 3mm;
+  margin-bottom: 4mm;
+}
+
+.intro-number {
+  width: 7mm;
+  height: 7mm;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8pt;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.intro-text {
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--gray-700);
+}
+
+/* === СТРАНИЦА РЕФЛЕКСИИ === */
+.reflection-block {
+  margin-bottom: 6mm;
+}
+
+.reflection-label {
+  font-family: var(--font-heading);
+  font-size: 9pt;
+  font-weight: 700;
+  color: var(--primary-mid);
+  margin-bottom: 2mm;
+}
+
+/* === ФИНАЛЬНАЯ СТРАНИЦА === */
+.final-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 30mm;
+}
+
+.final-quote {
+  font-size: 14pt;
+  font-style: italic;
+  color: var(--primary);
+  line-height: 1.6;
+  max-width: 140mm;
+  margin-bottom: 10mm;
+}
+
+.final-author {
+  font-size: 9pt;
+  color: var(--gray-400);
+}
+
+/* === БЛОК ЗАМЕТОК === */
+.notes-hint {
+  font-size: 8pt;
+  color: var(--gray-400);
+  font-style: italic;
+  margin-bottom: 2mm;
+}
+
+/* === ПЕЧАТЬ === */
+@media print {
+  body {
+    background: white;
+  }
+
+  .page, .cover, .block-title-page {
+    margin: 0;
+    box-shadow: none;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}

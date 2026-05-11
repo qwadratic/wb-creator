@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hallux Rigidus — Робочий зошит</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #014948;
+  --primary-mid: #328A8A;
+  --primary-light: #E8F5F3;
+  --accent: #008C89;
+  --accent-bright: #C6EE68;
+  --text-primary: #010E0E;
+  --section-bg: #E8F5F3;
+  --key-idea-bg: #E8F5F3;
+  --table-header: #014948;
+  --table-row-alt: #F4FAF8;
+  --border: #D0E8E4;
+  --page-bg: #FFFFFF;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #e8e8e8;
+  color: var(--text-primary);
+  font-size: 15.6px;
+  line-height: 1.5;
+}
+
+.toolbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 48px;
+  background: var(--primary); color: #fff;
+  display: flex; align-items: center; padding: 0 20px;
+  z-index: 9999; gap: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.toolbar-brand { font-weight: 700; font-size: 13px; letter-spacing: 1px; opacity: 0.7; }
+.toolbar-title { font-weight: 600; font-size: 14px; flex: 1; }
+.toolbar-badge { background: var(--accent-bright); color: var(--primary); font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 12px; }
+.toolbar-btn { background: rgba(255,255,255,0.15); border: none; color: #fff; padding: 6px 14px; border-radius: 6px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+.toolbar-btn:hover { background: rgba(255,255,255,0.25); }
+
+.pages-container { padding: 68px 0 40px; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+
+.cut-line { width: 794px; border: none; border-top: 2px dashed #bbb; position: relative; }
+.cut-line::after { content: '\2702'; position: absolute; top: -12px; left: 10px; font-size: 18px; color: #999; background: #e8e8e8; padding: 0 4px; }
+
+.page { width: 794px; height: 1123px; background: var(--page-bg); box-shadow: 0 2px 20px rgba(0,0,0,0.12); position: relative; overflow: hidden; display: flex; flex-direction: column; flex-shrink: 0; }
+
+.page-cover { background: linear-gradient(160deg, #011818 0%, #014948 30%, #013838 60%, #328A8A 100%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 60px; }
+.cover-pill { background: rgba(198,238,104,0.15); border: 1px solid rgba(198,238,104,0.3); color: #C6EE68; padding: 8px 28px; border-radius: 30px; font-size: 11px; font-weight: 700; letter-spacing: 3px; margin-bottom: 50px; }
+.cover-cross { position: relative; width: 80px; height: 80px; margin-bottom: 50px; }
+.cover-cross::before, .cover-cross::after { content: ''; position: absolute; background: rgba(255,255,255,0.25); }
+.cover-cross::before { width: 2px; height: 80px; left: 50%; top: 0; transform: translateX(-50%); }
+.cover-cross::after { width: 80px; height: 2px; top: 50%; left: 0; transform: translateY(-50%); }
+.cover-workbook { font-size: 72px; font-weight: 900; letter-spacing: 6px; line-height: 1; margin-bottom: 20px; opacity: 0.95; }
+.cover-topic { font-size: 18px; font-weight: 600; line-height: 1.5; max-width: 550px; margin-bottom: 60px; opacity: 0.9; }
+.cover-author { font-size: 12px; font-weight: 400; opacity: 0.7; line-height: 1.7; max-width: 500px; margin-bottom: 16px; }
+.cover-handle { font-size: 13px; font-weight: 600; opacity: 0.5; letter-spacing: 1px; }
+
+.page-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 38px 8px; border-bottom: 2px solid var(--primary); flex-shrink: 0; }
+.header-left { font-size: 9px; font-weight: 700; letter-spacing: 2px; color: var(--primary); }
+.header-right { font-size: 9px; font-weight: 600; letter-spacing: 1px; color: var(--accent); }
+.page-content { flex: 1; padding: 14px 38px 10px; overflow: hidden; }
+.page-footer { display: flex; justify-content: space-between; align-items: center; padding: 6px 38px 8px; border-top: 1px solid var(--border); font-size: 9px; color: #999; flex-shrink: 0; }
+.footer-page { font-weight: 700; color: var(--primary); }
+.footer-handle { font-weight: 500; }
+
+.section-title { font-size: 20px; font-weight: 800; color: var(--primary); margin-bottom: 10px; letter-spacing: 0.5px; }
+
+.key-idea { background: var(--key-idea-bg); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding: 8px 12px; margin-bottom: 8px; font-size: 12px; line-height: 1.5; }
+.key-idea-label { font-size: 9px; font-weight: 700; color: var(--primary-mid); letter-spacing: 1px; margin-bottom: 4px; }
+
+.task-pill { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 5px; }
+.pill-table { background: #E8F5F3; color: var(--primary); }
+.pill-question { background: #fef3c7; color: #92400e; }
+.pill-chain { background: #ede9fe; color: #5b21b6; }
+.pill-checklist { background: #E5F9E0; color: #065f46; }
+.pill-sketch { background: #fce7f3; color: #9d174d; }
+.pill-numbered { background: #e0e7ff; color: #3730a3; }
+.pill-reflect { background: #f3e8ff; color: #6b21a8; }
+.pill-practice { background: #FFF7DB; color: #92400e; }
+
+.wb-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 11px; }
+.wb-table th { background: var(--table-header); color: #fff; padding: 8px 8px; text-align: left; font-weight: 600; font-size: 9px; letter-spacing: 0.5px; }
+.wb-table td { padding: 20px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.wb-table tr:nth-child(even) td { background: var(--table-row-alt); }
+.wb-table .fill-cell { color: #aaa; font-style: italic; }
+
+.question-block { margin-bottom: 8px; }
+.question-prompt { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+.question-icon { width: 20px; height: 20px; min-width: 20px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+.question-text { font-size: 12px; font-weight: 600; color: var(--primary); line-height: 1.4; padding-top: 1px; }
+.answer-line { width: 100%; border: none; border-bottom: 1px dashed #B8D4D0; height: 32px; margin-bottom: 1px; }
+
+.checklist-item { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; font-size: 11px; }
+.checkbox { width: 14px; height: 14px; min-width: 14px; border: 2px solid var(--primary); border-radius: 3px; }
+.checklist-text { flex: 1; }
+.fill-line { display: inline-block; width: 140px; border-bottom: 1px dashed #B8D4D0; margin: 0 2px; }
+
+.chain-container { display: flex; flex-direction: column; align-items: center; gap: 0; margin-bottom: 8px; }
+.chain-block { background: var(--primary); color: #fff; padding: 6px 16px; border-radius: 6px; font-size: 11px; font-weight: 600; text-align: center; width: 85%; }
+.chain-empty { background: #fff; border: 2px dashed var(--accent); color: var(--accent); padding: 10px 16px; border-radius: 6px; font-size: 11px; font-weight: 500; text-align: center; width: 85%; min-height: 44px; }
+.chain-arrow { font-size: 16px; color: var(--primary); line-height: 1; padding: 1px 0; }
+
+.sketch-box { border: 2px dashed var(--accent); background: #F4FAF8; border-radius: 10px; padding: 12px; margin-bottom: 8px; min-height: 120px; position: relative; }
+.sketch-label { position: absolute; top: -10px; left: 20px; background: var(--accent); color: #fff; padding: 2px 12px; border-radius: 10px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+
+.numbered-item { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.num-circle { width: 28px; height: 28px; min-width: 28px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+.num-line { flex: 1; border-bottom: 1px dashed #B8D4D0; height: 28px; }
+
+.callout { background: rgba(198,238,104,0.08); border-left: 4px solid #C6EE68; border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 12px; font-size: 12px; line-height: 1.5; }
+
+.sub-heading { font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 8px; margin-top: 12px; }
+.notes-title { font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
+
+.ba-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+.ba-table th { background: var(--table-header); color: #fff; padding: 8px 12px; font-size: 11px; font-weight: 600; text-align: left; }
+.ba-table td { padding: 20px 12px; border-bottom: 1px solid var(--border); height: 60px; }
+.ba-table tr:nth-child(even) td { background: var(--table-row-alt); }
+
+.block-wrap { position: relative; }
+.block-wrap:hover .block-handle, .block-wrap:hover .block-actions { opacity: 1; }
+.block-handle { position: absolute; left: -24px; top: 4px; width: 16px; height: 20px; cursor: grab; opacity: 0; transition: opacity 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+.block-handle-dot { width: 4px; height: 4px; background: #bbb; border-radius: 50%; }
+.block-actions { position: absolute; right: -8px; top: 4px; display: flex; gap: 2px; opacity: 0; transition: opacity 0.2s; }
+.block-action-btn { width: 22px; height: 22px; border: none; background: #f0f0f0; color: #888; border-radius: 4px; cursor: pointer; font-size: 10px; display: flex; align-items: center; justify-content: center; }
+.block-action-btn:hover { background: #ddd; color: #333; }
+
+.comment-popover { display: none; position: absolute; right: -8px; top: 30px; width: 240px; background: #fff; border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); padding: 12px; z-index: 100; }
+.comment-popover.active { display: block; }
+.comment-textarea { width: 100%; border: 1px solid #ddd; border-radius: 6px; padding: 8px; font-family: inherit; font-size: 11px; resize: vertical; min-height: 60px; }
+.comment-save-btn { margin-top: 6px; background: var(--accent); color: #fff; border: none; padding: 4px 12px; border-radius: 4px; font-family: inherit; font-size: 11px; font-weight: 600; cursor: pointer; }
+
+@page { size: A4 portrait; margin: 0; }
+@media print {
+  *, *::before, *::after { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+  html, body { background: white !important; margin: 0 !important; padding: 0 !important; }
+  .toolbar, .cut-line, .block-handle, .block-actions, .comment-btn, .comment-popover, .inserted-page-break { display: none !important; }
+  .block-wrap:hover { outline: none !important; }
+  .block-wrap.has-comment { border-left-color: transparent !important; background: transparent !important; }
+  [contenteditable] { outline: none !important; }
+  .pages-container { padding: 0 !important; gap: 0 !important; }
+  .scale-frame, .wb-scale-frame { transform: none !important; margin: 0 !important; width: 210mm !important; }
+  .page, .cover { width: 210mm !important; height: 297mm !important; box-shadow: none !important; overflow: hidden !important; page-break-after: always !important; break-after: page !important; page-break-inside: avoid !important; }
+  .page:last-of-type, .cover:last-of-type { page-break-after: avoid !important; break-after: avoid !important; }
+  .cover, .page-cover { background: linear-gradient(160deg, #011818 0%, #014948 30%, #013838 60%, #328A8A 100%) !important; color: white !important; }
+  .cover-pill { background: rgba(198,238,104,0.15) !important; border: 1px solid rgba(198,238,104,0.3) !important; color: #C6EE68 !important; }
+  thead tr, thead th { background: #014948 !important; color: white !important; }
+  tbody tr:nth-child(even) { background: #F4FAF8 !important; }
+  .key-idea { background: #E8F5F3 !important; border-left: 4px solid #014948 !important; }
+  .key-idea-label { color: #328A8A !important; }
+  .chain-block { background: #014948 !important; color: white !important; }
+  .chain-empty { border: 2px dashed #008C89 !important; }
+  .q-icon, .question-icon, .num-circle { background: #014948 !important; color: white !important; }
+  .checkbox { border: 2px solid #014948 !important; }
+  .callout { background: rgba(198,238,104,0.08) !important; border-left: 4px solid #C6EE68 !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="toolbar-brand">ОРТОБОР</span>
+  <span class="toolbar-title">Hallux Rigidus — Робочий зошит</span>
+  <span class="toolbar-badge" id="commentCount">0 нотаток</span>
+  <button class="toolbar-btn" onclick="copyAllComments()">Копіювати нотатки</button>
+  <button class="toolbar-btn" onclick="replaceCover()">Замінити обкладинку</button>
+  <button class="toolbar-btn" onclick="exportPDF()">Експорт PDF</button>
+</div>
+
+<div class="pages-container" id="pagesContainer">
+
+<!-- ==================== COVER ==================== -->
+<div class="page page-cover" style="padding:0; background:none; display:block;">
+  <img src="cover-hallux-rigidus.jpeg" style="width:100%; height:100%; object-fit:cover; display:block;" />
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 1: ВИЗНАЧЕННЯ ТА АНАТОМІЯ ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">HALLUX RIGIDUS — WORKBOOK</span>
+    <span class="header-right">РОЗДІЛ 1</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="s1-title">1. ВИЗНАЧЕННЯ ТА АНАТОМІЯ</div>
+
+    <div class="key-idea" data-block="s1-idea">
+      <div class="key-idea-label">КЛЮЧОВА ІДЕЯ</div>
+      Hallux rigidus — повна або майже повна втрата рухливості 1-го плеснофалангового суглоба (ПФС). Hallux limitus — часткове обмеження. Нормальна дорсифлексія 1-го ПФС: 55&ndash;60&deg;. 1-а плеснова кістка товща за 2&ndash;5, сезамоїдні кістки під головкою 1-ї плеснової працюють як надколінок для великого пальця — збільшують важіль м'язів-згиначів.
+    </div>
+
+    <div data-block="s1-table1">
+      <span class="task-pill pill-table">RIGIDUS vs LIMITUS — ПОРІВНЯННЯ</span>
+      <table class="wb-table">
+        <thead>
+          <tr><th style="width:28%">Параметр</th><th style="width:36%">Hallux Limitus</th><th style="width:36%">Hallux Rigidus</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Дорсифлексія 1-го ПФС</strong></td><td>Обмежена (менше 55&deg;)</td><td>Відсутня або &lt;10&deg;</td></tr>
+          <tr><td><strong>Стадія процесу</strong></td><td>Рання / функціональна</td><td>Пізня / структурна</td></tr>
+          <tr><td><strong>Остеофіти</strong></td><td class="fill-cell">запишіть...</td><td class="fill-cell">запишіть...</td></tr>
+          <tr><td><strong>Біль</strong></td><td class="fill-cell">запишіть...</td><td class="fill-cell">запишіть...</td></tr>
+          <tr><td><strong>Можливість корекції</strong></td><td class="fill-cell">запишіть...</td><td class="fill-cell">запишіть...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="question-block" data-block="s1-q1">
+      <span class="task-pill pill-question">? ПИТАННЯ</span>
+      <div class="question-prompt">
+        <div class="question-icon">?</div>
+        <div class="question-text">Чому сезамоїдні кістки 1-го ПФС порівнюють з надколінком? Яка їхня біомеханічна роль при відштовхуванні?</div>
+      </div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">1</span>
+    <span class="footer-handle">@ortobor_academy</span>
+  </div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 2: БІОМЕХАНІКА ХОДИ ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">HALLUX RIGIDUS — WORKBOOK</span>
+    <span class="header-right">РОЗДІЛ 2</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="s2-title">2. БІОМЕХАНІКА ХОДИ</div>
+
+    <div class="key-idea" data-block="s2-idea">
+      <div class="key-idea-label">КЛЮЧОВА ІДЕЯ</div>
+      3 фази перекату стопи: контакт п'ятки (супінація) &rarr; повний контакт (пронація/амортизація) &rarr; відштовхування (дорсифлексія 1-го ПФС на 55&ndash;60&deg;). При ригідності 1-го ПФС організм обирає латеральний обхідний маневр: навантаження переноситься на 2&ndash;5 плеснові та МФС 1-го пальця (IPJ), розвивається компенсаторна гіперсупінація &rarr; патологія колін, стегон, хребта.
+    </div>
+
+    <div data-block="s2-chain1">
+      <span class="task-pill pill-chain">НОРМАЛЬНА ХОДА — ВІДНОВІТЬ ПОСЛІДОВНІСТЬ</span>
+      <div class="chain-container">
+        <div class="chain-block">Контакт п'ятки (супінація, стабілізація)</div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-empty">Повний контакт: <span class="fill-line" style="width:140px"></span> (амортизація)</div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-empty">Відштовхування: дорсифлексія 1-го ПФС <span class="fill-line" style="width:50px"></span>&deg;</div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-block">Ефективний перекат через 1-й палець</div>
+      </div>
+    </div>
+
+    <div data-block="s2-chain2">
+      <span class="task-pill pill-chain">ПАТОЛОГІЧНА ХОДА ПРИ HALLUX RIGIDUS — ЗАПОВНІТЬ</span>
+      <div class="chain-container">
+        <div class="chain-block">Блокування дорсифлексії 1-го ПФС</div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-empty">Латеральний обхідний маневр: <span class="fill-line" style="width:120px"></span></div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-empty">Перевантаження <span class="fill-line" style="width:60px"></span> плеснових + <span class="fill-line" style="width:60px"></span></div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-empty">Компенсаторна <span class="fill-line" style="width:100px"></span></div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-block">Патологія колін / стегон / хребта</div>
+      </div>
+    </div>
+
+    <div class="question-block" data-block="s2-q1">
+      <span class="task-pill pill-question">? ПИТАННЯ</span>
+      <div class="question-prompt">
+        <div class="question-icon">?</div>
+        <div class="question-text">Чому при hallux rigidus пацієнт може скаржитись на біль у коліні, а не в стопі? Опишіть компенсаторний ланцюг.</div>
+      </div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">2</span>
+    <span class="footer-handle">@ortobor_academy</span>
+  </div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 3: ЕТІОЛОГІЯ ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">HALLUX RIGIDUS — WORKBOOK</span>
+    <span class="header-right">РОЗДІЛ 3</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="s3-title">3. ЕТІОЛОГІЯ</div>
+
+    <div class="key-idea" data-block="s3-idea">
+      <div class="key-idea-label">КЛЮЧОВА ІДЕЯ</div>
+      Hallux rigidus — мультифакторне захворювання. Основні причини: пронована/вальгусна стопа, носіння підборів з вузьким носком, остеоартроз, подагра (кристали уратів — класика з часів Гіппократа), пряма травма, вроджена дисплазія, діабет, менопауза (гормональний вплив на хрящ).
+    </div>
+
+    <div data-block="s3-table1">
+      <span class="task-pill pill-table">ПРИЧИНИ ЗА КАТЕГОРІЯМИ — ЗАПОВНІТЬ</span>
+      <table class="wb-table">
+        <thead>
+          <tr><th style="width:25%">Категорія</th><th style="width:35%">Конкретні причини</th><th style="width:40%">Механізм ураження 1-го ПФС</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Біомеханічні</strong></td><td>Пронована/вальгусна стопа</td><td class="fill-cell">запишіть...</td></tr>
+          <tr><td><strong>Зовнішні</strong></td><td>Підбори + вузький носок, травма</td><td class="fill-cell">запишіть...</td></tr>
+          <tr><td><strong>Метаболічні</strong></td><td class="fill-cell">запишіть 3 причини...</td><td>Кристали уратів / деструкція хряща</td></tr>
+          <tr><td><strong>Гормональні</strong></td><td class="fill-cell">запишіть...</td><td class="fill-cell">запишіть...</td></tr>
+          <tr><td><strong>Вроджені</strong></td><td class="fill-cell">запишіть...</td><td class="fill-cell">запишіть...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="question-block" data-block="s3-q1">
+      <span class="task-pill pill-question">? ПИТАННЯ</span>
+      <div class="question-prompt">
+        <div class="question-icon">?</div>
+        <div class="question-text">Чому подагра історично називається &laquo;хворобою королів&raquo;? Як кристали уратів пошкоджують саме 1-й ПФС?</div>
+      </div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">3</span>
+    <span class="footer-handle">@ortobor_academy</span>
+  </div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 4: ПОДОЛОГІЧНІ ОЗНАКИ ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">HALLUX RIGIDUS — WORKBOOK</span>
+    <span class="header-right">РОЗДІЛ 4</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="s4-title">4. ПОДОЛОГІЧНІ ОЗНАКИ (&laquo;ОБЛИЧЧЯ СТОПИ&raquo;)</div>
+
+    <div class="key-idea" data-block="s4-idea">
+      <div class="key-idea-label">КЛЮЧОВА ІДЕЯ</div>
+      Подолог бачить hallux rigidus раніше за лікаря &mdash; по характерному &laquo;обличчю стопи&raquo;. Патогномонічна ознака: М'ЯКА ЧИСТА ШКІРА ПІД 1-м ПФС (суглоб не працює &rarr; немає навантаження &rarr; немає кератозу). Одночасно: кератоз під IPJ 1-го пальця, дифузні кератози під 2&ndash;5 головками, гіпертрофія латеральних нігтьових валиків, екстензійна контрактура IPJ, хронічний оніхолізис.
+    </div>
+
+    <div data-block="s4-checklist">
+      <span class="task-pill pill-checklist">ПОДОЛОГІЧНІ ОЗНАКИ HALLUX RIGIDUS — ЧЕК-ЛИСТ</span>
+      <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">М'яка чиста шкіра під 1-м ПФС (патогномонічна!)</span></div>
+      <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Кератоз під МФС (IPJ) 1-го пальця</span></div>
+      <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Дифузні кератози під 2&ndash;5 головками плеснових</span></div>
+      <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Гіпертрофія латеральних нігтьових валиків</span></div>
+      <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Екстензійна контрактура IPJ 1-го пальця</span></div>
+      <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Хронічний оніхолізис</span></div>
+      <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Потовщення / деформація нігтьової пластини 1-го пальця</span></div>
+      <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Дорсальний остеофіт (&laquo;шишка&raquo; зверху 1-го ПФС)</span></div>
+    </div>
+
+    <div data-block="s4-sketch">
+      <span class="task-pill pill-sketch">НАМАЛЮЙТЕ РОЗПОДІЛ КЕРАТОЗІВ НА СТОПІ</span>
+      <div class="sketch-box" style="min-height: 200px;">
+        <span class="sketch-label">ПІДОШВА СТОПИ ПРИ HALLUX RIGIDUS</span>
+      </div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">4</span>
+    <span class="footer-handle">@ortobor_academy</span>
+  </div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 5: ДІАГНОСТИКА ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">HALLUX RIGIDUS — WORKBOOK</span>
+    <span class="header-right">РОЗДІЛ 5</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="s5-title">5. ДІАГНОСТИКА</div>
+
+    <div class="key-idea" data-block="s5-idea">
+      <div class="key-idea-label">КЛЮЧОВА ІДЕЯ</div>
+      Три діагностичних тести: активний (пацієнт піднімає пальці стоячи), пасивний (лікар виконує дорсифлексію ПРОКСИМАЛЬНОЇ фаланги, не дистальної!), рентген. Клінічний тригер для подолога: чиста шкіра під 1-м ПФС + латеральні кератози + мозоль на IPJ = негайно перевірити рухливість 1-го ПФС.
+    </div>
+
+    <div data-block="s5-practice">
+      <span class="task-pill pill-practice">КЛІНІЧНИЙ КЕЙС</span>
+      <div class="callout">
+        <strong>Пацієнтка, 52 роки.</strong> Скарги: біль у колінах останні 2 роки, рецидивні мозолі під 2&ndash;3 головками, деформація нігтів 1-х пальців обох стоп. Ортопед колін — &laquo;артроз&raquo;. Подолог виявив: м'яка шкіра під обома 1-ми ПФС, кератоз на IPJ, оніхолізис.<br>
+        <strong>Діагноз:</strong> білатеральний hallux rigidus &rarr; компенсаторне перевантаження &rarr; гонартроз.
+      </div>
+      <div class="question-prompt">
+        <div class="question-icon">?</div>
+        <div class="question-text">Які 3 подологічні ознаки у цьому кейсі вказували на hallux rigidus ще до тестування рухливості? Яка правильна техніка пасивного тесту?</div>
+      </div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+    <div class="question-block" data-block="s5-q1">
+      <span class="task-pill pill-question">? ПИТАННЯ</span>
+      <div class="question-prompt">
+        <div class="question-icon">?</div>
+        <div class="question-text">Чому при пасивному тесті важливо тримати проксимальну фалангу, а не дистальну? Яку помилку допускають найчастіше?</div>
+      </div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">5</span>
+    <span class="footer-handle">@ortobor_academy</span>
+  </div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 6: ЛІКУВАННЯ ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">HALLUX RIGIDUS — WORKBOOK</span>
+    <span class="header-right">РОЗДІЛ 6</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="s6-title">6. ЛІКУВАННЯ</div>
+
+    <div class="key-idea" data-block="s6-idea">
+      <div class="key-idea-label">КЛЮЧОВА ІДЕЯ</div>
+      Головний принцип: рокерна ригідна підошва ОБОВ'ЯЗКОВА — вона переносить перекат з суглоба на взуття. Устілки з платформою 1-го променя, вправи для збереження залишкового ROM, фізіотерапія (УХТ, НПЗП). Категорично НЕ РОБИТИ: barefoot взуття, силіконові сепаратори, йога з дорсифлексією 1-го ПФС. Хірургія: артродез у 5&ndash;7&deg; дорсифлексії.
+    </div>
+
+    <div data-block="s6-table1">
+      <span class="task-pill pill-table">ЩО РОБИТИ vs ЩО НЕ РОБИТИ</span>
+      <table class="wb-table">
+        <thead>
+          <tr><th style="width:50%">ЩО РОБИТИ</th><th style="width:50%">ЩО НЕ РОБИТИ</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Рокерна ригідна підошва (перекат через взуття)</td><td>Barefoot / мінімалістичне взуття</td></tr>
+          <tr><td>Устілки з платформою 1-го променя</td><td>Силіконові сепаратори для пальців</td></tr>
+          <tr><td>Вправи для збереження залишкового ROM</td><td>Йога з форсованою дорсифлексією 1-го ПФС</td></tr>
+          <tr><td>Фізіотерапія (УХТ, НПЗП)</td><td>Ігнорування проблеми (&laquo;розходиться&raquo;)</td></tr>
+          <tr><td>Хірургія: артродез у 5&ndash;7&deg; дорсифлексії (при повному блокуванні)</td><td class="fill-cell">запишіть ще приклад...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="question-block" data-block="s6-q1">
+      <span class="task-pill pill-question">? ПИТАННЯ</span>
+      <div class="question-prompt">
+        <div class="question-icon">?</div>
+        <div class="question-text">Чому рокерна підошва є обов'язковою при hallux rigidus? Як саме вона компенсує втрату дорсифлексії?</div>
+      </div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">6</span>
+    <span class="footer-handle">@ortobor_academy</span>
+  </div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 7: ПРОГНОЗ ТА ЗНАЧЕННЯ ДЛЯ ПОДОЛОГА ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">HALLUX RIGIDUS — WORKBOOK</span>
+    <span class="header-right">РОЗДІЛ 7</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="s7-title">7. ПРОГНОЗ ТА ЗНАЧЕННЯ ДЛЯ ПОДОЛОГА</div>
+
+    <div class="key-idea" data-block="s7-idea">
+      <div class="key-idea-label">КЛЮЧОВА ІДЕЯ</div>
+      Нелікований hallux rigidus &rarr; рецидивні мозолі, нігтьові розлади, прогресуючий артроз колін/стегон/хребта. Рання подологічна детекція: перевіряти рухливість 1-го ПФС у КОЖНОГО пацієнта з кератозами або нігтьовою патологією. Реалістичне консультування: устілки + взуття значно покращать стан, але не повністю усунуть кератози при повному блокуванні суглоба.
+    </div>
+
+    <div data-block="s7-checklist">
+      <span class="task-pill pill-checklist">КОЛИ НАПРАВЛЯТИ ДО ОРТОПЕДА — ЧЕК-ЛИСТ</span>
+      <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Дорсифлексія 1-го ПФС менше 30&deg;</span></div>
+      <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Біль при русі в 1-му ПФС</span></div>
+      <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Видимий дорсальний остеофіт</span></div>
+      <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Рецидивні кератози під 2&ndash;5 головками попри адекватний догляд</span></div>
+      <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Біль у колінах / стегнах / попереку у поєднанні з ознаками ригідності</span></div>
+      <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Прогресуючі нігтьові деформації 1-го пальця</span></div>
+      <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text"><span class="fill-line"></span> (допишіть)</span></div>
+    </div>
+
+    <div data-block="s7-notes">
+      <div class="notes-title">Нотатки</div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">7</span>
+    <span class="footer-handle">@ortobor_academy</span>
+  </div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 8: РЕФЛЕКСІЯ ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">HALLUX RIGIDUS — WORKBOOK</span>
+    <span class="header-right">РЕФЛЕКСІЯ</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="r-title">РЕФЛЕКСІЯ ТА ПЛАНУВАННЯ</div>
+
+    <div data-block="r-main">
+      <span class="task-pill pill-reflect">РЕФЛЕКСІЯ</span>
+      <div class="sub-heading">Головне, що я дізнався / дізналась</div>
+      <div class="numbered-item"><div class="num-circle">1</div><div class="num-line"></div></div>
+      <div class="numbered-item"><div class="num-circle">2</div><div class="num-line"></div></div>
+      <div class="numbered-item"><div class="num-circle">3</div><div class="num-line"></div></div>
+    </div>
+
+    <div data-block="r-change" style="margin-top:20px">
+      <div class="sub-heading">Що я зміню у своїй практиці</div>
+      <table class="ba-table">
+        <thead>
+          <tr><th style="width:50%">ЩО Я РОБИВ(ЛА) РАНІШЕ</th><th style="width:50%">ЩО БУДУ РОБИТИ ТЕПЕР</th></tr>
+        </thead>
+        <tbody>
+          <tr><td></td><td></td></tr>
+          <tr><td></td><td></td></tr>
+          <tr><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div data-block="r-steps" style="margin-top:20px">
+      <div class="sub-heading">Мої перші кроки</div>
+      <div class="numbered-item"><div class="num-circle">1</div><div class="num-line"></div></div>
+      <div class="numbered-item"><div class="num-circle">2</div><div class="num-line"></div></div>
+      <div class="numbered-item"><div class="num-circle">3</div><div class="num-line"></div></div>
+    </div>
+
+    <div data-block="r-notes" style="margin-top:20px">
+      <div class="notes-title">Мої нотатки</div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">8</span>
+    <span class="footer-handle">@ortobor_academy</span>
+  </div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 9: ФІНАЛЬНА ==================== -->
+<div class="page page-cover" style="justify-content: center;">
+  <div style="max-width:500px; text-align:center;">
+    <div style="font-size:16px; font-style:italic; opacity:0.9; line-height:1.8; margin-bottom:40px;">
+      &laquo;Чиста шкіра під першим ПФС — це не здоров'я. Це мовчазна ознака суглоба, який перестав працювати.&raquo;
+    </div>
+    <div style="font-size:13px; font-weight:600; opacity:0.7; margin-bottom:60px;">— Євгеній Боровський</div>
+    <div style="font-size:11px; opacity:0.5; line-height:2;">
+      Ортобор Академія<br>
+      @ortobor_academy<br>
+      ortobor.com
+    </div>
+  </div>
+</div>
+
+</div><!-- /pages-container -->
+
+<script>
+(function() {
+  const blocks = document.querySelectorAll('[data-block]');
+  const comments = {};
+  try { const saved = localStorage.getItem('wb-hallux-rigidus-v2-comments'); if (saved) Object.assign(comments, JSON.parse(saved)); } catch(e) {}
+
+  blocks.forEach(el => {
+    const id = el.getAttribute('data-block');
+    el.querySelectorAll('.section-title, .key-idea, .question-text, th, td, .checklist-text, .chain-block, .chain-empty, .sub-heading, .notes-title').forEach(t => { t.setAttribute('contenteditable', 'true'); t.style.outline = 'none'; });
+
+    const wrap = document.createElement('div'); wrap.className = 'block-wrap'; el.parentNode.insertBefore(wrap, el); wrap.appendChild(el);
+    const handle = document.createElement('div'); handle.className = 'block-handle'; handle.innerHTML = '<div class="block-handle-dot"></div><div class="block-handle-dot"></div><div class="block-handle-dot"></div><div class="block-handle-dot"></div><div class="block-handle-dot"></div><div class="block-handle-dot"></div>'; wrap.appendChild(handle);
+
+    const actions = document.createElement('div'); actions.className = 'block-actions';
+    const btnComment = document.createElement('button'); btnComment.className = 'block-action-btn'; btnComment.innerHTML = '&#128172;'; btnComment.title = 'Нотатка'; actions.appendChild(btnComment);
+    const btnUp = document.createElement('button'); btnUp.className = 'block-action-btn'; btnUp.innerHTML = '&uarr;'; btnUp.title = 'Вгору'; btnUp.onclick = () => { const prev = wrap.previousElementSibling; if (prev && prev.classList.contains('block-wrap')) wrap.parentNode.insertBefore(wrap, prev); }; actions.appendChild(btnUp);
+    const btnDown = document.createElement('button'); btnDown.className = 'block-action-btn'; btnDown.innerHTML = '&darr;'; btnDown.title = 'Вниз'; btnDown.onclick = () => { const next = wrap.nextElementSibling; if (next && next.classList.contains('block-wrap')) wrap.parentNode.insertBefore(next, wrap); }; actions.appendChild(btnDown);
+    const btnBB = document.createElement('button'); btnBB.className = 'block-action-btn'; btnBB.innerHTML = '&#9986;&#8593;'; btnBB.title = 'Розрив до'; btnBB.onclick = () => { const cut = document.createElement('hr'); cut.className = 'cut-line'; wrap.parentNode.insertBefore(cut, wrap); }; actions.appendChild(btnBB);
+    const btnBA = document.createElement('button'); btnBA.className = 'block-action-btn'; btnBA.innerHTML = '&#9986;&#8595;'; btnBA.title = 'Розрив після'; btnBA.onclick = () => { const cut = document.createElement('hr'); cut.className = 'cut-line'; wrap.after(cut); }; actions.appendChild(btnBA);
+    const btnExt = document.createElement('button'); btnExt.className = 'block-action-btn'; btnExt.innerHTML = '&#10530;'; btnExt.title = 'Збільшити'; btnExt.onclick = () => resizeBlock(wrap, true); actions.appendChild(btnExt);
+    const btnShr = document.createElement('button'); btnShr.className = 'block-action-btn'; btnShr.innerHTML = '&#10529;'; btnShr.title = 'Зменшити'; btnShr.onclick = () => resizeBlock(wrap, false); actions.appendChild(btnShr);
+
+    if (el.querySelector('.wb-table, .ba-table, table')) {
+      const btnPU = document.createElement('button'); btnPU.className = 'block-action-btn'; btnPU.innerHTML = '&#8615;'; btnPU.title = 'Збільшити висоту рядків'; btnPU.onclick = () => resizeTablePadding(wrap, true); actions.appendChild(btnPU);
+      const btnPD = document.createElement('button'); btnPD.className = 'block-action-btn'; btnPD.innerHTML = '&#8613;'; btnPD.title = 'Зменшити висоту рядків'; btnPD.onclick = () => resizeTablePadding(wrap, false); actions.appendChild(btnPD);
+    }
+
+    const btnRm = document.createElement('button'); btnRm.className = 'block-action-btn'; btnRm.innerHTML = '&times;'; btnRm.title = 'Видалити'; btnRm.onclick = () => { if (confirm('Видалити блок?')) wrap.remove(); }; actions.appendChild(btnRm);
+    wrap.appendChild(actions);
+
+    const popover = document.createElement('div'); popover.className = 'comment-popover';
+    popover.innerHTML = `<textarea class="comment-textarea" placeholder="Ваша нотатка...">${comments[id] || ''}</textarea><button class="comment-save-btn">Зберегти</button>`;
+    wrap.appendChild(popover);
+
+    btnComment.onclick = (e) => { e.stopPropagation(); document.querySelectorAll('.comment-popover.active').forEach(p => { if (p !== popover) p.classList.remove('active'); }); popover.classList.toggle('active'); };
+    popover.querySelector('.comment-save-btn').onclick = () => { const val = popover.querySelector('.comment-textarea').value.trim(); if (val) { comments[id] = val; } else { delete comments[id]; } try { localStorage.setItem('wb-hallux-rigidus-v2-comments', JSON.stringify(comments)); } catch(e){} popover.classList.remove('active'); updateBadge(); };
+  });
+
+  document.addEventListener('click', (e) => { if (!e.target.closest('.comment-popover') && !e.target.closest('.block-action-btn')) { document.querySelectorAll('.comment-popover.active').forEach(p => p.classList.remove('active')); } });
+  function updateBadge() { document.getElementById('commentCount').textContent = Object.keys(comments).length + ' нотаток'; } updateBadge();
+
+  function resizeBlock(block, grow) {
+    const delta = grow ? 1 : -1;
+    block.querySelectorAll('.answer-line').forEach((line, i, arr) => { if (grow) { const clone = line.cloneNode(true); line.parentNode.insertBefore(clone, line.nextSibling); } else if (arr.length > 1 && i === arr.length - 1) { line.remove(); } });
+    const tbody = block.querySelector('.wb-table tbody, .ba-table tbody, table tbody');
+    if (tbody) { if (grow) { const cols = tbody.querySelector('tr') ? tbody.querySelector('tr').cells.length : 2; const tr = document.createElement('tr'); for (let c = 0; c < cols; c++) { const td = document.createElement('td'); td.innerHTML = '&nbsp;'; tr.appendChild(td); } tbody.appendChild(tr); } else if (tbody.rows.length > 1) { tbody.lastElementChild.remove(); } }
+    block.querySelectorAll('.chain-empty').forEach(ce => { const cur = parseInt(ce.style.minHeight) || 44; ce.style.minHeight = Math.max(20, cur + delta * 16) + 'px'; });
+    block.querySelectorAll('.sketch-box').forEach(sb => { const cur = parseInt(sb.style.minHeight) || parseInt(getComputedStyle(sb).minHeight) || 120; sb.style.minHeight = Math.max(50, cur + delta * 40) + 'px'; });
+    const cl = block.querySelector('.checklist-item');
+    if (cl) { const parent = cl.parentNode; if (grow) { const clone = cl.cloneNode(true); clone.querySelector('.checklist-text').textContent = ''; parent.appendChild(clone); } else { const items = parent.querySelectorAll('.checklist-item'); if (items.length > 1) items[items.length - 1].remove(); } }
+  }
+
+  function resizeTablePadding(block, grow) {
+    const delta = grow ? 4 : -4;
+    block.querySelectorAll('.wb-table td, .ba-table td, table td').forEach(td => { const cur = parseInt(td.style.paddingTop) || parseInt(getComputedStyle(td).paddingTop) || 20; const next = Math.max(2, cur + delta); td.style.paddingTop = next + 'px'; td.style.paddingBottom = next + 'px'; });
+  }
+
+  window.copyAllComments = function() {
+    const keys = Object.keys(comments); if (!keys.length) { alert('Немає нотаток для копіювання.'); return; }
+    let md = '# Нотатки до зошиту: Hallux Rigidus\n\n'; keys.forEach(k => { md += `## ${k}\n${comments[k]}\n\n`; });
+    navigator.clipboard.writeText(md).then(() => { alert('Нотатки скопійовано до буфера обміну (Markdown).'); }).catch(() => { const ta = document.createElement('textarea'); ta.value = md; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); alert('Нотатки скопійовано.'); });
+  };
+  window.exportPDF = function() { window.print(); };
+
+  function scalePages() { const container = document.getElementById('pagesContainer'); const vw = window.innerWidth; if (vw < 840) { const scale = (vw - 40) / 794; container.style.transform = `scale(${scale})`; container.style.transformOrigin = 'top center'; container.style.width = '794px'; container.style.margin = '0 auto'; } else { container.style.transform = ''; container.style.width = ''; } }
+  scalePages(); window.addEventListener('resize', scalePages);
+  // ----- Cover replace -----
+  window.replaceCover = function() {
+    var input = document.createElement('input');
+    input.type = 'file'; input.accept = 'image/*'; input.style.display = 'none';
+    input.onchange = function(e) {
+      var file = e.target.files && e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        _applyWbCover(ev.target.result);
+        try { localStorage.setItem(_wbCoverKey(), ev.target.result); }
+        catch(err) { console.warn('Cover image too large for browser storage; will not survive reload.'); }
+      };
+      reader.readAsDataURL(file);
+    };
+    document.body.appendChild(input);
+    input.click();
+    setTimeout(function(){ try { input.remove(); } catch(_){} }, 0);
+  };
+  function _wbCoverKey() { return 'wb-cover:' + (document.title || 'workbook'); }
+  function _applyWbCover(dataUrl) {
+    var cover = document.querySelector('.page.page-cover, .page.cover, .cover');
+    if (!cover) return;
+    cover.innerHTML = '<img src="' + dataUrl + '" style="width:100%;height:100%;object-fit:cover;display:block;">';
+    cover.setAttribute('style', 'padding:0;background:none;display:block;');
+  }
+  try { var _wbSaved = localStorage.getItem(_wbCoverKey()); if (_wbSaved) _applyWbCover(_wbSaved); } catch(_) {}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>Ortobor — Button Variants</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased}
+
+/* ── ANIMATED BG ── */
+:root{
+  --c1:0,140,137; --c2:50,138,138; --c3:198,238,104;
+  --c4:90,172,172; --c5:1,73,72; --cp:198,238,104;
+  --size:80%; --blend:hard-light;
+}
+.bg{
+  position:fixed;inset:0;
+  background:linear-gradient(135deg,#013838,#026060);
+  overflow:hidden;
+}
+.gradients{
+  position:absolute;inset:0;
+  filter:url(#goo) blur(40px);
+}
+.orb{position:absolute;width:var(--size);height:var(--size);top:calc(50% - var(--size)/2);left:calc(50% - var(--size)/2);mix-blend-mode:var(--blend);border-radius:50%}
+.o1{background:radial-gradient(circle at center,rgba(var(--c1),1) 0,rgba(var(--c1),0) 50%) no-repeat;animation:moveV 28s ease infinite}
+.o2{background:radial-gradient(circle at center,rgba(var(--c2),.85) 0,rgba(var(--c2),0) 50%) no-repeat;transform-origin:calc(50% - 380px);animation:moveC 18s reverse infinite}
+.o3{background:radial-gradient(circle at center,rgba(var(--c3),.65) 0,rgba(var(--c3),0) 50%) no-repeat;transform-origin:calc(50% + 380px);animation:moveC 36s linear infinite;opacity:.75}
+.o4{background:radial-gradient(circle at center,rgba(var(--c4),.8) 0,rgba(var(--c4),0) 50%) no-repeat;transform-origin:calc(50% - 180px);animation:moveH 36s ease infinite;opacity:.7}
+.o5{background:radial-gradient(circle at center,rgba(var(--c5),.85) 0,rgba(var(--c5),0) 50%) no-repeat;transform-origin:calc(50% - 700px) calc(50% + 700px);animation:moveC 18s ease infinite}
+.optr{position:absolute;background:radial-gradient(circle at center,rgba(var(--cp),.6) 0,rgba(var(--cp),0) 50%) no-repeat;mix-blend-mode:var(--blend);width:100%;height:100%;top:-50%;left:-50%;opacity:.6;will-change:transform}
+@keyframes moveV{0%{transform:translateY(-45%)}50%{transform:translateY(45%)}100%{transform:translateY(-45%)}}
+@keyframes moveC{0%{transform:rotate(0deg)}50%{transform:rotate(180deg)}100%{transform:rotate(360deg)}}
+@keyframes moveH{0%{transform:translateX(-45%) translateY(-8%)}50%{transform:translateX(45%) translateY(8%)}100%{transform:translateX(-45%) translateY(-8%)}}
+
+/* ── CONTENT ── */
+.content{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:20px}
+.headline{font-size:clamp(28px,4vw,52px);font-weight:800;letter-spacing:-.6px;text-align:center;line-height:1.06;background:linear-gradient(to bottom,rgba(255,255,255,.95),rgba(255,255,255,.3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px}
+.sub{color:rgba(255,255,255,.42);font-size:15px;text-align:center;margin-bottom:52px}
+
+/* ── VARIANTS GRID ── */
+.variants{display:flex;flex-direction:column;gap:28px;width:100%;max-width:680px}
+.vrow{display:flex;align-items:center;gap:20px}
+.vtag{color:rgba(255,255,255,.3);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;width:120px;flex-shrink:0;text-align:right}
+
+/* ── BUTTON STYLES ── */
+
+/* V1 — Solid teal + white ring */
+.btn-v1{
+  background:#008C89;
+  border:2px solid rgba(255,255,255,.55);
+  color:#fff;
+  font-family:inherit;font-size:15px;font-weight:800;
+  padding:17px 36px;
+  border-radius:14px;
+  cursor:pointer;letter-spacing:.2px;
+  box-shadow:0 0 0 1px rgba(0,140,137,.8), 0 8px 28px rgba(0,140,137,.35);
+  transition:all .16s;
+}
+.btn-v1:hover{background:#00A09D;border-color:rgba(255,255,255,.8);transform:translateY(-2px);box-shadow:0 0 0 1px rgba(0,140,137,.9),0 14px 38px rgba(0,140,137,.45)}
+
+/* V2 — Glass teal + slim white border */
+.btn-v2{
+  background:rgba(0,140,137,.72);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border:1.5px solid rgba(255,255,255,.6);
+  border-bottom-color:rgba(255,255,255,.2);
+  color:#fff;
+  font-family:inherit;font-size:15px;font-weight:800;
+  padding:17px 36px;
+  border-radius:14px;
+  cursor:pointer;letter-spacing:.2px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28), 0 8px 28px rgba(0,0,0,.2);
+  transition:all .16s;
+}
+.btn-v2:hover{background:rgba(0,160,157,.8);border-color:rgba(255,255,255,.85);transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 14px 36px rgba(0,0,0,.25)}
+
+/* V3 — White border only (outline) */
+.btn-v3{
+  background:rgba(255,255,255,.1);
+  backdrop-filter:blur(16px) saturate(160%);
+  -webkit-backdrop-filter:blur(16px) saturate(160%);
+  border:2px solid rgba(255,255,255,.7);
+  color:#fff;
+  font-family:inherit;font-size:15px;font-weight:800;
+  padding:17px 36px;
+  border-radius:14px;
+  cursor:pointer;letter-spacing:.2px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18), 0 4px 16px rgba(0,0,0,.15);
+  transition:all .16s;
+}
+.btn-v3:hover{background:rgba(255,255,255,.18);border-color:#fff;transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 8px 24px rgba(0,0,0,.2)}
+
+/* V4 — Pill shape + double ring */
+.btn-v4{
+  background:#008C89;
+  border:2px solid rgba(255,255,255,.55);
+  outline:1px solid rgba(0,140,137,.7);
+  outline-offset:3px;
+  color:#fff;
+  font-family:inherit;font-size:15px;font-weight:800;
+  padding:17px 40px;
+  border-radius:100px;
+  cursor:pointer;letter-spacing:.3px;
+  box-shadow:0 8px 28px rgba(0,140,137,.35);
+  transition:all .16s;
+}
+.btn-v4:hover{background:#00A09D;border-color:rgba(255,255,255,.85);transform:translateY(-2px);box-shadow:0 14px 38px rgba(0,140,137,.45)}
+
+/* V5 — Frosted glass + teal glow */
+.btn-v5{
+  position:relative;
+  background:rgba(0,100,98,.65);
+  backdrop-filter:blur(24px) saturate(200%);
+  -webkit-backdrop-filter:blur(24px) saturate(200%);
+  border:1px solid rgba(255,255,255,.45);
+  border-top-color:rgba(255,255,255,.7);
+  color:#fff;
+  font-family:inherit;font-size:15px;font-weight:800;
+  padding:17px 36px;
+  border-radius:14px;
+  cursor:pointer;letter-spacing:.2px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.35),
+    0 0 0 1px rgba(0,140,137,.35),
+    0 8px 32px rgba(0,140,137,.28),
+    0 2px 8px rgba(0,0,0,.2);
+  transition:all .16s;
+}
+.btn-v5:hover{
+  background:rgba(0,120,118,.75);
+  border-color:rgba(255,255,255,.65);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 0 1px rgba(0,140,137,.5),0 12px 40px rgba(0,140,137,.38),0 2px 8px rgba(0,0,0,.2);
+  transform:translateY(-2px);
+}
+
+/* ── SELECTED INDICATOR ── */
+.vrow{cursor:pointer}
+.vrow:hover .vtag{color:rgba(255,255,255,.65)}
+.selected-badge{display:none;background:rgba(198,238,104,.2);border:1px solid rgba(198,238,104,.4);color:#C6EE68;font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase;margin-left:12px}
+.vrow.selected .selected-badge{display:inline-flex}
+.vrow.selected .vtag{color:#C6EE68}
+</style>
+</head>
+<body>
+
+<svg style="display:none">
+  <defs>
+    <filter id="goo">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+      <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8" result="goo"/>
+      <feBlend in="SourceGraphic" in2="goo"/>
+    </filter>
+  </defs>
+</svg>
+
+<div class="bg">
+  <div class="gradients">
+    <div class="orb o1"></div>
+    <div class="orb o2"></div>
+    <div class="orb o3"></div>
+    <div class="orb o4"></div>
+    <div class="orb o5"></div>
+    <div class="optr" id="ptr"></div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="headline">Записатися на курс</div>
+  <div class="sub">5 варіантів кнопки — клікни щоб відмітити улюблений</div>
+
+  <div class="variants">
+
+    <div class="vrow" onclick="pick(this)">
+      <div class="vtag">Варіант 1</div>
+      <button class="btn-v1">Записатися на курс →</button>
+      <span class="selected-badge">Вибрано</span>
+    </div>
+
+    <div class="vrow" onclick="pick(this)">
+      <div class="vtag">Варіант 2</div>
+      <button class="btn-v2">Записатися на курс →</button>
+      <span class="selected-badge">Вибрано</span>
+    </div>
+
+    <div class="vrow" onclick="pick(this)">
+      <div class="vtag">Варіант 3</div>
+      <button class="btn-v3">Записатися на курс →</button>
+      <span class="selected-badge">Вибрано</span>
+    </div>
+
+    <div class="vrow" onclick="pick(this)">
+      <div class="vtag">Варіант 4</div>
+      <button class="btn-v4">Записатися на курс →</button>
+      <span class="selected-badge">Вибрано</span>
+    </div>
+
+    <div class="vrow" onclick="pick(this)">
+      <div class="vtag">Варіант 5</div>
+      <button class="btn-v5">Записатися на курс →</button>
+      <span class="selected-badge">Вибрано</span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// pointer tracking
+const ptr = document.getElementById('ptr');
+let cx=0,cy=0,tx=0,ty=0;
+document.addEventListener('mousemove', e => { tx=e.clientX; ty=e.clientY; });
+(function tick(){ cx+=(tx-cx)/22; cy+=(ty-cy)/22; ptr.style.transform=`translate(${Math.round(cx)}px,${Math.round(cy)}px)`; requestAnimationFrame(tick); })();
+
+// pick
+function pick(row) {
+  document.querySelectorAll('.vrow').forEach(r => r.classList.remove('selected'));
+  row.classList.add('selected');
+}
+</script>
+</body>
+</html>

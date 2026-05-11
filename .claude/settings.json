@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/scripts/sync-sessions.sh --since 30d"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "QUIET=1 $CLAUDE_PROJECT_DIR/scripts/sync-sessions.sh --since 1d"
+          }
+        ]
+      }
+    ]
+  }
+}

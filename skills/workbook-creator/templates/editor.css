@@ -1,0 +1,602 @@
+/* ============================================================
+   Workbook WYSIWYG Editor — Styles
+   Prefix: wb-  (avoids collision with workbook content classes)
+   Depends on CSS variables: --primary, --accent, --accent-bright,
+     --text-primary, --section-bg, --border, --font
+   ============================================================ */
+
+/* ── Toolbar ─────────────────────────────────────────────── */
+.wb-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  background: var(--primary, #1a1a2e);
+  color: #fff;
+  font-family: var(--font, system-ui, sans-serif);
+  font-size: 13px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+  flex-wrap: wrap;
+}
+
+.wb-toolbar-brand {
+  font-weight: 700;
+  opacity: .7;
+  white-space: nowrap;
+}
+
+.wb-toolbar-title {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.wb-toolbar-comments {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: default;
+}
+
+.wb-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 10px;
+  background: var(--accent, #e63946);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  transition: transform .2s ease;
+}
+
+.wb-count-badge.wb-badge-bump {
+  animation: wb-bump .3s ease;
+}
+
+@keyframes wb-bump {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+.wb-toolbar-btn {
+  padding: 4px 10px;
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: 4px;
+  background: transparent;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  transition: background .15s, opacity .15s;
+}
+
+.wb-toolbar-btn:hover {
+  background: rgba(255,255,255,.12);
+}
+
+.wb-toolbar-btn:disabled {
+  opacity: .35;
+  cursor: default;
+}
+
+.wb-btn-primary {
+  background: var(--accent, #e63946);
+  border-color: var(--accent, #e63946);
+}
+
+.wb-btn-primary:hover {
+  background: var(--accent-bright, #ff6b6b);
+}
+
+.wb-btn-ghost {
+  border-color: transparent;
+  opacity: .7;
+}
+
+.wb-btn-ghost:hover {
+  opacity: 1;
+  background: rgba(255,255,255,.08);
+}
+
+.wb-toolbar-feedback {
+  font-size: 12px;
+  opacity: .8;
+  transition: opacity .3s;
+}
+
+/* Body offset for fixed toolbar */
+body.wb-editor-active {
+  padding-top: 44px;
+}
+
+/* ── Scale frame ─────────────────────────────────────────── */
+.wb-scale-frame {
+  transform-origin: top center;
+}
+
+/* ── Block wrapper ───────────────────────────────────────── */
+.wb-block-wrap {
+  position: relative;
+  transition: background .2s, border-color .2s;
+}
+
+.wb-block-wrap.wb-dragging {
+  opacity: .4;
+}
+
+.wb-block-wrap.wb-drag-over::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #22c55e;
+  border-radius: 2px;
+  z-index: 10;
+}
+
+/* ── Has-comment indicator ───────────────────────────────── */
+.wb-block-wrap.has-comment {
+  border-left: 3px solid var(--accent, #e63946);
+  padding-left: 4px;
+  background: rgba(230, 57, 70, .04);
+}
+
+/* ── Edited indicator ────────────────────────────────────── */
+.wb-block-wrap.wb-edited::after {
+  content: '✎';
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 10px;
+  color: var(--accent, #e63946);
+  opacity: .6;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ── Drag handle ─────────────────────────────────────────── */
+.wb-drag-handle {
+  position: absolute;
+  left: -26px;
+  top: 4px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  opacity: 0;
+  transition: opacity .15s;
+  color: var(--text-primary, #333);
+  font-size: 14px;
+  user-select: none;
+  z-index: 5;
+  border-radius: 3px;
+}
+
+.wb-drag-handle:hover {
+  background: rgba(0,0,0,.06);
+}
+
+.wb-block-wrap:hover > .wb-drag-handle {
+  opacity: .6;
+}
+
+/* ── Action bar ──────────────────────────────────────────── */
+.wb-action-bar {
+  position: absolute;
+  right: -6px;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s;
+  z-index: 20;
+  transform: translateX(100%);
+}
+
+.wb-block-wrap:hover > .wb-action-bar {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.wb-action-btn {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 3px;
+  background: #f0f0f0;
+  color: var(--text-primary, #333);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: background .12s;
+}
+
+.wb-action-btn:hover {
+  background: #ddd;
+}
+
+.wb-action-btn.wb-comment-btn {
+  opacity: 0;
+  transition: opacity .15s, background .12s;
+}
+
+.wb-block-wrap:hover .wb-comment-btn {
+  opacity: 1;
+}
+
+.wb-block-wrap.has-comment .wb-comment-btn {
+  opacity: 1;
+  color: var(--accent, #e63946);
+  background: rgba(230, 57, 70, .12);
+}
+
+/* ── Comment popover ─────────────────────────────────────── */
+.wb-comment-popover {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 100;
+  width: 280px;
+  background: #fff;
+  border: 1px solid var(--border, #ddd);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.15);
+  padding: 0;
+  display: none;
+  font-family: var(--font, system-ui, sans-serif);
+}
+
+.wb-comment-popover.wb-open {
+  display: block;
+}
+
+.wb-comment-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border, #ddd);
+}
+
+.wb-comment-tab {
+  flex: 1;
+  padding: 8px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--text-primary, #333);
+  opacity: .5;
+  transition: opacity .15s, border-color .15s;
+  border-bottom: 2px solid transparent;
+  font-family: inherit;
+}
+
+.wb-comment-tab.wb-tab-active {
+  opacity: 1;
+}
+
+.wb-comment-tab[data-type="edit"].wb-tab-active {
+  border-bottom-color: var(--accent, #e63946);
+}
+
+.wb-comment-tab[data-type="instruction"].wb-tab-active {
+  border-bottom-color: #888;
+}
+
+.wb-comment-body {
+  padding: 10px;
+}
+
+.wb-comment-body textarea {
+  width: 100%;
+  min-height: 60px;
+  border: 1px solid var(--border, #ddd);
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-size: 13px;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.wb-comment-body textarea:focus {
+  outline: none;
+  border-color: var(--accent, #e63946);
+}
+
+.wb-comment-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.wb-comment-save,
+.wb-comment-delete {
+  padding: 4px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.wb-comment-save {
+  background: var(--accent, #e63946);
+  color: #fff;
+}
+
+.wb-comment-delete {
+  background: #eee;
+  color: #666;
+}
+
+/* ── Page break marker ───────────────────────────────────── */
+.wb-page-break {
+  position: relative;
+  border-top: 2px dashed #f59e0b;
+  margin: 8px 0;
+  padding: 2px 0;
+}
+
+.wb-page-break-label {
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  background: #fff;
+  padding: 0 6px;
+  font-size: 10px;
+  color: #f59e0b;
+  font-weight: 600;
+  font-family: var(--font, system-ui, sans-serif);
+}
+
+.wb-page-break-remove {
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: #f59e0b;
+  padding: 0 4px;
+}
+
+.wb-page-break-remove:hover {
+  color: #d97706;
+}
+
+/* ── Contenteditable focus ring ──────────────────────────── */
+[contenteditable="true"] {
+  outline: none;
+  transition: box-shadow .15s;
+}
+
+[contenteditable="true"]:focus {
+  box-shadow: inset 0 0 0 1px var(--accent-bright, #ff6b6b);
+  border-radius: 2px;
+}
+
+/* ============================================================
+   PRINT / PDF — SET IN STONE
+   These rules are immutable. They guarantee that background
+   colors, gradients, cover pages, table headers, pills, chains,
+   and all branded elements print correctly in any browser.
+   DO NOT override or remove these rules.
+   ============================================================ */
+@page { size: A4 portrait; margin: 0; }
+
+@media print {
+  /* ── 1. Force background colors on EVERY element ────────── */
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* ── 2. Page dimensions (immutable) ─────────────────────── */
+  html, body {
+    background: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .page, .cover, .block-title-page {
+    width: 210mm !important;
+    height: 297mm !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+  /* Prevent blank trailing page */
+  .page:last-of-type, .cover:last-of-type, .block-title-page:last-of-type {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* ── 3. Reset viewport scaling ──────────────────────────── */
+  #scale-root, .wb-scale-root { padding: 0 !important; }
+  .wb-scale-frame, .scale-frame {
+    transform: none !important;
+    margin: 0 !important;
+    width: 210mm !important;
+    align-items: stretch !important;
+  }
+
+  /* ── 4. Hide ALL editor chrome ──────────────────────────── */
+  .wb-toolbar,
+  .wb-action-bar,
+  .wb-drag-handle,
+  .wb-comment-btn,
+  .wb-comment-popover,
+  .wb-page-break,
+  .wb-cut-line,
+  .page-cut-line,
+  .cut-line,
+  .inserted-page-break,
+  .block-handle,
+  .block-actions,
+  .comment-btn,
+  .comment-popover,
+  .preview-toolbar,
+  .wb-block-wrap.wb-edited::after {
+    display: none !important;
+  }
+  .wb-block-wrap.has-comment {
+    border-left-color: transparent !important;
+    background: transparent !important;
+  }
+  [contenteditable] { outline: none !important; }
+
+  /* ── 5. Branded elements — backgrounds MUST print ───────── */
+  /* Cover & block title pages */
+  .cover {
+    background: linear-gradient(160deg, var(--primary, #0d1b5e) 0%, var(--primary-mid, #1e40af) 60%, var(--accent, #2563eb) 100%) !important;
+    color: white !important;
+  }
+  .block-title-page {
+    background: linear-gradient(135deg, var(--primary, #0d1b5e) 0%, var(--primary-mid, #1e40af) 100%) !important;
+    color: white !important;
+  }
+  /* Also support reference-style variable names */
+  .cover[style*="--print-bg-title"] {
+    background: linear-gradient(160deg, var(--print-bg-title-start) 0%, var(--print-bg-title) 55%, var(--print-bg-title-end) 100%) !important;
+  }
+
+  /* Table headers */
+  thead tr, thead th {
+    background: var(--primary, var(--print-table-header, #0d1b5e)) !important;
+    color: white !important;
+  }
+  tbody tr:nth-child(even) {
+    background: var(--table-row-alt, var(--print-table-row-alt, #f5f7ff)) !important;
+  }
+
+  /* Key idea blocks */
+  .key-idea {
+    background: var(--primary-light, var(--section-bg, var(--print-key-idea-bg, #dbeafe))) !important;
+    border-left: 4px solid var(--primary, var(--print-text-primary, #0d1b5e)) !important;
+  }
+
+  /* Section headers */
+  .section-header {
+    background: var(--section-bg, var(--print-section-bg, #dbeafe)) !important;
+    border-left: 4px solid var(--primary, var(--print-text-primary, #0d1b5e)) !important;
+  }
+
+  /* Chain items (filled) */
+  .chain-item-filled, .chain-item {
+    background: var(--primary, var(--print-table-header, #0d1b5e)) !important;
+    color: white !important;
+  }
+
+  /* Pills / task labels */
+  .pill, .task-label,
+  .pill-lime, .pill-accent, .pill-mint,
+  .label-question, .label-checklist, .label-chain, .label-sketch, .label-practice {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Highlight / conclusion boxes */
+  .highlight-box, .highlight-box.success, .highlight-box.danger {
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  /* Question icon circles */
+  .question-icon, .intro-number {
+    background: var(--accent, var(--print-accent, #2563eb)) !important;
+    color: white !important;
+  }
+
+  /* Numbered circles */
+  .num-circle {
+    background: var(--primary, #0d1b5e) !important;
+    color: white !important;
+  }
+
+  /* Checkboxes */
+  .checkbox {
+    border: 2px solid var(--primary, #0d1b5e) !important;
+  }
+
+  /* Notes page background */
+  .notes-full {
+    background: var(--conclusion-bg, var(--print-conclusion-bg, #eff6ff)) !important;
+  }
+
+  /* Cover type pill */
+  .cover-type-pill {
+    background: var(--accent, var(--print-accent, #2563eb)) !important;
+  }
+
+  /* Footer/header survive print */
+  .page-header, .page-footer {
+    border-color: var(--border, #e0e0e0) !important;
+  }
+}
+
+/* ── Touch devices (Notion-style) ────────────────────────── */
+@media (hover: none), (pointer: coarse) {
+  /* Drag handles always visible on touch */
+  .wb-drag-handle {
+    opacity: .4 !important;
+  }
+
+  /* Action bar toggled by JS, not hover */
+  .wb-block-wrap:hover > .wb-action-bar {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .wb-action-bar.wb-touch-open {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  /* Larger tap targets */
+  .wb-action-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
+  }
+
+  /* Comment buttons always visible on touch */
+  .wb-comment-btn {
+    opacity: .6 !important;
+  }
+
+  .wb-block-wrap.has-comment .wb-comment-btn {
+    opacity: 1 !important;
+  }
+
+  /* Wider comment popover */
+  .wb-comment-popover {
+    width: min(90vw, 320px);
+    right: -10px;
+  }
+}

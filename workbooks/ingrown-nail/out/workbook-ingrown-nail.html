@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вросший ноготь — Рабочая тетрадь студента</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0d1b5e;
+  --primary-mid: #1e40af;
+  --primary-light: #dbeafe;
+  --accent: #2563eb;
+  --accent-bright: #60a5fa;
+  --text-primary: #0d1b5e;
+  --section-bg: #dbeafe;
+  --key-idea-bg: #dbeafe;
+  --table-header: #0d1b5e;
+  --table-row-alt: #f5f7ff;
+  --border: #E0E0E0;
+  --page-bg: #FFFFFF;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #e8e8e8;
+  color: var(--text-primary);
+  font-size: 15.6px;
+  line-height: 1.5;
+}
+
+/* Toolbar */
+.toolbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 48px;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 9999;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.toolbar-brand { font-weight: 700; font-size: 13px; letter-spacing: 1px; opacity: 0.7; }
+.toolbar-title { font-weight: 600; font-size: 14px; flex: 1; }
+.toolbar-badge {
+  background: var(--accent-bright);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+.toolbar-btn {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.toolbar-btn:hover { background: rgba(255,255,255,0.25); }
+
+/* Pages container */
+.pages-container {
+  padding: 68px 0 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+/* Cut line */
+.cut-line {
+  width: 794px;
+  border: none;
+  border-top: 2px dashed #bbb;
+  position: relative;
+}
+.cut-line::after {
+  content: '\2702';
+  position: absolute;
+  top: -12px;
+  left: 10px;
+  font-size: 18px;
+  color: #999;
+  background: #e8e8e8;
+  padding: 0 4px;
+}
+
+/* Page — FIXED dimensions, do not change */
+.page {
+  width: 794px;
+  height: 1123px;
+  background: var(--page-bg);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.12);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+/* Cover page */
+.page-cover {
+  background: linear-gradient(160deg, #0a1445 0%, #0d1b5e 30%, #1e3a8a 60%, #1e40af 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 60px;
+}
+.cover-pill {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 8px 28px;
+  border-radius: 30px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin-bottom: 50px;
+}
+.cover-cross {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 50px;
+}
+.cover-cross::before, .cover-cross::after {
+  content: '';
+  position: absolute;
+  background: rgba(255,255,255,0.25);
+}
+.cover-cross::before {
+  width: 2px; height: 80px;
+  left: 50%; top: 0;
+  transform: translateX(-50%);
+}
+.cover-cross::after {
+  width: 80px; height: 2px;
+  top: 50%; left: 0;
+  transform: translateY(-50%);
+}
+.cover-workbook {
+  font-size: 72px;
+  font-weight: 900;
+  letter-spacing: 6px;
+  line-height: 1;
+  margin-bottom: 20px;
+  opacity: 0.95;
+}
+.cover-topic {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+  max-width: 550px;
+  margin-bottom: 60px;
+  opacity: 0.9;
+}
+.cover-author {
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.7;
+  line-height: 1.7;
+  max-width: 500px;
+  margin-bottom: 16px;
+}
+.cover-handle {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.5;
+  letter-spacing: 1px;
+}
+
+/* Page header/footer — FIXED sizes, immutable */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 38px 8px;
+  border-bottom: 2px solid var(--primary);
+  flex-shrink: 0;
+}
+.header-left {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--primary);
+}
+.header-right {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--accent);
+}
+.page-content {
+  flex: 1;
+  padding: 14px 38px 10px;
+  overflow: hidden;
+}
+.page-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 38px 8px;
+  border-top: 1px solid var(--border);
+  font-size: 9px;
+  color: #999;
+  flex-shrink: 0;
+}
+.footer-page { font-weight: 700; color: var(--primary); }
+.footer-handle { font-weight: 500; }
+
+/* Section title — FIXED size, do not scale */
+.section-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+/* Key idea */
+.key-idea {
+  background: var(--key-idea-bg);
+  border-left: 4px solid var(--primary);
+  border-radius: 0 8px 8px 0;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.key-idea-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+/* Task pill */
+.task-pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+}
+.pill-table { background: #dbeafe; color: var(--primary); }
+.pill-question { background: #fef3c7; color: #92400e; }
+.pill-chain { background: #ede9fe; color: #5b21b6; }
+.pill-checklist { background: #d1fae5; color: #065f46; }
+.pill-sketch { background: #fce7f3; color: #9d174d; }
+.pill-numbered { background: #e0e7ff; color: #3730a3; }
+.pill-reflect { background: #f3e8ff; color: #6b21a8; }
+
+/* Tables */
+.wb-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 8px;
+  font-size: 11px;
+}
+.wb-table th {
+  background: var(--table-header);
+  color: #fff;
+  padding: 5px 8px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+}
+.wb-table td {
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.wb-table tr:nth-child(even) td { background: var(--table-row-alt); }
+.wb-table .fill-cell { color: #aaa; font-style: italic; }
+
+/* Question block */
+.question-block {
+  margin-bottom: 8px;
+}
+.question-prompt {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.question-icon {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+.question-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  line-height: 1.4;
+  padding-top: 1px;
+}
+.answer-line {
+  width: 100%;
+  border: none;
+  border-bottom: 1px dashed #ccc;
+  height: 22px;
+  margin-bottom: 1px;
+}
+
+/* Checklist */
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+  font-size: 11px;
+}
+.checkbox {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  border: 2px solid var(--primary);
+  border-radius: 3px;
+}
+.checklist-text { flex: 1; }
+
+/* Chain */
+.chain-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 8px;
+}
+.chain-block {
+  background: var(--primary);
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  width: 85%;
+}
+.chain-empty {
+  background: #fff;
+  border: 2px dashed var(--accent);
+  color: var(--accent);
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+  width: 85%;
+  min-height: 28px;
+}
+.chain-arrow {
+  font-size: 16px;
+  color: var(--primary);
+  line-height: 1;
+  padding: 1px 0;
+}
+
+/* Sketch box */
+.sketch-box {
+  border: 2px dashed var(--accent);
+  background: #f8faff;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 8px;
+  min-height: 120px;
+  position: relative;
+}
+.sketch-label {
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  background: var(--accent);
+  color: #fff;
+  padding: 2px 12px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Numbered item */
+.numbered-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.num-circle {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+.num-line {
+  flex: 1;
+  border-bottom: 1px dashed #ccc;
+  height: 28px;
+}
+
+/* Grid 2x2 */
+.grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.grid-card {
+  background: var(--section-bg);
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+}
+.grid-card-icon {
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+.grid-card-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.grid-card-desc {
+  font-size: 11px;
+  color: #555;
+  line-height: 1.4;
+}
+
+/* Callout */
+.callout {
+  background: #fef9e7;
+  border-left: 4px solid #f59e0b;
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Student data fields */
+.student-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 20px;
+  margin-bottom: 16px;
+}
+.student-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.student-field-label {
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--primary);
+}
+.student-field-line {
+  flex: 1;
+  border-bottom: 1px dashed #ccc;
+  height: 24px;
+}
+
+/* Notes */
+.notes-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+/* Subtitle */
+.sub-heading {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+  margin-top: 12px;
+}
+
+/* Before/After table */
+.ba-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
+.ba-table th {
+  background: var(--table-header);
+  color: #fff;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: left;
+}
+.ba-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  height: 40px;
+}
+.ba-table tr:nth-child(even) td { background: var(--table-row-alt); }
+
+/* Block editor system */
+.block-wrap {
+  position: relative;
+}
+.block-wrap:hover .block-handle,
+.block-wrap:hover .block-actions {
+  opacity: 1;
+}
+.block-handle {
+  position: absolute;
+  left: -24px;
+  top: 4px;
+  width: 16px;
+  height: 20px;
+  cursor: grab;
+  opacity: 0;
+  transition: opacity 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.block-handle-dot {
+  width: 4px; height: 4px;
+  background: #bbb;
+  border-radius: 50%;
+}
+.block-actions {
+  position: absolute;
+  right: -8px;
+  top: 4px;
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.block-action-btn {
+  width: 22px; height: 22px;
+  border: none;
+  background: #f0f0f0;
+  color: #888;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.block-action-btn:hover { background: #ddd; color: #333; }
+
+/* Comment popover */
+.comment-popover {
+  display: none;
+  position: absolute;
+  right: -8px;
+  top: 30px;
+  width: 240px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  padding: 12px;
+  z-index: 100;
+}
+.comment-popover.active { display: block; }
+.comment-textarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 8px;
+  font-family: inherit;
+  font-size: 11px;
+  resize: vertical;
+  min-height: 60px;
+}
+.comment-save-btn {
+  margin-top: 6px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ── Print — SET IN STONE ── */
+@page { size: A4 portrait; margin: 0; }
+@media print {
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+  html, body { background: white !important; margin: 0 !important; padding: 0 !important; }
+  .toolbar, .cut-line, .block-handle, .block-actions, .comment-btn, .comment-popover,
+  .inserted-page-break { display: none !important; }
+  .block-wrap:hover { outline: none !important; }
+  .block-wrap.has-comment { border-left-color: transparent !important; background: transparent !important; }
+  [contenteditable] { outline: none !important; }
+  .pages-container { padding: 0 !important; gap: 0 !important; }
+  .scale-frame, .wb-scale-frame { transform: none !important; margin: 0 !important; width: 210mm !important; }
+  .page, .cover {
+    width: 210mm !important; height: 297mm !important;
+    box-shadow: none !important; overflow: hidden !important;
+    page-break-after: always !important; break-after: page !important;
+    page-break-inside: avoid !important;
+  }
+  .page:last-of-type, .cover:last-of-type {
+    page-break-after: avoid !important; break-after: avoid !important;
+  }
+  /* Force backgrounds on branded elements */
+  .cover, .page-cover { background: linear-gradient(160deg, #0a1445 0%, #0d1b5e 30%, #1e3a8a 60%, #1e40af 100%) !important; color: white !important; }
+  .cover-pill { background: rgba(255,255,255,0.15) !important; border: 1px solid rgba(255,255,255,0.3) !important; color: white !important; }
+  .cover-line { background: #2563eb !important; }
+  thead tr, thead th { background: #0d1b5e !important; color: white !important; }
+  tbody tr:nth-child(even) { background: #f5f7ff !important; }
+  .key-idea { background: #dbeafe !important; border-left: 4px solid #0d1b5e !important; }
+  .key-idea-label { color: #1e40af !important; }
+  .section-header { background: #dbeafe !important; border-left: 4px solid #0d1b5e !important; }
+  .chain-block { background: #0d1b5e !important; color: white !important; }
+  .chain-empty { border: 2px dashed #93c5fd !important; }
+  .chain-filled, .chain-item-filled, .chain-item { background: #0d1b5e !important; color: white !important; }
+  .pill, .task-pill, .task-pill[class*="pill-"] { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .q-icon, .question-icon, .num-circle { background: #0d1b5e !important; color: white !important; }
+  .checkbox { border: 2px solid #0d1b5e !important; }
+  .highlight-box, .callout { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .intro-card { background: #f0f4ff !important; border: 1px solid #dbeafe !important; }
+}
+
+/* fill-in line for checklists */
+.fill-line {
+  display: inline-block;
+  width: 120px;
+  border-bottom: 1px dashed #ccc;
+  margin: 0 2px;
+}
+</style>
+</head>
+<body>
+
+<!-- Toolbar -->
+<div class="toolbar">
+  <span class="toolbar-brand">PODOLOG</span>
+  <span class="toolbar-title">Вросший ноготь — Workbook</span>
+  <span class="toolbar-badge" id="commentCount">0 заметок</span>
+  <button class="toolbar-btn" onclick="copyAllComments()">Копировать заметки</button>
+  <button class="toolbar-btn" onclick="replaceCover()">Заменить обложку</button>
+  <button class="toolbar-btn" onclick="exportPDF()">Экспорт PDF</button>
+</div>
+
+<div class="pages-container" id="pagesContainer">
+
+<!-- ==================== COVER ==================== -->
+<div class="page page-cover">
+  <div class="cover-pill">РАБОЧАЯ ТЕТРАДЬ СТУДЕНТА</div>
+  <div class="cover-cross"></div>
+  <div class="cover-workbook">WORKBOOK</div>
+  <div class="cover-topic">PRO ВРОСШИЙ НОГОТЬ:<br>ОТ ДИАГНОСТИКИ ДО РЕЗУЛЬТАТА</div>
+  <div class="cover-author">Автор курса: Ольга Серебрянская — подолог, преподаватель,<br>основатель учебного центра подологии в Праге</div>
+  <div class="cover-handle">@podolog_serebrianska</div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 1: ВВЕДЕНИЕ ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">ВРОСШИЙ НОГОТЬ — WORKBOOK</span>
+    <span class="header-right">ВВЕДЕНИЕ</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="intro-title">ВВЕДЕНИЕ</div>
+
+    <div class="key-idea" data-block="intro-idea">
+      <div class="key-idea-label">КЛЮЧЕВАЯ ИДЕЯ</div>
+      Эта рабочая тетрадь — ваш личный инструмент для закрепления знаний. Заполняйте её во время лекции и после неё. Здесь нет правильных и неправильных ответов — есть ваши наблюдения, выводы и план действий.
+    </div>
+
+    <div class="grid-2x2" data-block="intro-grid">
+      <div class="grid-card">
+        <div class="grid-card-icon">&#9998;</div>
+        <div class="grid-card-title">ФИКСИРУЙТЕ</div>
+        <div class="grid-card-desc">Записывайте ключевые тезисы и факты из лекции</div>
+      </div>
+      <div class="grid-card">
+        <div class="grid-card-icon">&#128270;</div>
+        <div class="grid-card-title">АНАЛИЗИРУЙТЕ</div>
+        <div class="grid-card-desc">Сравнивайте, систематизируйте, находите закономерности</div>
+      </div>
+      <div class="grid-card">
+        <div class="grid-card-icon">&#128203;</div>
+        <div class="grid-card-title">ПЛАНИРУЙТЕ</div>
+        <div class="grid-card-desc">Формулируйте шаги для внедрения в практику</div>
+      </div>
+      <div class="grid-card">
+        <div class="grid-card-icon">&#128161;</div>
+        <div class="grid-card-title">РАЗМЫШЛЯЙТЕ</div>
+        <div class="grid-card-desc">Задавайте себе вопросы и ищите собственные ответы</div>
+      </div>
+    </div>
+
+    <div class="callout" data-block="intro-callout">
+      <strong>Помните:</strong> рабочая тетрадь — это не тест. Это пространство для вашего профессионального роста. Чем честнее вы отвечаете, тем больше пользы получите.
+    </div>
+
+    <div data-block="intro-structure">
+      <span class="task-pill pill-table">СТРУКТУРА КУРСА</span>
+      <table class="wb-table">
+        <thead>
+          <tr><th style="width:40px">№</th><th>Тема раздела</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Онихокриптоз: определение и диагностика</td></tr>
+          <tr><td>2</td><td>Причины и патогенез</td></tr>
+          <tr><td>3</td><td>Стадии врастания</td></tr>
+          <tr><td>4</td><td>Раневой процесс: фазы заживления</td></tr>
+          <tr><td>5</td><td>Алгоритм обработки вросшего ногтя</td></tr>
+          <tr><td>6</td><td>Антисептика и перевязочные материалы</td></tr>
+          <tr><td>7</td><td>Протоколы работы по стадиям</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">1</span>
+    <span class="footer-handle">@podolog_serebrianska</span>
+  </div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 2: ОНИХОКРИПТОЗ ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">ВРОСШИЙ НОГОТЬ — WORKBOOK</span>
+    <span class="header-right">РАЗДЕЛ 1</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="s1-title">1. ОНИХОКРИПТОЗ: ОПРЕДЕЛЕНИЕ И ДИАГНОСТИКА</div>
+
+    <div class="key-idea" data-block="s1-idea">
+      <div class="key-idea-label">КЛЮЧЕВАЯ ИДЕЯ</div>
+      Онихокриптоз (от греч. onyx — &laquo;ноготь&raquo; и kryptos — &laquo;скрытый&raquo;) — патологическое состояние, при котором край ногтевой пластины врастает в окружающие мягкие ткани, вызывая воспаление, боль и отёк. Наиболее часто поражается первый палец стопы.
+    </div>
+
+    <div data-block="s1-table1">
+      <span class="task-pill pill-table">ЗАПОЛНИТЕ ТАБЛИЦУ СРАВНЕНИЯ</span>
+      <table class="wb-table">
+        <thead>
+          <tr><th style="width:28%">Критерий</th><th style="width:36%">Unguis incarnatus (вросший)</th><th style="width:36%">Unguis convolutus (скрученный)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Латинское название</strong></td><td>Unguis incarnatus</td><td>Unguis convolutus</td></tr>
+          <tr><td><strong>Ключевой признак</strong></td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td></tr>
+          <tr><td><strong>Наличие воспаления</strong></td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td></tr>
+          <tr><td><strong>Форма ногтя</strong></td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td></tr>
+          <tr><td><strong>Тактика мастера</strong></td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="question-block" data-block="s1-q1">
+      <span class="task-pill pill-question">? ВОПРОС ДЛЯ РАЗМЫШЛЕНИЯ</span>
+      <div class="question-prompt">
+        <div class="question-icon">?</div>
+        <div class="question-text">Почему ошибочно считать, что ширина ногтевой пластины увеличивается при врастании?</div>
+      </div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+    <div data-block="s1-table2">
+      <span class="task-pill pill-table">ТИПЫ ВРАСТАНИЯ</span>
+      <table class="wb-table">
+        <thead>
+          <tr><th style="width:30%">Тип</th><th>Описание</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Латеральное</strong></td><td class="fill-cell">опишите...</td></tr>
+          <tr><td><strong>Дистальное</strong></td><td class="fill-cell">опишите...</td></tr>
+          <tr><td><strong>Проксимальное (ретронихия)</strong></td><td class="fill-cell">опишите...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">2</span>
+    <span class="footer-handle">@podolog_serebrianska</span>
+  </div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 3: ПРИЧИНЫ И ПАТОГЕНЕЗ ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">ВРОСШИЙ НОГОТЬ — WORKBOOK</span>
+    <span class="header-right">РАЗДЕЛ 2</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="s2-title">2. ПРИЧИНЫ И ПАТОГЕНЕЗ</div>
+
+    <div class="key-idea" data-block="s2-idea">
+      <div class="key-idea-label">КЛЮЧЕВАЯ ИДЕЯ</div>
+      Вросший ноготь — результат сочетания механических, анатомических и системных факторов. Понимание причины определяет тактику лечения.
+    </div>
+
+    <div data-block="s2-table1">
+      <span class="task-pill pill-table">СИСТЕМАТИЗИРУЙТЕ ПРИЧИНЫ</span>
+      <table class="wb-table">
+        <thead>
+          <tr><th style="width:35%">Группа причин</th><th>Примеры</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Механические / травматические</strong></td><td class="fill-cell">перечислите...</td></tr>
+          <tr><td><strong>Анатомические особенности</strong></td><td class="fill-cell">перечислите...</td></tr>
+          <tr><td><strong>Физиологические / системные</strong></td><td class="fill-cell">перечислите...</td></tr>
+          <tr><td><strong>Инфекционные</strong></td><td class="fill-cell">перечислите...</td></tr>
+          <tr><td><strong>Постоперационные</strong></td><td class="fill-cell">перечислите...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div data-block="s2-chain">
+      <span class="task-pill pill-chain">ПАТОГЕНЕЗ ОНИХОКРИПТОЗА</span>
+      <div class="chain-container">
+        <div class="chain-block">Нарушение направления роста</div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-block">Повреждение мягких тканей</div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-empty">Воспалительная реакция?</div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-empty">&nbsp;</div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-empty">&nbsp;</div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-block">Хроническая форма</div>
+      </div>
+    </div>
+
+    <div class="question-block" data-block="s2-q1">
+      <span class="task-pill pill-question">? ВОПРОС ДЛЯ РАЗМЫШЛЕНИЯ</span>
+      <div class="question-prompt">
+        <div class="question-icon">?</div>
+        <div class="question-text">Почему воспаление при вросшем ногте становится хроническим? Назовите 3 ключевых фактора.</div>
+      </div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">3</span>
+    <span class="footer-handle">@podolog_serebrianska</span>
+  </div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 4: СТАДИИ ВРАСТАНИЯ ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">ВРОСШИЙ НОГОТЬ — WORKBOOK</span>
+    <span class="header-right">РАЗДЕЛ 3</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="s3-title">3. СТАДИИ ВРАСТАНИЯ</div>
+
+    <div data-block="s3-table1">
+      <span class="task-pill pill-table">КЛАССИФИКАЦИЯ ПО СТАДИЯМ</span>
+      <table class="wb-table">
+        <thead>
+          <tr><th style="width:18%">Стадия</th><th style="width:41%">Симптомы</th><th style="width:41%">Тактика подолога</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>I (лёгкая)</strong></td><td class="fill-cell">опишите...</td><td class="fill-cell">опишите...</td></tr>
+          <tr><td><strong>II (с инфекцией)</strong></td><td class="fill-cell">опишите...</td><td class="fill-cell">опишите...</td></tr>
+          <tr><td><strong>III (гипертрофическая)</strong></td><td class="fill-cell">опишите...</td><td class="fill-cell">опишите...</td></tr>
+          <tr><td><strong>IV (хроническая деформация)</strong></td><td class="fill-cell">опишите...</td><td class="fill-cell">опишите...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="question-block" data-block="s3-q1">
+      <span class="task-pill pill-question">? ВОПРОС ДЛЯ РАЗМЫШЛЕНИЯ</span>
+      <div class="question-prompt">
+        <div class="question-icon">?</div>
+        <div class="question-text">На какой стадии подолог НЕ работает самостоятельно и почему?</div>
+      </div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+    <div data-block="s3-checklist">
+      <span class="task-pill pill-checklist">КЛИНИЧЕСКИЕ ПРОЯВЛЕНИЯ ВРОСШЕГО НОГТЯ</span>
+      <div style="margin-bottom: 12px;">
+        <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Боль при ходьбе</span></div>
+        <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Отёк и покраснение</span></div>
+        <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Разрастание грануляционной ткани</span></div>
+        <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Гнойное отделяемое</span></div>
+        <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Чувствительность при давлении</span></div>
+      </div>
+    </div>
+
+    <div class="question-block" data-block="s3-q2">
+      <span class="task-pill pill-question">? ВОПРОС ДЛЯ РАЗМЫШЛЕНИЯ</span>
+      <div class="question-prompt">
+        <div class="question-icon">?</div>
+        <div class="question-text">Чем грануляционная ткань отличается от пиогенной гранулёмы? Как это влияет на тактику?</div>
+      </div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">4</span>
+    <span class="footer-handle">@podolog_serebrianska</span>
+  </div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 5: РАНЕВОЙ ПРОЦЕСС ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">ВРОСШИЙ НОГОТЬ — WORKBOOK</span>
+    <span class="header-right">РАЗДЕЛ 4</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="s4-title">4. РАНЕВОЙ ПРОЦЕСС: ФАЗЫ ЗАЖИВЛЕНИЯ</div>
+
+    <div class="key-idea" data-block="s4-idea">
+      <div class="key-idea-label">КЛЮЧЕВАЯ ИДЕЯ</div>
+      Раневой процесс при вросшем ногте — это хроническое воспалительное заживление, которое постоянно поддерживается механической травмой со стороны ногтя.
+    </div>
+
+    <div data-block="s4-chain">
+      <span class="task-pill pill-chain">ТРИ ФАЗЫ ЗАЖИВЛЕНИЯ</span>
+      <div class="chain-container">
+        <div class="chain-block">Воспалительная фаза (1–3 дня)</div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-empty">Что происходит?</div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-block">Пролиферативная фаза (3 дня – 3 недели)</div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-empty">Что происходит?</div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-block">Фаза ремоделирования (3 нед – 12 мес)</div>
+        <div class="chain-arrow">&darr;</div>
+        <div class="chain-empty">Что происходит?</div>
+      </div>
+    </div>
+
+    <div data-block="s4-table1">
+      <span class="task-pill pill-table">РОЛЬ ПОДОЛОГА НА КАЖДОЙ ФАЗЕ</span>
+      <table class="wb-table">
+        <thead>
+          <tr><th style="width:35%">Фаза</th><th>Задачи подолога</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Воспалительная</strong></td><td class="fill-cell">заполните...</td></tr>
+          <tr><td><strong>Пролиферативная</strong></td><td class="fill-cell">заполните...</td></tr>
+          <tr><td><strong>Ремоделирование</strong></td><td class="fill-cell">заполните...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="question-block" data-block="s4-q1">
+      <span class="task-pill pill-question">? ВОПРОС ДЛЯ РАЗМЫШЛЕНИЯ</span>
+      <div class="question-prompt">
+        <div class="question-icon">?</div>
+        <div class="question-text">Почему при вросшем ногте рана не может перейти в фазу ремоделирования без устранения механической причины?</div>
+      </div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">5</span>
+    <span class="footer-handle">@podolog_serebrianska</span>
+  </div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 6: АЛГОРИТМ ОБРАБОТКИ ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">ВРОСШИЙ НОГОТЬ — WORKBOOK</span>
+    <span class="header-right">РАЗДЕЛ 5</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="s5-title">5. АЛГОРИТМ ОБРАБОТКИ ВРОСШЕГО НОГТЯ</div>
+
+    <div class="key-idea" data-block="s5-idea">
+      <div class="key-idea-label">КЛЮЧЕВАЯ ИДЕЯ</div>
+      Все манипуляции проводятся в строгих условиях асептики и антисептики. Правильная последовательность этапов определяет результат.
+    </div>
+
+    <div data-block="s5-numbered">
+      <span class="task-pill pill-numbered">ПОШАГОВЫЙ АЛГОРИТМ</span>
+      <div style="margin-bottom:14px">
+        <div class="numbered-item"><div class="num-circle">1</div><div class="num-line"></div></div>
+        <div class="numbered-item"><div class="num-circle">2</div><div class="num-line"></div></div>
+        <div class="numbered-item"><div class="num-circle">3</div><div class="num-line"></div></div>
+        <div class="numbered-item"><div class="num-circle">4</div><div class="num-line"></div></div>
+        <div class="numbered-item"><div class="num-circle">5</div><div class="num-line"></div></div>
+        <div class="numbered-item"><div class="num-circle">6</div><div class="num-line"></div></div>
+        <div class="numbered-item"><div class="num-circle">7</div><div class="num-line"></div></div>
+      </div>
+    </div>
+
+    <div data-block="s5-checklist">
+      <span class="task-pill pill-checklist">ПРАВИЛА СРЕЗА</span>
+      <div style="margin-bottom:14px">
+        <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Полотно кусачек расположить <span class="fill-line"></span></span></div>
+        <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Срез выполнять с шагом <span class="fill-line"></span></span></div>
+        <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">Носик должен <span class="fill-line"></span> в боковой валик</span></div>
+        <div class="checklist-item"><div class="checkbox"></div><span class="checklist-text">После удаления угла <span class="fill-line"></span></span></div>
+      </div>
+    </div>
+
+    <div class="question-block" data-block="s5-q1">
+      <span class="task-pill pill-question">? ВОПРОС ДЛЯ РАЗМЫШЛЕНИЯ</span>
+      <div class="question-prompt">
+        <div class="question-icon">?</div>
+        <div class="question-text">Какие ошибки при обработке вросшего ногтя приводят к рецидиву?</div>
+      </div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">6</span>
+    <span class="footer-handle">@podolog_serebrianska</span>
+  </div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 7: АНТИСЕПТИКА ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">ВРОСШИЙ НОГОТЬ — WORKBOOK</span>
+    <span class="header-right">РАЗДЕЛ 6</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="s6-title">6. АНТИСЕПТИКА И ПЕРЕВЯЗОЧНЫЕ МАТЕРИАЛЫ</div>
+
+    <div class="key-idea" data-block="s6-idea">
+      <div class="key-idea-label">КЛЮЧЕВАЯ ИДЕЯ</div>
+      Принцип: РАНА — антисептика, ВОКРУГ РАНЫ — асептика. Антисептики разных химических групп НЕ комбинируют в одной процедуре.
+    </div>
+
+    <div data-block="s6-table1">
+      <span class="task-pill pill-table">СРЕДСТВА ПО ФАЗАМ РАНЕВОГО ПРОЦЕССА</span>
+      <table class="wb-table">
+        <thead>
+          <tr><th style="width:28%">Средство</th><th style="width:36%">Фаза</th><th style="width:36%">Задача</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>ActiMaris Forte</strong></td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td></tr>
+          <tr><td><strong>Prontosan</strong></td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td></tr>
+          <tr><td><strong>Octenisept</strong></td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td></tr>
+          <tr><td><strong>Betadine</strong></td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td></tr>
+          <tr><td><strong>Rigenoma</strong></td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td></tr>
+          <tr><td><strong>HydroClean</strong></td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div data-block="s6-table2">
+      <span class="task-pill pill-table">СОВМЕСТИМОСТЬ АНТИСЕПТИКОВ (&#10003; или &#10007;)</span>
+      <table class="wb-table">
+        <thead>
+          <tr><th>Средство</th><th>Prontosan</th><th>Betadine</th><th>Octenisept</th><th>Rigenoma</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Prontosan</strong></td><td style="text-align:center">—</td><td class="fill-cell"></td><td class="fill-cell"></td><td class="fill-cell"></td></tr>
+          <tr><td><strong>Betadine</strong></td><td class="fill-cell"></td><td style="text-align:center">—</td><td class="fill-cell"></td><td class="fill-cell"></td></tr>
+          <tr><td><strong>Octenisept</strong></td><td class="fill-cell"></td><td class="fill-cell"></td><td style="text-align:center">—</td><td class="fill-cell"></td></tr>
+          <tr><td><strong>Rigenoma</strong></td><td class="fill-cell"></td><td class="fill-cell"></td><td class="fill-cell"></td><td style="text-align:center">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="question-block" data-block="s6-q1">
+      <span class="task-pill pill-question">? ВОПРОС ДЛЯ РАЗМЫШЛЕНИЯ</span>
+      <div class="question-prompt">
+        <div class="question-icon">?</div>
+        <div class="question-text">Почему современные рекомендации призывают минимизировать использование агрессивных антисептиков?</div>
+      </div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">7</span>
+    <span class="footer-handle">@podolog_serebrianska</span>
+  </div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 8: ПРОТОКОЛЫ ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">ВРОСШИЙ НОГОТЬ — WORKBOOK</span>
+    <span class="header-right">РАЗДЕЛ 7</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="s7-title">7. ПРОТОКОЛЫ РАБОТЫ ПО СТАДИЯМ</div>
+
+    <div data-block="s7-table1">
+      <span class="task-pill pill-table">ТАКТИКА ПО СТАДИЯМ</span>
+      <table class="wb-table">
+        <thead>
+          <tr><th style="width:12%">Стадия</th><th style="width:30%">Действия подолога</th><th style="width:28%">Средства</th><th style="width:30%">Перевязки</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>I</strong></td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td></tr>
+          <tr><td><strong>II</strong></td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td></tr>
+          <tr><td><strong>III</strong></td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td></tr>
+          <tr><td><strong>IV</strong></td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td><td class="fill-cell">заполните...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div data-block="s7-sketch">
+      <span class="task-pill pill-sketch">СХЕМА</span>
+      <div class="sketch-box">
+        <div class="sketch-label">РАСПОЛОЖЕНИЕ ТАМПОНАДЫ</div>
+        <p style="font-size:12px;color:#888;margin-top:14px;">Нарисуйте схему правильного расположения тампонады в боковом валике</p>
+      </div>
+    </div>
+
+    <div class="question-block" data-block="s7-q1">
+      <span class="task-pill pill-question">? ВОПРОС ДЛЯ РАЗМЫШЛЕНИЯ</span>
+      <div class="question-prompt">
+        <div class="question-icon">?</div>
+        <div class="question-text">На каком этапе можно установить коррекционную систему и почему нельзя раньше?</div>
+      </div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+    <div data-block="s7-notes">
+      <div class="notes-title">Мои заметки</div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">8</span>
+    <span class="footer-handle">@podolog_serebrianska</span>
+  </div>
+</div>
+
+<hr class="cut-line">
+
+<!-- ==================== PAGE 9: РЕФЛЕКСИЯ ==================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="header-left">ВРОСШИЙ НОГОТЬ — WORKBOOK</span>
+    <span class="header-right">ИТОГОВЫЙ РАЗДЕЛ</span>
+  </div>
+  <div class="page-content">
+
+    <div class="section-title" data-block="s8-title">ИТОГОВЫЙ РАЗДЕЛ: РЕФЛЕКСИЯ И ПЛАНИРОВАНИЕ</div>
+
+    <div data-block="s8-discoveries">
+      <span class="task-pill pill-reflect">РЕФЛЕКСИЯ</span>
+      <div class="sub-heading">Мои главные открытия курса</div>
+      <div class="numbered-item"><div class="num-circle">1</div><div class="num-line"></div></div>
+      <div class="numbered-item"><div class="num-circle">2</div><div class="num-line"></div></div>
+      <div class="numbered-item"><div class="num-circle">3</div><div class="num-line"></div></div>
+    </div>
+
+    <div data-block="s8-ba" style="margin-top:20px">
+      <div class="sub-heading">Что изменится в моей практике</div>
+      <table class="ba-table">
+        <thead>
+          <tr><th style="width:50%">ЧТО Я ДЕЛАЛ(А) РАНЬШЕ</th><th style="width:50%">ЧТО БУДУ ДЕЛАТЬ ТЕПЕРЬ</th></tr>
+        </thead>
+        <tbody>
+          <tr><td></td><td></td></tr>
+          <tr><td></td><td></td></tr>
+          <tr><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div data-block="s8-notes" style="margin-top:20px">
+      <div class="notes-title">Мои заметки</div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+      <div class="answer-line"></div>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span></span>
+    <span class="footer-page">9</span>
+    <span class="footer-handle">@podolog_serebrianska</span>
+  </div>
+</div>
+
+</div><!-- /pages-container -->
+
+<script>
+(function() {
+  // ===== Auto-init block editor system =====
+  const blocks = document.querySelectorAll('[data-block]');
+  const comments = {};
+
+  // Load saved comments
+  try {
+    const saved = localStorage.getItem('wb-ingrown-comments');
+    if (saved) Object.assign(comments, JSON.parse(saved));
+  } catch(e) {}
+
+  blocks.forEach(el => {
+    const id = el.getAttribute('data-block');
+    const wrap = document.createElement('div');
+    wrap.className = 'block-wrap';
+    el.parentNode.insertBefore(wrap, el);
+    wrap.appendChild(el);
+
+    // Drag handle
+    const handle = document.createElement('div');
+    handle.className = 'block-handle';
+    handle.innerHTML = '<div class="block-handle-dot"></div><div class="block-handle-dot"></div><div class="block-handle-dot"></div><div class="block-handle-dot"></div><div class="block-handle-dot"></div><div class="block-handle-dot"></div>';
+    wrap.appendChild(handle);
+
+    // Actions
+    const actions = document.createElement('div');
+    actions.className = 'block-actions';
+
+    const btnComment = document.createElement('button');
+    btnComment.className = 'block-action-btn';
+    btnComment.innerHTML = '&#128172;';
+    btnComment.title = 'Заметка';
+    actions.appendChild(btnComment);
+
+    const btnUp = document.createElement('button');
+    btnUp.className = 'block-action-btn';
+    btnUp.innerHTML = '&uarr;';
+    btnUp.title = 'Вверх';
+    btnUp.onclick = () => {
+      const prev = wrap.previousElementSibling;
+      if (prev && prev.classList.contains('block-wrap')) {
+        wrap.parentNode.insertBefore(wrap, prev);
+      }
+    };
+    actions.appendChild(btnUp);
+
+    const btnDown = document.createElement('button');
+    btnDown.className = 'block-action-btn';
+    btnDown.innerHTML = '&darr;';
+    btnDown.title = 'Вниз';
+    btnDown.onclick = () => {
+      const next = wrap.nextElementSibling;
+      if (next && next.classList.contains('block-wrap')) {
+        wrap.parentNode.insertBefore(next, wrap);
+      }
+    };
+    actions.appendChild(btnDown);
+
+    const btnBreakBefore = document.createElement('button');
+    btnBreakBefore.className = 'block-action-btn';
+    btnBreakBefore.innerHTML = '&#9986;&#8593;';
+    btnBreakBefore.title = 'Разрыв до';
+    btnBreakBefore.onclick = () => {
+      const cut = document.createElement('hr');
+      cut.className = 'cut-line';
+      wrap.parentNode.insertBefore(cut, wrap);
+    };
+    actions.appendChild(btnBreakBefore);
+
+    const btnBreakAfter = document.createElement('button');
+    btnBreakAfter.className = 'block-action-btn';
+    btnBreakAfter.innerHTML = '&#9986;&#8595;';
+    btnBreakAfter.title = 'Разрыв после';
+    btnBreakAfter.onclick = () => {
+      const cut = document.createElement('hr');
+      cut.className = 'cut-line';
+      wrap.after(cut);
+    };
+    actions.appendChild(btnBreakAfter);
+
+    const btnExtend = document.createElement('button');
+    btnExtend.className = 'block-action-btn';
+    btnExtend.innerHTML = '&#10530;';
+    btnExtend.title = 'Увеличить';
+    btnExtend.onclick = () => resizeBlock(wrap, true);
+    actions.appendChild(btnExtend);
+
+    const btnShrink = document.createElement('button');
+    btnShrink.className = 'block-action-btn';
+    btnShrink.innerHTML = '&#10529;';
+    btnShrink.title = 'Уменьшить';
+    btnShrink.onclick = () => resizeBlock(wrap, false);
+    actions.appendChild(btnShrink);
+
+    const btnRemove = document.createElement('button');
+    btnRemove.className = 'block-action-btn';
+    btnRemove.innerHTML = '&times;';
+    btnRemove.title = 'Удалить';
+    btnRemove.onclick = () => {
+      if (confirm('Удалить блок?')) wrap.remove();
+    };
+    actions.appendChild(btnRemove);
+
+    wrap.appendChild(actions);
+
+    // Comment popover
+    const popover = document.createElement('div');
+    popover.className = 'comment-popover';
+    popover.innerHTML = `
+      <textarea class="comment-textarea" placeholder="Ваша заметка...">${comments[id] || ''}</textarea>
+      <button class="comment-save-btn">Сохранить</button>
+    `;
+    wrap.appendChild(popover);
+
+    btnComment.onclick = (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.comment-popover.active').forEach(p => {
+        if (p !== popover) p.classList.remove('active');
+      });
+      popover.classList.toggle('active');
+    };
+
+    popover.querySelector('.comment-save-btn').onclick = () => {
+      const val = popover.querySelector('.comment-textarea').value.trim();
+      if (val) {
+        comments[id] = val;
+      } else {
+        delete comments[id];
+      }
+      try { localStorage.setItem('wb-ingrown-comments', JSON.stringify(comments)); } catch(e){}
+      popover.classList.remove('active');
+      updateBadge();
+    };
+  });
+
+  // Close popovers on outside click
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.comment-popover') && !e.target.closest('.block-action-btn')) {
+      document.querySelectorAll('.comment-popover.active').forEach(p => p.classList.remove('active'));
+    }
+  });
+
+  function updateBadge() {
+    const count = Object.keys(comments).length;
+    document.getElementById('commentCount').textContent = count + ' заметок';
+  }
+  updateBadge();
+
+  // ===== Resize block (extend/shrink) =====
+  function resizeBlock(block, grow) {
+    const delta = grow ? 1 : -1;
+    // 1. Answer lines
+    block.querySelectorAll('.answer-line').forEach((line, i, arr) => {
+      if (grow) {
+        const clone = line.cloneNode(true);
+        line.parentNode.insertBefore(clone, line.nextSibling);
+      } else if (arr.length > 1 && i === arr.length - 1) {
+        line.remove();
+      }
+    });
+    // 2. Table rows — increase/decrease row height
+    block.querySelectorAll('.wb-table td').forEach(td => {
+      const cur = parseInt(getComputedStyle(td).paddingTop) || 5;
+      td.style.paddingTop = Math.max(2, cur + delta * 3) + 'px';
+      td.style.paddingBottom = Math.max(2, cur + delta * 3) + 'px';
+    });
+    const tbody = block.querySelector('.wb-table tbody, table tbody');
+    if (tbody) {
+      if (grow) {
+        const cols = tbody.querySelector('tr') ? tbody.querySelector('tr').cells.length : 2;
+        const tr = document.createElement('tr');
+        for (let c = 0; c < cols; c++) { const td = document.createElement('td'); td.innerHTML = '&nbsp;'; tr.appendChild(td); }
+        tbody.appendChild(tr);
+      } else if (tbody.rows.length > 1) {
+        tbody.lastElementChild.remove();
+      }
+    }
+    // 3. Chain empty blocks
+    block.querySelectorAll('.chain-empty').forEach(ce => {
+      const cur = parseInt(ce.style.minHeight) || 28;
+      ce.style.minHeight = Math.max(20, cur + delta * 16) + 'px';
+      const curPad = parseInt(ce.style.paddingTop) || 6;
+      ce.style.paddingTop = Math.max(4, curPad + delta * 4) + 'px';
+      ce.style.paddingBottom = Math.max(4, curPad + delta * 4) + 'px';
+    });
+    // 4. Sketch boxes
+    block.querySelectorAll('.sketch-box').forEach(sb => {
+      const cur = parseInt(sb.style.minHeight) || parseInt(getComputedStyle(sb).minHeight) || 120;
+      sb.style.minHeight = Math.max(50, cur + delta * 40) + 'px';
+    });
+    // 5. Checklist — add/remove items
+    const cl = block.querySelector('.checklist-item');
+    if (cl) {
+      const parent = cl.parentNode;
+      if (grow) {
+        const clone = cl.cloneNode(true);
+        clone.querySelector('.checklist-text').textContent = '';
+        parent.appendChild(clone);
+      } else {
+        const items = parent.querySelectorAll('.checklist-item');
+        if (items.length > 1) items[items.length - 1].remove();
+      }
+    }
+  }
+
+  // ===== Copy all comments =====
+  window.copyAllComments = function() {
+    const keys = Object.keys(comments);
+    if (!keys.length) { alert('Нет заметок для копирования.'); return; }
+    let md = '# Заметки к тетради: Вросший ноготь\n\n';
+    keys.forEach(k => {
+      md += `## ${k}\n${comments[k]}\n\n`;
+    });
+    navigator.clipboard.writeText(md).then(() => {
+      alert('Заметки скопированы в буфер обмена (Markdown).');
+    }).catch(() => {
+      // Fallback
+      const ta = document.createElement('textarea');
+      ta.value = md;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      alert('Заметки скопированы.');
+    });
+  };
+
+  // ===== PDF export =====
+  window.exportPDF = function() {
+    window.print();
+  };
+
+  // ===== Viewport scaling =====
+  function scalePages() {
+    const container = document.getElementById('pagesContainer');
+    const vw = window.innerWidth;
+    if (vw < 840) {
+      const scale = (vw - 40) / 794;
+      container.style.transform = `scale(${scale})`;
+      container.style.transformOrigin = 'top center';
+      container.style.width = '794px';
+      container.style.margin = '0 auto';
+    } else {
+      container.style.transform = '';
+      container.style.width = '';
+    }
+  }
+  scalePages();
+  window.addEventListener('resize', scalePages);
+  // ----- Cover replace -----
+  window.replaceCover = function() {
+    var input = document.createElement('input');
+    input.type = 'file'; input.accept = 'image/*'; input.style.display = 'none';
+    input.onchange = function(e) {
+      var file = e.target.files && e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        _applyWbCover(ev.target.result);
+        try { localStorage.setItem(_wbCoverKey(), ev.target.result); }
+        catch(err) { console.warn('Cover image too large for browser storage; will not survive reload.'); }
+      };
+      reader.readAsDataURL(file);
+    };
+    document.body.appendChild(input);
+    input.click();
+    setTimeout(function(){ try { input.remove(); } catch(_){} }, 0);
+  };
+  function _wbCoverKey() { return 'wb-cover:' + (document.title || 'workbook'); }
+  function _applyWbCover(dataUrl) {
+    var cover = document.querySelector('.page.page-cover, .page.cover, .cover');
+    if (!cover) return;
+    cover.innerHTML = '<img src="' + dataUrl + '" style="width:100%;height:100%;object-fit:cover;display:block;">';
+    cover.setAttribute('style', 'padding:0;background:none;display:block;');
+  }
+  try { var _wbSaved = localStorage.getItem(_wbCoverKey()); if (_wbSaved) _applyWbCover(_wbSaved); } catch(_) {}
+})();
+</script>
+</body>
+</html>

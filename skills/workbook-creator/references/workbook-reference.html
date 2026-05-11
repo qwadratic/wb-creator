@@ -1,0 +1,2106 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ортози в практиці подолога — Робочий зошит</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --print-bg-title:        #185C50;
+  --print-bg-title-start:  #105040;
+  --print-bg-title-end:    #247C5C;
+  --print-accent:          #A8D44A;
+  --print-accent-bright:   #C8F135;
+  --print-text-primary:    #0C4A3A;
+  --print-section-bg:      #D6EEE8;
+  --print-key-idea-bg:     #D6EEE8;
+  --print-conclusion-bg:   #F0F8E0;
+  --print-table-header:    #0C4A3A;
+  --print-table-row-alt:   #F5F9F3;
+  --print-border:          #E0E0E0;
+  --print-page:            #FFFFFF;
+  --print-text-on-dark:    #FFFFFF;
+  --font: 'Montserrat', 'Inter', 'Helvetica Neue', sans-serif;
+  --page-w: 794px;
+  --page-h: 1123px;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { font-family: var(--font); font-size: 12px; color: var(--print-text-primary); background: #8a9a95; }
+
+/* TOOLBAR */
+.preview-toolbar { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; background: var(--print-bg-title); color: white; display: flex; align-items: center; gap: 10px; padding: 8px 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.35); font-family: var(--font); font-size: 11px; flex-wrap: wrap; min-height: 46px; }
+.toolbar-brand { font-weight: 800; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--print-accent); margin-right: 4px; white-space: nowrap; }
+.toolbar-title { font-weight: 500; opacity: 0.8; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.toolbar-comment-count { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.1); border-radius: 20px; padding: 4px 10px; font-weight: 700; font-size: 11px; white-space: nowrap; }
+.count-badge { background: var(--print-accent); color: var(--print-text-primary); border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; transition: transform 0.2s; }
+.count-badge.bump { transform: scale(1.5); }
+.btn-copy { background: var(--print-accent); color: var(--print-text-primary); border: none; border-radius: 20px; padding: 6px 14px; font-family: var(--font); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; white-space: nowrap; transition: background 0.18s; }
+.btn-copy:hover { background: var(--print-accent-bright); }
+.copy-feedback { font-size: 11px; color: var(--print-accent); font-weight: 600; opacity: 0; transition: opacity 0.3s; white-space: nowrap; }
+.copy-feedback.visible { opacity: 1; }
+
+/* SCALE WRAPPER */
+#scale-root { padding-top: 56px; padding-bottom: 60px; display: flex; flex-direction: column; align-items: center; }
+.scale-frame { transform-origin: top center; display: flex; flex-direction: column; align-items: center; width: var(--page-w); }
+
+/* PAGE CUT LINE */
+.page-cut-line { width: var(--page-w); height: 28px; display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; }
+.page-cut-line::before { content: ''; position: absolute; left: -60px; right: -60px; top: 50%; border-top: 2px dashed #e74c3c; opacity: 0.8; }
+.page-cut-line-label { background: #e74c3c; color: white; font-family: var(--font); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; position: relative; z-index: 1; white-space: nowrap; }
+
+/* A4 PAGE */
+.page, .cover { width: var(--page-w); height: var(--page-h); box-sizing: border-box; overflow: hidden; background: var(--print-page); position: relative; box-shadow: 0 4px 28px rgba(0,0,0,0.22); flex-shrink: 0; }
+.page { display: flex; flex-direction: column; }
+
+/* COVER */
+.cover { background: linear-gradient(160deg, var(--print-bg-title-start) 0%, var(--print-bg-title) 55%, var(--print-bg-title-end) 100%); display: flex; flex-direction: column; padding: 0; color: var(--print-text-on-dark); position: relative; overflow: hidden; }
+.cover-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; z-index: 0; }
+.cover-inner { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; padding: 40px 42px 36px 42px; }
+.cover-logo { height: 112px; object-fit: contain; object-position: left; filter: brightness(0) invert(1); flex-shrink: 0; }
+.cover-center { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 0 60px 0; }
+.cover-type-pill { display: inline-block; background: var(--print-accent); color: var(--print-text-primary); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 5px 16px; border-radius: 6px; margin-bottom: 18px; width: fit-content; }
+.cover-title-box { background: rgba(255,255,255,0.97); border-radius: 12px; padding: 22px 28px; margin-bottom: 18px; }
+.cover-title-box h1 { font-size: 34px; font-weight: 900; text-transform: uppercase; color: var(--print-text-primary); line-height: 1.1; letter-spacing: 0.02em; }
+.cover-title-box .cover-subtitle-inner { font-size: 14px; font-weight: 600; color: #2a7a60; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+.cover-subtitle { font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.65; max-width: 420px; margin-bottom: 0; }
+.cover-spacer { flex: 0 0 auto; height: 20px; }
+
+/* PAGE HEADER & FOOTER */
+.page-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 38px 8px 38px; border-bottom: 1px solid var(--print-border); flex-shrink: 0; }
+.page-header-logo { height: 13.6px; object-fit: contain; object-position: left; }
+.page-header-right { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: #aaa; }
+.page-footer { display: flex; justify-content: space-between; align-items: center; padding: 6px 38px 8px 38px; border-top: 1px solid var(--print-border); font-size: 10px; color: #bbb; flex-shrink: 0; }
+.page-footer-center { font-weight: 500; color: #ccc; text-align: center; flex: 1; padding: 0 20px; font-style: italic; }
+.page-footer-right { font-weight: 700; color: var(--print-text-primary); font-size: 10px; }
+
+/* PAGE CONTENT */
+.page-content { flex: 1; padding: 14px 38px 14px 52px; overflow: hidden; display: flex; flex-direction: column; gap: 10px; }
+
+/* SECTION HEADER */
+.section-header { background: var(--print-section-bg); border-left: 4px solid var(--print-text-primary); border-radius: 8px; padding: 10px 14px; }
+.section-header h2 { font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--print-text-primary); letter-spacing: 0.03em; line-height: 1.2; }
+.section-header p { font-size: 11px; color: #4a7a6a; margin-top: 4px; line-height: 1.4; }
+
+/* PILL */
+.pill { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 11px; border-radius: 4px; margin-bottom: 6px; }
+.pill-lime { background: var(--print-accent); color: var(--print-text-primary); }
+.pill-mint { background: var(--print-section-bg); color: var(--print-text-primary); }
+
+/* KEY IDEA */
+.key-idea { background: var(--print-key-idea-bg); border-left: 4px solid var(--print-text-primary); border-radius: 0 8px 8px 0; padding: 10px 13px; font-size: 10px; line-height: 1.6; color: var(--print-text-primary); }
+.key-idea strong { font-weight: 700; }
+
+/* QUESTION / ANSWER */
+.question-prompt { font-size: 10px; font-weight: 700; color: var(--print-text-primary); line-height: 1.4; margin-bottom: 6px; }
+.answer-lines { display: flex; flex-direction: column; gap: 0; }
+.answer-line { height: 22px; border-bottom: 1.5px solid var(--print-border); }
+
+/* CHECKLIST */
+.checklist { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+.checklist li { display: flex; align-items: center; gap: 7px; font-size: 9px; line-height: 1.4; padding: 3px 0; border-bottom: 1px solid #f0f0f0; }
+.checkbox { width: 11px; height: 11px; border: 2px solid var(--print-text-primary); border-radius: 2px; flex-shrink: 0; }
+.checklist-text { flex: 1; }
+
+/* TABLE */
+.table-wrapper { overflow: hidden; border-radius: 6px; border: 1px solid var(--print-border); }
+table { width: 100%; border-collapse: collapse; font-size: 9px; }
+thead tr { background: var(--print-table-header); color: white; }
+thead th { padding: 6px 9px; font-weight: 700; text-align: left; font-size: 9px; letter-spacing: 0.03em; }
+tbody tr { border-bottom: 1px solid var(--print-border); }
+tbody tr:nth-child(even) { background: var(--print-table-row-alt); }
+tbody td { padding: 5px 9px; color: var(--print-text-primary); vertical-align: top; line-height: 1.4; }
+
+/* CHAIN */
+.chain { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.chain-item-filled { background: var(--print-table-header); color: white; padding: 6px 14px; border-radius: 6px; font-size: 10px; font-weight: 600; text-align: center; width: 100%; }
+.chain-item-empty { border: 2px dashed var(--print-border); background: white; color: #bbb; padding: 6px 14px; border-radius: 6px; font-size: 10px; text-align: center; width: 100%; min-height: 28px; display: flex; align-items: center; justify-content: center; }
+.chain-arrow { font-size: 13px; color: var(--print-text-primary); line-height: 1; padding: 1px 0; opacity: 0.5; }
+
+/* SKETCH BOX */
+.sketch-box { border: 2px dashed var(--print-border); border-radius: 8px; background: #fafcfb; display: flex; align-items: flex-end; justify-content: center; padding: 8px; }
+.sketch-label { font-size: 8px; font-weight: 600; color: #ccc; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; }
+
+/* HIGHLIGHT BOX */
+.highlight-box { background: #fff8e1; border-left: 4px solid #f39c12; border-radius: 0 6px 6px 0; padding: 8px 12px; font-size: 10px; font-weight: 700; color: #7a5c00; line-height: 1.4; }
+.highlight-box.danger { background: #fdecea; border-left-color: #e74c3c; color: #7a1a1a; }
+.highlight-box.success { background: var(--print-conclusion-bg); border-left-color: var(--print-text-primary); color: var(--print-text-primary); }
+
+/* TWO-COLUMN */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* COMPARE CARD */
+.compare-card { border: 1px solid var(--print-border); border-radius: 8px; overflow: hidden; }
+.compare-card-header { background: var(--print-table-header); color: white; padding: 6px 10px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+.compare-card-body { padding: 7px 10px; font-size: 9px; line-height: 1.5; color: var(--print-text-primary); }
+.compare-card-body p { margin-bottom: 3px; }
+.compare-card-body .pro { color: #2a7a60; font-weight: 600; }
+.compare-card-body .con { color: #c0392b; font-weight: 600; }
+
+/* NOTES PAGE */
+.notes-page-content { flex: 1; padding: 14px 38px 14px 52px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+.notes-full { flex: 1; background: var(--print-conclusion-bg); border-radius: 10px; padding: 16px 20px; display: flex; flex-direction: column; overflow: hidden; }
+.notes-full h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--print-text-primary); letter-spacing: 0.05em; margin-bottom: 3px; }
+.notes-full .notes-hint { font-size: 10px; color: #7aaa8a; font-style: italic; margin-bottom: 10px; }
+.notes-full .notes-lines { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.notes-full .notes-lines .answer-line { height: auto; flex: 1; border-bottom: 1.5px solid #c8e0c0; max-height: 28px; }
+
+/* ============================================================
+   BLOCK EDITING SYSTEM
+   ============================================================ */
+.block-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Drag handle — Notion-style, left side */
+.block-handle {
+  position: absolute;
+  left: -26px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: grab;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 100;
+  border-radius: 4px;
+  padding: 2px;
+}
+.block-wrap:hover > .block-handle { opacity: 1; }
+.block-handle:hover { background: rgba(0,0,0,0.06); }
+.block-handle-dot { width: 3px; height: 3px; border-radius: 50%; background: #888; }
+.block-handle.dragging { cursor: grabbing; }
+
+/* Block action bar — top-right on hover */
+.block-actions {
+  position: absolute;
+  top: -12px;
+  right: 0;
+  display: none;
+  align-items: center;
+  gap: 1px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 2px 4px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.14);
+  z-index: 600;
+  white-space: nowrap;
+}
+.block-wrap:hover > .block-actions { display: flex; }
+.block-action-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 11px; padding: 2px 3px; border-radius: 4px;
+  color: #555; line-height: 1;
+  transition: background 0.12s, color 0.12s;
+  display: flex; align-items: center; justify-content: center;
+  min-width: 20px; height: 20px;
+  title: attr(title);
+}
+.block-action-btn:hover { background: var(--print-section-bg); color: var(--print-text-primary); }
+.block-action-btn.danger:hover { background: #fdecea; color: #c0392b; }
+.block-action-sep { width: 1px; height: 12px; background: #e0e0e0; margin: 0 1px; align-self: center; }
+
+/* Drag states */
+.block-wrap.drag-over-top { border-top: 2px solid var(--print-accent); }
+.block-wrap.drag-over-bottom { border-bottom: 2px solid var(--print-accent); }
+.block-wrap.dragging-source { opacity: 0.35; }
+
+/* Inserted page break */
+.inserted-page-break {
+  width: 100%;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  margin: 2px 0;
+}
+.inserted-page-break::before {
+  content: '';
+  position: absolute;
+  left: -60px; right: -60px;
+  top: 50%;
+  border-top: 2px dashed #e67e22;
+  opacity: 0.7;
+}
+.inserted-page-break-label {
+  background: #e67e22; color: white;
+  font-family: var(--font); font-size: 8px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 3px;
+  position: relative; z-index: 1; white-space: nowrap;
+}
+.inserted-page-break .pb-remove {
+  position: absolute; right: 4px;
+  background: #e67e22; border: none; color: white;
+  font-size: 10px; cursor: pointer; border-radius: 3px;
+  padding: 1px 5px; z-index: 2; opacity: 0; transition: opacity 0.15s;
+}
+.inserted-page-break:hover .pb-remove { opacity: 1; }
+
+/* Extend area button */
+.extend-btn {
+  display: block; width: 100%; text-align: center;
+  font-size: 8px; font-weight: 700; color: #bbb;
+  background: none; border: none; cursor: pointer;
+  padding: 2px 0 0 0; letter-spacing: 0.05em; text-transform: uppercase;
+  transition: color 0.15s;
+}
+.extend-btn:hover { color: var(--print-text-primary); }
+
+/* ============================================================
+   COMMENT SYSTEM
+   ============================================================ */
+.commentable { position: relative; }
+.comment-btn {
+  position: absolute; top: -8px; right: -8px;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--print-text-primary); color: white;
+  border: 2px solid white; cursor: pointer; font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 300; box-shadow: 0 2px 8px rgba(0,0,0,0.28);
+  padding: 0; line-height: 1;
+  transition: background 0.15s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  opacity: 0; transform: scale(0.7); pointer-events: none;
+}
+.commentable:hover > .comment-btn { opacity: 1; transform: scale(1); pointer-events: auto; }
+.comment-btn.has-comment { opacity: 1 !important; transform: scale(1) !important; background: var(--print-accent); color: var(--print-text-primary); pointer-events: auto; }
+@media (hover: none), (pointer: coarse) {
+  .comment-btn { opacity: 1 !important; transform: scale(1) !important; width: 32px; height: 32px; font-size: 14px; pointer-events: auto; }
+}
+.comment-btn:hover { background: var(--print-accent); color: var(--print-text-primary); transform: scale(1.1); }
+.comment-popover {
+  display: none; position: absolute; top: 24px; right: -8px;
+  width: 260px; max-width: calc(100vw - 24px);
+  background: white; border-radius: 10px;
+  box-shadow: 0 8px 36px rgba(0,0,0,0.24);
+  border: 1px solid var(--print-border);
+  z-index: 9000; flex-direction: column; overflow: hidden;
+}
+.comment-popover.open { display: flex; }
+.popover-header { background: var(--print-text-primary); color: white; padding: 7px 12px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; display: flex; justify-content: space-between; align-items: center; }
+.popover-close { background: none; border: none; color: rgba(255,255,255,0.65); cursor: pointer; font-size: 15px; line-height: 1; padding: 0 2px; }
+.popover-close:hover { color: white; }
+.popover-textarea { border: none; outline: none; resize: none; font-family: var(--font); font-size: 10px; color: var(--print-text-primary); padding: 10px 12px; min-height: 90px; line-height: 1.55; background: white; width: 100%; }
+.popover-footer { display: flex; justify-content: flex-end; gap: 6px; padding: 7px 10px; border-top: 1px solid var(--print-border); background: #fafafa; }
+.popover-btn-save { background: var(--print-text-primary); color: white; border: none; border-radius: 6px; padding: 5px 12px; font-family: var(--font); font-size: 9px; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em; }
+.popover-btn-save:hover { background: var(--print-accent); color: var(--print-text-primary); }
+.popover-btn-clear { background: none; color: #c0392b; border: 1px solid #e0c0c0; border-radius: 6px; padding: 5px 10px; font-family: var(--font); font-size: 9px; font-weight: 600; cursor: pointer; }
+.popover-btn-clear:hover { background: #fdecea; }
+/* ── Exercise page text ×1.3 ─────────────────────────────── */
+/* Headings, badges, cover — NOT touched */
+.page .section-header h2 { font-size: 18.2px; }
+.page .section-header p  { font-size: 14.3px; }
+.page .pill              { font-size: 13px; }
+.page .page-header-right { font-size: 11.7px; }
+.page-footer             { font-size: 13px; }
+.page .page-footer-right { font-size: 13px; }
+/* Logo 15% smaller */
+.page-header-logo { height: 13.6px; }
+
+/* ── Content text ×1.3 × 1.2 = ×1.56 ───────────────────────── */
+/* Table cells */
+.page table              { font-size: 14px; }
+.page thead th           { font-size: 14px; }
+.page tbody td           { font-size: 14px; }
+.page .compare-card-header { font-size: 14px; }
+.page .compare-card-body   { font-size: 14px; }
+/* Key idea / highlight blocks */
+.page .key-idea          { font-size: 15.6px; }
+.page .highlight-box     { font-size: 15.6px; }
+/* Checklist */
+.page .checklist li      { font-size: 14px; }
+/* Chain items */
+.page .chain-item-filled { font-size: 15.6px; }
+.page .chain-item-empty  { font-size: 15.6px; }
+.page .chain-arrow       { font-size: 20.3px; }
+/* Notes */
+.page .notes-full h3       { font-size: 16.9px; }
+.page .notes-full .notes-hint { font-size: 15.6px; }
+.page .sketch-label      { font-size: 12.5px; }
+/* Question prompts — bold + larger */
+.page .question-prompt   { font-size: 15.6px; font-weight: 800; }
+/* Inline style overrides (content only, not badges) */
+.page [style*="font-size:8px"]  { font-size: 12.5px !important; }
+.page [style*="font-size:9px"]  { font-size: 14px !important; }
+.page [style*="font-size:10px"] { font-size: 15.6px !important; }
+.page [style*="font-size:11px"] { font-size: 17.2px !important; }
+.page [style*="font-size:12px"] { font-size: 18.7px !important; }
+.page [style*="font-size:13px"] { font-size: 20.3px !important; }
+.page [style*="font-size:14px"] { font-size: 21.8px !important; }
+</style>
+</head>
+<body>
+
+<!-- TOOLBAR -->
+<div class="preview-toolbar">
+  <span class="toolbar-brand">Ortobor</span>
+  <span class="toolbar-title">Ортози в практиці подолога — Робочий зошит</span>
+  <div class="toolbar-comment-count">
+    💬 <span id="globalCount" class="count-badge">0</span>
+  </div>
+  <button class="btn-copy" id="btnUndo" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);opacity:0.4;pointer-events:none;" title="Ctrl+Z">↩ Скасувати</button>
+  <button class="btn-copy" id="btnCopy">📋 Копіювати коментарі</button>
+  <button class="btn-copy" id="btnPDF" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3);">⬇ Зберегти PDF</button>
+  <span class="copy-feedback" id="copyFeedback"></span>
+</div>
+
+<div id="scale-root">
+<div class="scale-frame" id="scaleFrame">
+
+<!-- PAGE 1: COVER -->
+<div class="cover commentable" id="bw-cover">
+  <button class="comment-btn" data-block="cover" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-cover">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="cover">✕</button></div>
+  <textarea class="popover-textarea" id="ta-cover" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="cover">Видалити</button><button class="popover-btn-save" data-block="cover">Зберегти</button></div>
+</div>
+  <!-- Full-page background image -->
+  <img src="cover-pattern-v7.png" alt="" class="cover-bg">
+  <!-- Content overlay -->
+  <div class="cover-inner">
+    <img src="logo.png" alt="Ortobor Academy" class="cover-logo">
+    <div class="cover-spacer"></div>
+    <div class="cover-center">
+      <span class="cover-type-pill">Робочий зошит до лекції</span>
+      <div class="cover-title-box">
+        <h1>Ортози в практиці подолога</h1>
+        <div class="cover-subtitle-inner">Погляд ортопеда</div>
+      </div>
+      <p class="cover-subtitle">Структурований зошит для активного засвоєння матеріалу лекції. Заповнюйте блоки під час або після перегляду.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CUT LINE 1/2 -->
+<div class="page-cut-line"><span class="page-cut-line-label">✂ Розрив сторінки — стор. 1 / 2</span></div>
+
+<!-- PAGE 2 — KEY CONCEPT & TERMINOLOGY -->
+<div class="page">
+  <div class="page-header"><img src="logo.png" alt="Ortobor Academy" class="page-header-logo"><span class="page-header-right">Ortobor.Academy | @ortoped_borovskoy_evgeniy</span></div>
+  <div class="page-content">
+    <div class="block-wrap commentable" id="bw-s1-header">
+  <div class="block-handle" draggable="true" data-block="s1-header">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="s1-header" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="s1-header" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="s1-header" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="s1-header" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="s1-header" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="s1-header" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="s1-header" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="s1-header" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-s1-header">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="s1-header">✕</button></div>
+  <textarea class="popover-textarea" id="ta-s1-header" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="s1-header">Видалити</button><button class="popover-btn-save" data-block="s1-header">Зберегти</button></div>
+</div>
+  <div class="section-header">
+  <h2>Розділ 1. Що таке ортоз?</h2>
+  <p>Термінологія, ключова роль та місце ортозів у подологічній практиці</p>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-key1">
+  <div class="block-handle" draggable="true" data-block="key1">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="key1" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="key1" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="key1" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="key1" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="key1" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="key1" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="key1" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="key1" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-key1">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="key1">✕</button></div>
+  <textarea class="popover-textarea" id="ta-key1" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="key1">Видалити</button><button class="popover-btn-save" data-block="key1">Зберегти</button></div>
+</div>
+  <div class="key-idea">
+  <strong>Ортоз</strong> — важлива складова <strong>комплексного лікування</strong> ортопедичних деформацій стопи, зокрема деформацій пальців. Правильне застосування ортозів дозволяє досягти результату лікування, мінімізувати ризики ускладнень та профілактувати рецидиви.
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-term-q">
+  <div class="block-handle" draggable="true" data-block="term-q">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="term-q" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="term-q" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="term-q" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="term-q" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="term-q" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="term-q" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="term-q" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="term-q" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-term-q">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="term-q">✕</button></div>
+  <textarea class="popover-textarea" id="ta-term-q" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="term-q">Видалити</button><button class="popover-btn-save" data-block="term-q">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-lime">Питання</span>
+  <div class="question-prompt">Чим відрізняється термін «ортОз» від «ортЕз»? Запишіть коректне визначення:</div>
+  <div class="two-col" style="gap:10px;margin-bottom:4px;">
+    <div class="block-wrap commentable" id="bw-term-left">
+  <div class="block-handle" draggable="true" data-block="term-left">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  <button class="block-action-btn" data-action="move-right" data-block="term-left" title="Перемістити праворуч">→</button><span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="move-up" data-block="term-left" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="term-left" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="term-left" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="term-left" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="term-left" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="term-left" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="term-left" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="term-left" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-term-left">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="term-left">✕</button></div>
+  <textarea class="popover-textarea" id="ta-term-left" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="term-left">Видалити</button><button class="popover-btn-save" data-block="term-left">Зберегти</button></div>
+</div>
+  <div style="padding:4px 0;">
+  <div style="font-size:8px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;">ОртОз (подологічний сленг)</div>
+  <div class="answer-lines"><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div></div>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-term-right">
+  <div class="block-handle" draggable="true" data-block="term-right">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  <button class="block-action-btn" data-action="move-left" data-block="term-right" title="Перемістити ліворуч">←</button><span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="move-up" data-block="term-right" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="term-right" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="term-right" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="term-right" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="term-right" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="term-right" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="term-right" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="term-right" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-term-right">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="term-right">✕</button></div>
+  <textarea class="popover-textarea" id="ta-term-right" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="term-right">Видалити</button><button class="popover-btn-save" data-block="term-right">Зберегти</button></div>
+</div>
+  <div style="padding:4px 0;">
+  <div style="font-size:8px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;">ОртЕз (медичний термін)</div>
+  <div class="answer-lines"><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div></div>
+</div>
+</div>
+  </div>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-biomech">
+  <div class="block-handle" draggable="true" data-block="biomech">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="biomech" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="biomech" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="biomech" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="biomech" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="biomech" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="biomech" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="biomech" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="biomech" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-biomech">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="biomech">✕</button></div>
+  <textarea class="popover-textarea" id="ta-biomech" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="biomech">Видалити</button><button class="popover-btn-save" data-block="biomech">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-mint">Ключова ідея</span>
+  <div class="key-idea">
+    Стопа — це <strong>складна цілісна біомеханічна конструкція</strong>. Механічний вплив на одну із ділянок стопи (наприклад, положення пальців) може змінити біомеханіку руху як самої стопи, так і <strong>руху всього тіла</strong>.
+  </div>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-chain1">
+  <div class="block-handle" draggable="true" data-block="chain1">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="chain1" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="chain1" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="chain1" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="chain1" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="chain1" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="chain1" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="chain1" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="chain1" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-chain1">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="chain1">✕</button></div>
+  <textarea class="popover-textarea" id="ta-chain1" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="chain1">Видалити</button><button class="popover-btn-save" data-block="chain1">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-lime">Ланцюжок наслідків</span>
+  <div style="font-size:9px;font-weight:600;margin-bottom:6px;color:#2a7a60;">✓ Позитивний приклад: відновлення біомеханіки</div>
+  <div class="two-col" style="gap:8px;">
+    <div class="block-wrap commentable" id="bw-chain-left">
+  <div class="block-handle" draggable="true" data-block="chain-left">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  <button class="block-action-btn" data-action="move-right" data-block="chain-left" title="Перемістити праворуч">→</button><span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="move-up" data-block="chain-left" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="chain-left" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="chain-left" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="chain-left" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="chain-left" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="chain-left" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="chain-left" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="chain-left" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-chain-left">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="chain-left">✕</button></div>
+  <textarea class="popover-textarea" id="ta-chain-left" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="chain-left">Видалити</button><button class="popover-btn-save" data-block="chain-left">Зберегти</button></div>
+</div>
+  <div class="chain">
+  <div class="chain-item-filled">Міжпальцевий мозоль → біль</div>
+  <div class="chain-arrow">↓</div>
+  <div class="chain-item-filled">Тривале кульгання</div>
+  <div class="chain-arrow">↓</div>
+  <div class="chain-item-filled">Біль у коліні</div>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-chain-right">
+  <div class="block-handle" draggable="true" data-block="chain-right">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  <button class="block-action-btn" data-action="move-left" data-block="chain-right" title="Перемістити ліворуч">←</button><span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="move-up" data-block="chain-right" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="chain-right" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="chain-right" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="chain-right" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="chain-right" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="chain-right" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="chain-right" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="chain-right" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-chain-right">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="chain-right">✕</button></div>
+  <textarea class="popover-textarea" id="ta-chain-right" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="chain-right">Видалити</button><button class="popover-btn-save" data-block="chain-right">Зберегти</button></div>
+</div>
+  <div class="chain">
+  <div class="chain-item-filled" style="background:#2a7a60;">Розвантажувальний ортоз</div>
+  <div class="chain-arrow">↓</div>
+  <div class="chain-item-empty">Що відновлюється?</div>
+  <div class="chain-arrow">↓</div>
+  <div class="chain-item-empty">Який результат?</div>
+</div>
+</div>
+  </div>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-neg-example">
+  <div class="block-handle" draggable="true" data-block="neg-example">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="neg-example" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="neg-example" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="neg-example" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="neg-example" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="neg-example" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="neg-example" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="neg-example" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="neg-example" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-neg-example">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="neg-example">✕</button></div>
+  <textarea class="popover-textarea" id="ta-neg-example" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="neg-example">Видалити</button><button class="popover-btn-save" data-block="neg-example">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-lime">Питання</span>
+  <div class="question-prompt">Негативний приклад: при невромі Мортона або метатарзалгії — що може статися при неправильному ортозі?</div>
+  <div class="answer-lines"><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div></div>
+</div>
+</div>
+  </div>
+  <div class="page-footer"><span>Ortobor Academy</span><span class="page-footer-center">Ортози в практиці подолога</span><span class="page-footer-right">2</span></div>
+</div>
+<div class="page-cut-line"><span class="page-cut-line-label">✂ Розрив сторінки — стор. 2 / 3</span></div>
+
+<!-- PAGE 3 — INDICATIONS & PRE-PRESCRIPTION -->
+<div class="page">
+  <div class="page-header"><img src="logo.png" alt="Ortobor Academy" class="page-header-logo"><span class="page-header-right">Ortobor.Academy | @ortoped_borovskoy_evgeniy</span></div>
+  <div class="page-content">
+    <div class="block-wrap commentable" id="bw-s2-header">
+  <div class="block-handle" draggable="true" data-block="s2-header">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="s2-header" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="s2-header" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="s2-header" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="s2-header" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="s2-header" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="s2-header" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="s2-header" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="s2-header" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-s2-header">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="s2-header">✕</button></div>
+  <textarea class="popover-textarea" id="ta-s2-header" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="s2-header">Видалити</button><button class="popover-btn-save" data-block="s2-header">Зберегти</button></div>
+</div>
+  <div class="section-header">
+  <h2>Розділ 2. Показання та призначення</h2>
+  <p>Коли, кому та як правильно призначати ортози</p>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-indications">
+  <div class="block-handle" draggable="true" data-block="indications">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="indications" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="indications" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="indications" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="indications" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="indications" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="indications" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="indications" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="indications" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-indications">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="indications">✕</button></div>
+  <textarea class="popover-textarea" id="ta-indications" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="indications">Видалити</button><button class="popover-btn-save" data-block="indications">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-lime">Чек-ліст</span>
+  <div class="question-prompt" style="margin-bottom:5px;">Показання до застосування ортозів (відмітьте ті, що знаєте):</div>
+  <ul class="checklist">
+    <li><div class="checkbox"></div><span class="checklist-text">Деформації пальців стопи (молоткоподібні, кігтеподібні пальці)</span></li>
+    <li><div class="checkbox"></div><span class="checklist-text">Міжпальцеві мозолі (натоптиші, виразки)</span></li>
+    <li><div class="checkbox"></div><span class="checklist-text">Невромa Мортона (розвантаження)</span></li>
+    <li><div class="checkbox"></div><span class="checklist-text">Метатарзалгія (розвантаження головок плесен)</span></li>
+    <li><div class="checkbox"></div><span class="checklist-text">Профілактика рецидивів після лікування</span></li>
+  </ul>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-important1">
+  <div class="block-handle" draggable="true" data-block="important1">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="important1" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="important1" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="important1" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="important1" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="important1" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="important1" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="important1" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="important1" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-important1">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="important1">✕</button></div>
+  <textarea class="popover-textarea" id="ta-important1" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="important1">Видалити</button><button class="popover-btn-save" data-block="important1">Зберегти</button></div>
+</div>
+  <div class="highlight-box">
+  ⚠ Ортоз призначає лише <strong>лікар-ортопед або подолог</strong> після повноцінного обстеження. Самостійне застосування без показань може погіршити стан.
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-pre-prescription">
+  <div class="block-handle" draggable="true" data-block="pre-prescription">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="pre-prescription" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="pre-prescription" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="pre-prescription" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="pre-prescription" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="pre-prescription" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="pre-prescription" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="pre-prescription" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="pre-prescription" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-pre-prescription">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="pre-prescription">✕</button></div>
+  <textarea class="popover-textarea" id="ta-pre-prescription" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="pre-prescription">Видалити</button><button class="popover-btn-save" data-block="pre-prescription">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-lime">Чек-ліст</span>
+  <div class="question-prompt" style="margin-bottom:5px;">Що необхідно зробити перед призначенням ортозу:</div>
+  <ul class="checklist">
+    <li><div class="checkbox"></div><span class="checklist-text">Зібрати анамнез (скарги, тривалість, попереднє лікування)</span></li>
+    <li><div class="checkbox"></div><span class="checklist-text">Провести огляд стопи у статиці та динаміці</span></li>
+    <li><div class="checkbox"></div><span class="checklist-text">Виключити протипоказання (діабет, судинна патологія)</span></li>
+    <li><div class="checkbox"></div><span class="checklist-text">Оцінити тип деформації (рухлива / ригідна)</span></li>
+    <li><div class="checkbox"></div><span class="checklist-text">Визначити мету: корекція, розвантаження чи профілактика</span></li>
+  </ul>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-reflect1">
+  <div class="block-handle" draggable="true" data-block="reflect1">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="reflect1" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="reflect1" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="reflect1" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="reflect1" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="reflect1" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="reflect1" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="reflect1" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="reflect1" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-reflect1">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="reflect1">✕</button></div>
+  <textarea class="popover-textarea" id="ta-reflect1" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="reflect1">Видалити</button><button class="popover-btn-save" data-block="reflect1">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-mint">Питання</span>
+  <div class="question-prompt">Чому коригуючі ортози НЕ застосовуються при hallux valgus? Поясніть механізм:</div>
+  <div class="answer-lines"><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div></div>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-ustilky">
+  <div class="block-handle" draggable="true" data-block="ustilky">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="ustilky" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="ustilky" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="ustilky" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="ustilky" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="ustilky" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="ustilky" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="ustilky" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="ustilky" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-ustilky">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="ustilky">✕</button></div>
+  <textarea class="popover-textarea" id="ta-ustilky" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="ustilky">Видалити</button><button class="popover-btn-save" data-block="ustilky">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-mint">Питання</span>
+  <div class="question-prompt">Коли доцільно поєднувати ортози з устілками? Наведіть приклад клінічного випадку:</div>
+  <div class="answer-lines"><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div></div>
+</div>
+</div>
+  </div>
+  <div class="page-footer"><span>Ortobor Academy</span><span class="page-footer-center">Ортози в практиці подолога</span><span class="page-footer-right">3</span></div>
+</div>
+<div class="page-cut-line"><span class="page-cut-line-label">✂ Розрив сторінки — стор. 3 / 4</span></div>
+
+<!-- PAGE 4 — CLASSIFICATION -->
+<div class="page">
+  <div class="page-header"><img src="logo.png" alt="Ortobor Academy" class="page-header-logo"><span class="page-header-right">Ortobor.Academy | @ortoped_borovskoy_evgeniy</span></div>
+  <div class="page-content">
+    <div class="block-wrap commentable" id="bw-s3-header">
+  <div class="block-handle" draggable="true" data-block="s3-header">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="s3-header" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="s3-header" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="s3-header" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="s3-header" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="s3-header" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="s3-header" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="s3-header" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="s3-header" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-s3-header">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="s3-header">✕</button></div>
+  <textarea class="popover-textarea" id="ta-s3-header" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="s3-header">Видалити</button><button class="popover-btn-save" data-block="s3-header">Зберегти</button></div>
+</div>
+  <div class="section-header">
+  <h2>Розділ 3. Класифікація ортозів</h2>
+  <p>Індивідуальні vs фабричні: порівняння та вибір</p>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-classification">
+  <div class="block-handle" draggable="true" data-block="classification">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="classification" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="classification" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="classification" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="classification" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="classification" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="classification" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="classification" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="classification" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-classification">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="classification">✕</button></div>
+  <textarea class="popover-textarea" id="ta-classification" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="classification">Видалити</button><button class="popover-btn-save" data-block="classification">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-lime">Порівняння</span>
+  <div class="two-col" style="margin-top:4px;">
+    <div class="block-wrap commentable" id="bw-card-individual">
+  <div class="block-handle" draggable="true" data-block="card-individual">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  <button class="block-action-btn" data-action="move-right" data-block="card-individual" title="Перемістити праворуч">→</button><span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="move-up" data-block="card-individual" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="card-individual" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="card-individual" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="card-individual" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="card-individual" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="card-individual" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="card-individual" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="card-individual" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-card-individual">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="card-individual">✕</button></div>
+  <textarea class="popover-textarea" id="ta-card-individual" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="card-individual">Видалити</button><button class="popover-btn-save" data-block="card-individual">Зберегти</button></div>
+</div>
+  <div class="compare-card">
+  <div class="compare-card-header">Індивідуальні ортози</div>
+  <div class="compare-card-body">
+    <p>Виготовлені з урахуванням анатомічних особливостей стопи та клінічних потреб конкретної людини.</p>
+    <p class="pro">«+» Анатомічна точність — максимально точне розвантаження чи корекція</p>
+    <p class="con">«−» «Людський фактор» — можливі помилки при виготовленні</p>
+  </div>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-card-factory">
+  <div class="block-handle" draggable="true" data-block="card-factory">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  <button class="block-action-btn" data-action="move-left" data-block="card-factory" title="Перемістити ліворуч">←</button><span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="move-up" data-block="card-factory" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="card-factory" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="card-factory" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="card-factory" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="card-factory" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="card-factory" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="card-factory" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="card-factory" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-card-factory">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="card-factory">✕</button></div>
+  <textarea class="popover-textarea" id="ta-card-factory" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="card-factory">Видалити</button><button class="popover-btn-save" data-block="card-factory">Зберегти</button></div>
+</div>
+  <div class="compare-card">
+  <div class="compare-card-header">Неіндивідуальні (фабричні)</div>
+  <div class="compare-card-body">
+    <p>Виготовлені стандартизовано за формою та розміром, без урахування анатомічних особливостей стоп.</p>
+    <p class="pro">«+» Доступність</p>
+    <p class="con">«−» Не забезпечують анатомічний контакт для розвантаження чи корекції</p>
+  </div>
+</div>
+</div>
+  </div>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-compare-table">
+  <div class="block-handle" draggable="true" data-block="compare-table">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="compare-table" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="compare-table" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="compare-table" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="compare-table" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="compare-table" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="compare-table" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="compare-table" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="compare-table" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-compare-table">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="compare-table">✕</button></div>
+  <textarea class="popover-textarea" id="ta-compare-table" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="compare-table">Видалити</button><button class="popover-btn-save" data-block="compare-table">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-lime">Таблиця</span>
+  <div class="question-prompt" style="margin-bottom:4px;">Заповніть таблицю порівняння:</div>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Критерій</th><th>Індивідуальні</th><th>Фабричні</th></tr></thead>
+      <tbody>
+        <tr><td>Анатомічна точність</td><td></td><td></td></tr>
+        <tr><td>Вартість</td><td></td><td></td></tr>
+        <tr><td>Доступність</td><td></td><td></td></tr>
+        <tr><td>Ризик помилки</td><td></td><td></td></tr>
+        <tr><td>Ефективність корекції</td><td></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-class-reflect">
+  <div class="block-handle" draggable="true" data-block="class-reflect">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="class-reflect" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="class-reflect" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="class-reflect" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="class-reflect" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="class-reflect" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="class-reflect" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="class-reflect" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="class-reflect" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-class-reflect">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="class-reflect">✕</button></div>
+  <textarea class="popover-textarea" id="ta-class-reflect" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="class-reflect">Видалити</button><button class="popover-btn-save" data-block="class-reflect">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-mint">Питання</span>
+  <div class="question-prompt">У яких клінічних ситуаціях ви б обрали індивідуальний ортоз, а у яких — фабричний? Обґрунтуйте:</div>
+  <div class="answer-lines"><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div></div>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-sketch1">
+  <div class="block-handle" draggable="true" data-block="sketch1">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="sketch1" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="sketch1" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="sketch1" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="sketch1" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="sketch1" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="sketch1" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="sketch1" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="sketch1" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-sketch1">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="sketch1">✕</button></div>
+  <textarea class="popover-textarea" id="ta-sketch1" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="sketch1">Видалити</button><button class="popover-btn-save" data-block="sketch1">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-lime">Схема</span>
+  <div class="question-prompt" style="margin-bottom:4px;">Намалюйте схему класифікації ортозів (за типом, матеріалом, функцією):</div>
+  <div class="sketch-box" style="min-height:90px;"><span class="sketch-label">Місце для вашої схеми</span></div>
+</div>
+</div>
+  </div>
+  <div class="page-footer"><span>Ortobor Academy</span><span class="page-footer-center">Ортози в практиці подолога</span><span class="page-footer-right">4</span></div>
+</div>
+<div class="page-cut-line"><span class="page-cut-line-label">✂ Розрив сторінки — стор. 4 / 5</span></div>
+
+<!-- PAGE 5 — ERRORS: DIAGNOSTIC -->
+<div class="page">
+  <div class="page-header"><img src="logo.png" alt="Ortobor Academy" class="page-header-logo"><span class="page-header-right">Ortobor.Academy | @ortoped_borovskoy_evgeniy</span></div>
+  <div class="page-content">
+    <div class="block-wrap commentable" id="bw-s4-header">
+  <div class="block-handle" draggable="true" data-block="s4-header">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="s4-header" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="s4-header" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="s4-header" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="s4-header" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="s4-header" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="s4-header" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="s4-header" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="s4-header" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-s4-header">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="s4-header">✕</button></div>
+  <textarea class="popover-textarea" id="ta-s4-header" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="s4-header">Видалити</button><button class="popover-btn-save" data-block="s4-header">Зберегти</button></div>
+</div>
+  <div class="section-header">
+  <h2>Розділ 4. Помилки при застосуванні</h2>
+  <p>Діагностичні помилки та їх наслідки</p>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-diag-chain">
+  <div class="block-handle" draggable="true" data-block="diag-chain">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="diag-chain" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="diag-chain" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="diag-chain" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="diag-chain" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="diag-chain" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="diag-chain" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="diag-chain" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="diag-chain" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-diag-chain">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="diag-chain">✕</button></div>
+  <textarea class="popover-textarea" id="ta-diag-chain" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="diag-chain">Видалити</button><button class="popover-btn-save" data-block="diag-chain">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-lime">Ланцюжок наслідків</span>
+  <div class="question-prompt" style="margin-bottom:5px;">Неправильно визначені показання → наслідки (заповніть порожні блоки):</div>
+  <div class="chain">
+    <div class="chain-item-filled" style="background:#c0392b;">Неправильні показання до ортозів</div>
+    <div class="chain-arrow">↓</div>
+    <div style="display:flex;gap:8px;width:100%;">
+      <div class="block-wrap commentable" id="bw-diag-chain-c1" style="flex:1;min-width:0;">
+  <div class="block-handle" draggable="true" data-block="diag-chain-c1">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  <button class="block-action-btn" data-action="move-right" data-block="diag-chain-c1" title="Перемістити праворуч">→</button><span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="move-up" data-block="diag-chain-c1" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="diag-chain-c1" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="diag-chain-c1" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="diag-chain-c1" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="diag-chain-c1" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="diag-chain-c1" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="diag-chain-c1" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="diag-chain-c1" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-diag-chain-c1">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="diag-chain-c1">✕</button></div>
+  <textarea class="popover-textarea" id="ta-diag-chain-c1" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="diag-chain-c1">Видалити</button><button class="popover-btn-save" data-block="diag-chain-c1">Зберегти</button></div>
+</div>
+  <div class="chain-item-empty" style="flex:1;min-width:0;">Наслідок 1</div>
+</div>
+      <div class="block-wrap commentable" id="bw-diag-chain-c2" style="flex:1;min-width:0;">
+  <div class="block-handle" draggable="true" data-block="diag-chain-c2">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  <button class="block-action-btn" data-action="move-left" data-block="diag-chain-c2" title="Перемістити ліворуч">←</button><button class="block-action-btn" data-action="move-right" data-block="diag-chain-c2" title="Перемістити праворуч">→</button><span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="move-up" data-block="diag-chain-c2" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="diag-chain-c2" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="diag-chain-c2" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="diag-chain-c2" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="diag-chain-c2" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="diag-chain-c2" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="diag-chain-c2" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="diag-chain-c2" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-diag-chain-c2">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="diag-chain-c2">✕</button></div>
+  <textarea class="popover-textarea" id="ta-diag-chain-c2" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="diag-chain-c2">Видалити</button><button class="popover-btn-save" data-block="diag-chain-c2">Зберегти</button></div>
+</div>
+  <div class="chain-item-empty" style="flex:1;min-width:0;">Наслідок 2</div>
+</div>
+      <div class="block-wrap commentable" id="bw-diag-chain-c3" style="flex:1;min-width:0;">
+  <div class="block-handle" draggable="true" data-block="diag-chain-c3">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  <button class="block-action-btn" data-action="move-left" data-block="diag-chain-c3" title="Перемістити ліворуч">←</button><span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="move-up" data-block="diag-chain-c3" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="diag-chain-c3" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="diag-chain-c3" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="diag-chain-c3" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="diag-chain-c3" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="diag-chain-c3" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="diag-chain-c3" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="diag-chain-c3" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-diag-chain-c3">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="diag-chain-c3">✕</button></div>
+  <textarea class="popover-textarea" id="ta-diag-chain-c3" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="diag-chain-c3">Видалити</button><button class="popover-btn-save" data-block="diag-chain-c3">Зберегти</button></div>
+</div>
+  <div class="chain-item-empty" style="flex:1;min-width:0;">Наслідок 3</div>
+</div>
+    </div>
+  </div>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-wrong-indications">
+  <div class="block-handle" draggable="true" data-block="wrong-indications">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="wrong-indications" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="wrong-indications" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="wrong-indications" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="wrong-indications" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="wrong-indications" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="wrong-indications" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="wrong-indications" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="wrong-indications" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-wrong-indications">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="wrong-indications">✕</button></div>
+  <textarea class="popover-textarea" id="ta-wrong-indications" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="wrong-indications">Видалити</button><button class="popover-btn-save" data-block="wrong-indications">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-lime">Чек-ліст</span>
+  <div class="question-prompt" style="margin-bottom:5px;">Позначте ситуації, коли коригуючі ортози НЕ застосовуються:</div>
+  <ul class="checklist">
+    <li><div class="checkbox"></div><span class="checklist-text">Для корекції hallux valgus або деформації Тейлора</span></li>
+    <li><div class="checkbox"></div><span class="checklist-text">При ригідних деформаціях пальців</span></li>
+    <li><div class="checkbox"></div><span class="checklist-text">При артрозі, тендінозі, лігаментозі (без врахування)</span></li>
+  </ul>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-contraindications">
+  <div class="block-handle" draggable="true" data-block="contraindications">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="contraindications" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="contraindications" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="contraindications" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="contraindications" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="contraindications" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="contraindications" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="contraindications" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="contraindications" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-contraindications">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="contraindications">✕</button></div>
+  <textarea class="popover-textarea" id="ta-contraindications" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="contraindications">Видалити</button><button class="popover-btn-save" data-block="contraindications">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-lime">Таблиця</span>
+  <div class="question-prompt" style="margin-bottom:4px;">Супутні патології та ризики при застосуванні ортозів:</div>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Супутня патологія</th><th>Можливе ускладнення</th></tr></thead>
+      <tbody>
+        <tr><td>Цукровий діабет</td><td>Трофічні виразки</td></tr>
+        <tr><td>Порушення згортання крові</td><td>Синці, гематоми</td></tr>
+        <tr><td>Системні захворювання (стероїдна терапія)</td><td>Гематоми, рани</td></tr>
+        <tr><td>Локальні запальні / алергічні процеси</td><td>Прогресування запалення</td></tr>
+        <tr><td>Хронічна венозна недостатність</td><td>Ускладнення при кільцевих ортозах</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-diag-reflect">
+  <div class="block-handle" draggable="true" data-block="diag-reflect">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="diag-reflect" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="diag-reflect" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="diag-reflect" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="diag-reflect" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="diag-reflect" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="diag-reflect" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="diag-reflect" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="diag-reflect" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-diag-reflect">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="diag-reflect">✕</button></div>
+  <textarea class="popover-textarea" id="ta-diag-reflect" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="diag-reflect">Видалити</button><button class="popover-btn-save" data-block="diag-reflect">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-mint">Питання</span>
+  <div class="question-prompt">Як ви перевірятимете наявність протипоказань перед призначенням ортозу? Опишіть алгоритм:</div>
+  <div class="answer-lines"><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div></div>
+</div>
+</div>
+  </div>
+  <div class="page-footer"><span>Ortobor Academy</span><span class="page-footer-center">Ортози в практиці подолога</span><span class="page-footer-right">5</span></div>
+</div>
+<div class="page-cut-line"><span class="page-cut-line-label">✂ Розрив сторінки — стор. 5 / 6</span></div>
+
+<!-- PAGE 6 — TECHNICAL ERRORS + CONCLUSION -->
+<div class="page">
+  <div class="page-header"><img src="logo.png" alt="Ortobor Academy" class="page-header-logo"><span class="page-header-right">Ortobor.Academy | @ortoped_borovskoy_evgeniy</span></div>
+  <div class="page-content">
+    <div class="block-wrap commentable" id="bw-s5-header">
+  <div class="block-handle" draggable="true" data-block="s5-header">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="s5-header" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="s5-header" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="s5-header" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="s5-header" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="s5-header" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="s5-header" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="s5-header" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="s5-header" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-s5-header">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="s5-header">✕</button></div>
+  <textarea class="popover-textarea" id="ta-s5-header" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="s5-header">Видалити</button><button class="popover-btn-save" data-block="s5-header">Зберегти</button></div>
+</div>
+  <div class="section-header">
+  <h2>Розділ 5. Технічні помилки та підсумок</h2>
+  <p>Помилки виготовлення, використання та фінальна рефлексія</p>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-tech-errors">
+  <div class="block-handle" draggable="true" data-block="tech-errors">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="tech-errors" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="tech-errors" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="tech-errors" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="tech-errors" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="tech-errors" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="tech-errors" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="tech-errors" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="tech-errors" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-tech-errors">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="tech-errors">✕</button></div>
+  <textarea class="popover-textarea" id="ta-tech-errors" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="tech-errors">Видалити</button><button class="popover-btn-save" data-block="tech-errors">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-lime">Таблиця</span>
+  <div class="question-prompt" style="margin-bottom:4px;">Типи помилок при застосуванні ортозів — заповніть колонку «Як уникнути»:</div>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th style="width:28%">Тип помилки</th><th style="width:36%">Опис</th><th style="width:36%">Як уникнути</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Діагностичні</strong></td><td>Неправильно визначені показання, ігнорування протипоказань</td><td></td></tr>
+        <tr><td><strong>Технічні</strong></td><td>Неправильно підібрана жорсткість, розмір та форма ортозу</td><td></td></tr>
+        <tr><td><strong>Використання</strong></td><td>Вузьке, незафіксоване або неправильного розміру взуття</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-usage-errors">
+  <div class="block-handle" draggable="true" data-block="usage-errors">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="usage-errors" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="usage-errors" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="usage-errors" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="usage-errors" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="usage-errors" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="usage-errors" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="usage-errors" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="usage-errors" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-usage-errors">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="usage-errors">✕</button></div>
+  <textarea class="popover-textarea" id="ta-usage-errors" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="usage-errors">Видалити</button><button class="popover-btn-save" data-block="usage-errors">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-lime">Чек-ліст</span>
+  <div class="question-prompt" style="margin-bottom:5px;">Вимоги до взуття при використанні ортозів:</div>
+  <ul class="checklist">
+    <li><div class="checkbox"></div><span class="checklist-text">Достатня ширина взуття (не вузьке)</span></li>
+    <li><div class="checkbox"></div><span class="checklist-text">Надійна фіксація взуття на стопі</span></li>
+    <li><div class="checkbox"></div><span class="checklist-text">Правильний розмір взуття</span></li>
+    <li><div class="checkbox"></div><span class="checklist-text">Відповідна глибина взуття для розміщення ортозу</span></li>
+  </ul>
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-conclusion">
+  <div class="block-handle" draggable="true" data-block="conclusion">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="conclusion" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="conclusion" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="conclusion" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="conclusion" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="conclusion" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="conclusion" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="conclusion" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="conclusion" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-conclusion">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="conclusion">✕</button></div>
+  <textarea class="popover-textarea" id="ta-conclusion" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="conclusion">Видалити</button><button class="popover-btn-save" data-block="conclusion">Зберегти</button></div>
+</div>
+  <div class="highlight-box success">
+  🔑 Ортози — <strong>універсальний ключ</strong> для вирішення багатьох подологічних проблем. Правильне застосування дозволить досягти результату лікування, мінімізувати ризики ускладнень та профілактувати рецидиви.
+</div>
+</div>
+    <div class="block-wrap commentable" id="bw-final-reflect">
+  <div class="block-handle" draggable="true" data-block="final-reflect">
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+  <div class="block-handle-dot"></div><div class="block-handle-dot"></div>
+</div>
+  <div class="block-actions">
+  
+  <button class="block-action-btn" data-action="move-up" data-block="final-reflect" title="Перемістити вгору">↑</button>
+  <button class="block-action-btn" data-action="move-down" data-block="final-reflect" title="Перемістити вниз">↓</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="insert-break-before" data-block="final-reflect" title="Вставити розрив сторінки вище">⬆✂</button>
+  <button class="block-action-btn" data-action="insert-break-after" data-block="final-reflect" title="Вставити розрив сторінки нижче">⬇✂</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn" data-action="extend" data-block="final-reflect" title="Розширити область запису">⤢</button>
+  <button class="block-action-btn" data-action="shrink" data-block="final-reflect" title="Зменшити область запису">⤡</button>
+  <span class="block-action-sep"></span>
+  <button class="block-action-btn danger" data-action="remove" data-block="final-reflect" title="Видалити блок">🗑</button>
+</div>
+  <button class="comment-btn" data-block="final-reflect" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-final-reflect">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="final-reflect">✕</button></div>
+  <textarea class="popover-textarea" id="ta-final-reflect" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="final-reflect">Видалити</button><button class="popover-btn-save" data-block="final-reflect">Зберегти</button></div>
+</div>
+  <div>
+  <span class="pill pill-mint">Питання</span>
+  <div class="question-prompt">Що для вас стало найважливішим відкриттям цієї лекції? Як ви зміните свою практику?</div>
+  <div class="answer-lines"><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div></div>
+</div>
+</div>
+  </div>
+  <div class="page-footer"><span>Ortobor Academy</span><span class="page-footer-center">Ортози в практиці подолога</span><span class="page-footer-right">6</span></div>
+</div>
+<div class="page-cut-line"><span class="page-cut-line-label">✂ Розрив сторінки — стор. 6 / 7</span></div>
+
+<!-- PAGE 7 — FULL-PAGE NOTES -->
+<div class="page commentable" id="bw-notes-page">
+  <button class="comment-btn" data-block="notes-page" title="Коментар">💬</button>
+  <div class="comment-popover" id="popover-notes-page">
+  <div class="popover-header">Коментар <button class="popover-close" data-block="notes-page">✕</button></div>
+  <textarea class="popover-textarea" id="ta-notes-page" placeholder="Введіть коментар…"></textarea>
+  <div class="popover-footer"><button class="popover-btn-clear" data-block="notes-page">Видалити</button><button class="popover-btn-save" data-block="notes-page">Зберегти</button></div>
+</div>
+  <div class="page-header"><img src="logo.png" alt="Ortobor Academy" class="page-header-logo"><span class="page-header-right">Ortobor.Academy | @ortoped_borovskoy_evgeniy</span></div>
+  <div class="notes-page-content">
+    <div class="notes-full">
+      <h3>Мої нотатки</h3>
+      <div class="notes-hint">Мої спостереження, запитання та ідеї з лекції</div>
+      <div class="notes-lines"><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div><div class="answer-line"></div></div>
+    </div>
+  </div>
+  <div class="page-footer"><span>Ortobor Academy</span><span class="page-footer-center">Ортози в практиці подолога</span><span class="page-footer-right">7</span></div>
+</div>
+
+</div><!-- /scale-frame -->
+</div><!-- /scale-root -->
+
+<script>
+'use strict';
+
+// ── Block name map ─────────────────────────────────────────────
+const BLOCK_NAMES = {
+  'cover':              'Обкладинка',
+  's1-header':          'Розділ 1 — Заголовок',
+  'key1':               'Ключова ідея: роль ортозу',
+  'term-q':             'Питання: термінологія',
+  'term-left':          'Термінологія: ОртОз (ліва колонка)',
+  'term-right':         'Термінологія: ОртЕз (права колонка)',
+  'biomech':            'Ключова ідея: біомеханіка',
+  'chain1':             'Ланцюжок наслідків: позитивний приклад',
+  'chain-left':         'Ланцюжок: причина (ліва колонка)',
+  'chain-right':        'Ланцюжок: результат (права колонка)',
+  'neg-example':        'Питання: негативний приклад',
+  's2-header':          'Розділ 2 — Заголовок',
+  'indications':        'Чек-ліст: показання',
+  'important1':         'Важливо: хто призначає',
+  'pre-prescription':   'Чек-ліст: перед призначенням',
+  'reflect1':           'Питання: чому не при hallux valgus',
+  'ustilky':            'Питання: ортози + устілки',
+  's3-header':          'Розділ 3 — Заголовок',
+  'classification':     'Порівняння: типи ортозів',
+  'card-individual':    'Картка: Індивідуальні ортози',
+  'card-factory':       'Картка: Фабричні ортози',
+  'compare-table':      'Таблиця: порівняння типів',
+  'class-reflect':      'Питання: вибір типу ортозу',
+  'sketch1':            'Схема: класифікація',
+  's4-header':          'Розділ 4 — Заголовок',
+  'diag-chain':         'Ланцюжок: діагностичні помилки',
+  'diag-chain-c1':      'Ланцюжок: наслідок 1',
+  'diag-chain-c2':      'Ланцюжок: наслідок 2',
+  'diag-chain-c3':      'Ланцюжок: наслідок 3',
+  'wrong-indications':  'Чек-ліст: неправильні показання',
+  'contraindications':  'Таблиця: протипоказання',
+  'diag-reflect':       'Питання: алгоритм перевірки',
+  's5-header':          'Розділ 5 — Заголовок',
+  'tech-errors':        'Таблиця: типи помилок',
+  'usage-errors':       'Чек-ліст: вимоги до взуття',
+  'conclusion':         'Висновок',
+  'final-reflect':      'Питання: підсумкова рефлексія',
+  'notes-page':         'Сторінка нотаток',
+};
+
+// ── Comment state ──────────────────────────────────────────────
+const comments = {};
+
+function getPopover(id) { return document.getElementById('popover-' + id); }
+function getTextarea(id) { return document.getElementById('ta-' + id); }
+function getBtn(id)      { return document.querySelector('.comment-btn[data-block="' + id + '"]'); }
+
+function openPopover(id) {
+  document.querySelectorAll('.comment-popover.open').forEach(p => p.classList.remove('open'));
+  const pop = getPopover(id);
+  const ta  = getTextarea(id);
+  if (!pop || !ta) return;
+  ta.value = comments[id] || '';
+  pop.classList.add('open');
+  setTimeout(() => ta.focus(), 60);
+}
+
+function closePopover(id) {
+  const pop = getPopover(id);
+  if (pop) pop.classList.remove('open');
+}
+
+function saveComment(id) {
+  const ta  = getTextarea(id);
+  const btn = getBtn(id);
+  if (!ta) return;
+  const text   = ta.value.trim();
+  const wasNew = !comments[id];
+  if (text) {
+    comments[id] = text;
+    if (btn) btn.classList.add('has-comment');
+  } else {
+    delete comments[id];
+    if (btn) btn.classList.remove('has-comment');
+  }
+  closePopover(id);
+  updateCount(text && wasNew);
+}
+
+function clearComment(id) {
+  const ta  = getTextarea(id);
+  const btn = getBtn(id);
+  if (ta) ta.value = '';
+  delete comments[id];
+  if (btn) btn.classList.remove('has-comment');
+  closePopover(id);
+  updateCount(false);
+}
+
+function updateCount(bump) {
+  const badge = document.getElementById('globalCount');
+  badge.textContent = Object.keys(comments).length;
+  if (bump) {
+    badge.classList.remove('bump');
+    void badge.offsetWidth;
+    badge.classList.add('bump');
+    setTimeout(() => badge.classList.remove('bump'), 350);
+  }
+}
+
+// ── Comment event delegation ───────────────────────────────────
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.comment-btn');
+  if (btn) {
+    e.stopPropagation();
+    const id  = btn.dataset.block;
+    const pop = getPopover(id);
+    if (pop && pop.classList.contains('open')) closePopover(id);
+    else openPopover(id);
+    return;
+  }
+  const closeBtn = e.target.closest('.popover-close');
+  if (closeBtn) { e.stopPropagation(); closePopover(closeBtn.dataset.block); return; }
+  const saveBtn  = e.target.closest('.popover-btn-save');
+  if (saveBtn)  { e.stopPropagation(); saveComment(saveBtn.dataset.block); return; }
+  const clearBtn = e.target.closest('.popover-btn-clear');
+  if (clearBtn) { e.stopPropagation(); clearComment(clearBtn.dataset.block); return; }
+  // Click outside → auto-save
+  const openPop = document.querySelector('.comment-popover.open');
+  if (openPop && !e.target.closest('.comment-popover')) {
+    saveComment(openPop.id.replace('popover-', ''));
+  }
+});
+
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+    e.preventDefault();
+    performUndo();
+    return;
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    const openPop = document.querySelector('.comment-popover.open');
+    if (openPop) saveComment(openPop.id.replace('popover-', ''));
+  }
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.comment-popover.open').forEach(p => p.classList.remove('open'));
+  }
+});
+
+// ── Copy all comments ──────────────────────────────────────────
+document.getElementById('btnCopy').addEventListener('click', function() {
+  const feedback = document.getElementById('copyFeedback');
+  const keys = Object.keys(comments);
+  if (keys.length === 0) {
+    feedback.textContent = '⚠ Немає коментарів';
+    feedback.classList.add('visible');
+    setTimeout(() => { feedback.classList.remove('visible'); feedback.textContent = ''; }, 2200);
+    return;
+  }
+  let md = '# Коментарі до зошита\n\n';
+  md += '**Зошит:** Ортози в практиці подолога — Ortobor Academy  \n';
+  md += '**Дата:** ' + new Date().toLocaleDateString('uk-UA') + '  \n';
+  md += '**Кількість коментарів:** ' + keys.length + '\n\n---\n\n';
+  keys.forEach((id, i) => {
+    const name = BLOCK_NAMES[id] || id;
+    md += '## [' + (i + 1) + '] ' + name + '\n\n';
+    md += '`' + id + '`\n\n';
+    md += comments[id] + '\n\n---\n\n';
+  });
+  const copy = (text) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); return Promise.resolve();
+  };
+  copy(md).then(() => {
+    feedback.textContent = '✓ Скопійовано!';
+    feedback.classList.add('visible');
+    setTimeout(() => { feedback.classList.remove('visible'); feedback.textContent = ''; }, 2500);
+  }).catch(() => {
+    feedback.textContent = '✗ Помилка';
+    feedback.classList.add('visible');
+    setTimeout(() => { feedback.classList.remove('visible'); feedback.textContent = ''; }, 2500);
+  });
+});
+
+// ── Block editing system ───────────────────────────────────────
+let dragSrc = null;
+
+document.addEventListener('dragstart', function(e) {
+  const handle = e.target.closest('.block-handle');
+  if (!handle) return;
+  dragSrc = handle.closest('.block-wrap');
+  if (!dragSrc) return;
+  dragSrc.classList.add('dragging-source');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', dragSrc.id);
+});
+
+document.addEventListener('dragend', function() {
+  if (dragSrc) dragSrc.classList.remove('dragging-source');
+  document.querySelectorAll('.drag-over-top, .drag-over-bottom').forEach(el => {
+    el.classList.remove('drag-over-top', 'drag-over-bottom');
+  });
+  dragSrc = null;
+});
+
+document.addEventListener('dragover', function(e) {
+  const target = e.target.closest('.block-wrap');
+  if (!target || target === dragSrc) return;
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.drag-over-top, .drag-over-bottom').forEach(el => {
+    el.classList.remove('drag-over-top', 'drag-over-bottom');
+  });
+  const rect = target.getBoundingClientRect();
+  const mid  = rect.top + rect.height / 2;
+  if (e.clientY < mid) target.classList.add('drag-over-top');
+  else target.classList.add('drag-over-bottom');
+});
+
+document.addEventListener('drop', function(e) {
+  const target = e.target.closest('.block-wrap');
+  if (!target || !dragSrc || target === dragSrc) return;
+  e.preventDefault();
+  const parent = target.parentNode;
+  pushUndo({ type: 'move', element: dragSrc, parent: dragSrc.parentNode, nextSibling: dragSrc.nextElementSibling });
+  if (target.classList.contains('drag-over-top')) {
+    parent.insertBefore(dragSrc, target);
+  } else {
+    parent.insertBefore(dragSrc, target.nextSibling);
+  }
+  target.classList.remove('drag-over-top', 'drag-over-bottom');
+});
+
+// ── Undo system ───────────────────────────────────────────────
+const undoStack = [];
+const MAX_UNDO = 50;
+
+function pushUndo(entry) {
+  undoStack.push(entry);
+  if (undoStack.length > MAX_UNDO) undoStack.shift();
+  refreshUndoBtn();
+}
+
+function refreshUndoBtn() {
+  const btn = document.getElementById('btnUndo');
+  if (!btn) return;
+  if (undoStack.length > 0) {
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+  } else {
+    btn.style.opacity = '0.4';
+    btn.style.pointerEvents = 'none';
+  }
+}
+
+function performUndo() {
+  if (undoStack.length === 0) return;
+  const entry = undoStack.pop();
+  switch (entry.type) {
+    case 'move':
+      entry.parent.insertBefore(entry.element, entry.nextSibling);
+      break;
+    case 'remove':
+      entry.parent.insertBefore(entry.element, entry.nextSibling);
+      break;
+    case 'insert-break':
+      if (entry.element.parentNode) entry.element.remove();
+      break;
+    case 'extend-lines': {
+      const container = entry.container;
+      for (let i = 0; i < entry.count; i++) {
+        const last = container.lastElementChild;
+        if (last) last.remove();
+      }
+      break;
+    }
+    case 'extend-sketch':
+      entry.element.style.minHeight = entry.prevHeight;
+      break;
+    case 'shrink-lines': {
+      const ct = entry.container;
+      for (let i = 0; i < entry.count; i++) {
+        const line = document.createElement('div');
+        line.className = 'answer-line';
+        ct.appendChild(line);
+      }
+      break;
+    }
+    case 'extend-row':
+      if (entry.row.parentNode) entry.row.remove();
+      break;
+    case 'shrink-row':
+      entry.tbody.appendChild(entry.row);
+      break;
+  }
+  refreshUndoBtn();
+}
+
+document.getElementById('btnUndo').addEventListener('click', performUndo);
+
+// Block action buttons
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.block-action-btn');
+  if (!btn) return;
+  e.stopPropagation();
+  const action  = btn.dataset.action;
+  const blockId = btn.dataset.block;
+  const wrap    = document.getElementById('bw-' + blockId);
+  if (!wrap) return;
+  const parent  = wrap.parentNode;
+
+  if (action === 'move-up') {
+    const prev = wrap.previousElementSibling;
+    if (prev && prev.classList.contains('block-wrap')) {
+      pushUndo({ type: 'move', element: wrap, parent: parent, nextSibling: wrap.nextElementSibling });
+      parent.insertBefore(wrap, prev);
+    }
+  }
+  else if (action === 'move-down') {
+    const next = wrap.nextElementSibling;
+    if (next && next.classList.contains('block-wrap')) {
+      pushUndo({ type: 'move', element: wrap, parent: parent, nextSibling: wrap.nextElementSibling });
+      parent.insertBefore(next, wrap);
+    }
+  }
+  else if (action === 'move-left') {
+    const prev = wrap.previousElementSibling;
+    if (prev) {
+      pushUndo({ type: 'move', element: wrap, parent: parent, nextSibling: wrap.nextElementSibling });
+      parent.insertBefore(wrap, prev);
+    }
+  }
+  else if (action === 'move-right') {
+    const next = wrap.nextElementSibling;
+    if (next) {
+      pushUndo({ type: 'move', element: wrap, parent: parent, nextSibling: wrap.nextElementSibling });
+      parent.insertBefore(next, wrap);
+    }
+  }
+  else if (action === 'insert-break-before') {
+    const pb = createPageBreak();
+    pushUndo({ type: 'insert-break', element: pb });
+    parent.insertBefore(pb, wrap);
+  }
+  else if (action === 'insert-break-after') {
+    const pb = createPageBreak();
+    pushUndo({ type: 'insert-break', element: pb });
+    parent.insertBefore(pb, wrap.nextSibling);
+  }
+  else if (action === 'extend' || action === 'shrink') {
+    const grow = action === 'extend';
+    // Answer lines
+    wrap.querySelectorAll('.answer-lines').forEach(function(al) {
+      if (grow) {
+        pushUndo({ type: 'extend-lines', container: al, count: 3 });
+        for (var i = 0; i < 3; i++) { var l = document.createElement('div'); l.className = 'answer-line'; al.appendChild(l); }
+      } else if (al.children.length > 1) {
+        var n = Math.min(3, al.children.length - 1);
+        pushUndo({ type: 'shrink-lines', container: al, count: n });
+        for (var j = 0; j < n; j++) al.lastElementChild.remove();
+      }
+    });
+    // Sketch boxes
+    wrap.querySelectorAll('.sketch-box').forEach(function(sb) {
+      var cur = parseInt(sb.style.minHeight) || 90;
+      pushUndo({ type: 'extend-sketch', element: sb, prevHeight: sb.style.minHeight || '' });
+      sb.style.minHeight = Math.max(50, cur + (grow ? 40 : -40)) + 'px';
+    });
+    // Notes lines
+    wrap.querySelectorAll('.notes-lines').forEach(function(nl) {
+      if (grow) {
+        pushUndo({ type: 'extend-lines', container: nl, count: 5 });
+        for (var i = 0; i < 5; i++) { var l = document.createElement('div'); l.className = 'answer-line'; nl.appendChild(l); }
+      } else if (nl.children.length > 1) {
+        var n = Math.min(5, nl.children.length - 1);
+        pushUndo({ type: 'shrink-lines', container: nl, count: n });
+        for (var j = 0; j < n; j++) nl.lastElementChild.remove();
+      }
+    });
+    // Chain empty blocks
+    wrap.querySelectorAll('.chain-item-empty').forEach(function(ce) {
+      var cur = parseInt(ce.style.minHeight) || 28;
+      pushUndo({ type: 'extend-sketch', element: ce, prevHeight: ce.style.minHeight || '' });
+      ce.style.minHeight = Math.max(28, cur + (grow ? 20 : -20)) + 'px';
+    });
+    // Table rows
+    var tbody = wrap.querySelector('tbody');
+    if (tbody) {
+      if (grow) {
+        var cols = tbody.querySelector('tr') ? tbody.querySelector('tr').cells.length : 2;
+        var tr = document.createElement('tr');
+        for (var c = 0; c < cols; c++) { var td = document.createElement('td'); td.innerHTML = '&nbsp;'; tr.appendChild(td); }
+        pushUndo({ type: 'extend-row', tbody: tbody, row: tr });
+        tbody.appendChild(tr);
+      } else if (tbody.rows.length > 1) {
+        var last = tbody.lastElementChild;
+        pushUndo({ type: 'shrink-row', tbody: tbody, row: last, nextSibling: null });
+        last.remove();
+      }
+    }
+  }
+  else if (action === 'remove') {
+    if (confirm('Видалити цей блок?')) {
+      pushUndo({ type: 'remove', element: wrap, parent: parent, nextSibling: wrap.nextElementSibling });
+      wrap.remove();
+    }
+  }
+});
+
+function createPageBreak() {
+  const pb = document.createElement('div');
+  pb.className = 'inserted-page-break';
+  pb.innerHTML = '<span class="inserted-page-break-label">✂ Розрив сторінки (вставлено)</span><button class="pb-remove" title="Видалити розрив">✕</button>';
+  pb.querySelector('.pb-remove').addEventListener('click', () => pb.remove());
+  return pb;
+}
+
+// ── Responsive scaling ─────────────────────────────────────────
+function applyScale() {
+  const frame   = document.getElementById('scaleFrame');
+  const root    = document.getElementById('scale-root');
+  const PAGE_W  = 794;
+  const PADDING = 20;
+  const available = window.innerWidth - PADDING * 2;
+  const scale = Math.min(1, available / PAGE_W);
+  frame.style.transform      = 'scale(' + scale + ')';
+  frame.style.transformOrigin = 'top center';
+  // Adjust container height so scaled content doesn't leave a gap
+  const naturalH = frame.scrollHeight;
+  frame.style.marginBottom = (naturalH * scale - naturalH) + 'px';
+}
+applyScale();
+window.addEventListener('resize', applyScale);
+
+// ── PDF Export ────────────────────────────────────────────────
+document.getElementById('btnPDF').addEventListener('click', function() {
+  const frame = document.getElementById('scaleFrame');
+  const prevTransform = frame.style.transform;
+  const prevMargin = frame.style.marginBottom;
+  frame.style.transform = 'none';
+  frame.style.marginBottom = '0';
+
+  const style = document.createElement('style');
+  style.id = 'print-override';
+  // -webkit-print-color-adjust forces background colors in Chrome/Safari PDF export
+  style.textContent = `
+    @media print {
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+      body { background: white !important; }
+      .preview-toolbar { display: none !important; }
+      #scale-root { padding: 0 !important; }
+      .scale-frame {
+        transform: none !important;
+        width: 210mm !important;
+        align-items: stretch !important;
+        margin: 0 !important;
+      }
+      .page-cut-line, .inserted-page-break { display: none !important; }
+      .block-handle, .block-actions, .comment-btn, .comment-popover { display: none !important; }
+      .page, .cover {
+        box-shadow: none !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        overflow: hidden !important;
+      }
+      /* Last page — prevent extra blank page */
+      .page:last-of-type, .cover:last-of-type {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+      @page { size: A4 portrait; margin: 0; }
+    }
+  `;
+  document.head.appendChild(style);
+  window.print();
+  setTimeout(() => {
+    frame.style.transform = prevTransform;
+    frame.style.marginBottom = prevMargin;
+    const s = document.getElementById('print-override');
+    if (s) s.remove();
+  }, 2000);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>Ortobor — Animated Background</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --gradient-bg-start: #011818;
+  --gradient-bg-end:   #013838;
+  --c1: 0, 140, 137;       /* #008C89 — бренд teal */
+  --c2: 50, 138, 138;      /* #328A8A — teal */
+  --c3: 198, 238, 104;     /* #C6EE68 — lime accent */
+  --c4: 90, 172, 172;      /* #5AACAC — teal light */
+  --c5: 1, 73, 72;         /* #014948 — ink */
+  --cp: 198, 238, 104;     /* pointer — lime */
+  --size: 75%;
+  --blend: hard-light;
+}
+
+html, body { height: 100%; width: 100%; overflow: hidden; }
+
+/* ── BASE CONTAINER ── */
+.bg-wrap {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--gradient-bg-start), var(--gradient-bg-end));
+}
+
+/* ── CONTENT ABOVE ── */
+.content {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  pointer-events: none;
+}
+.content-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+  font-size: clamp(36px, 5vw, 72px);
+  font-weight: 800;
+  letter-spacing: -.8px;
+  text-align: center;
+  line-height: 1.05;
+  background: linear-gradient(to bottom, rgba(255,255,255,.95), rgba(255,255,255,.35));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding: 0 40px;
+}
+.content-title em {
+  background: linear-gradient(to bottom, #C6EE68, rgba(198,238,104,.5));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-style: normal;
+}
+.content-sub {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+  color: rgba(255,255,255,.45);
+  font-size: clamp(14px, 1.5vw, 18px);
+  text-align: center;
+  max-width: 480px;
+  line-height: 1.65;
+  pointer-events: none;
+}
+.content-btn {
+  pointer-events: all;
+  background: #008C89;
+  border: none;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  padding: 15px 32px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 6px 28px rgba(0,140,137,.35), inset 0 1px 0 rgba(255,255,255,.2);
+  transition: all .16s;
+  letter-spacing: .1px;
+}
+.content-btn:hover {
+  background: #00A09D;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(0,140,137,.45), inset 0 1px 0 rgba(255,255,255,.22);
+}
+
+/* ── GRADIENTS LAYER ── */
+.gradients {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: url(#goo) blur(40px);
+  -webkit-filter: url(#goo) blur(40px);
+}
+/* Safari fallback */
+@supports (-webkit-touch-callout: none) {
+  .gradients { filter: blur(60px); }
+}
+
+/* ── ORBS ── */
+.orb {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  top: calc(50% - var(--size)/2);
+  left: calc(50% - var(--size)/2);
+  mix-blend-mode: var(--blend);
+  border-radius: 50%;
+  opacity: 1;
+}
+.o1 {
+  background: radial-gradient(circle at center, rgba(var(--c1),1) 0, rgba(var(--c1),0) 50%) no-repeat;
+  transform-origin: center center;
+  animation: moveVertical 28s ease infinite;
+}
+.o2 {
+  background: radial-gradient(circle at center, rgba(var(--c2),.85) 0, rgba(var(--c2),0) 50%) no-repeat;
+  transform-origin: calc(50% - 380px);
+  animation: moveInCircle 18s reverse infinite;
+}
+.o3 {
+  background: radial-gradient(circle at center, rgba(var(--c3),.75) 0, rgba(var(--c3),0) 50%) no-repeat;
+  transform-origin: calc(50% + 380px);
+  animation: moveInCircle 36s linear infinite;
+  opacity: .8;
+}
+.o4 {
+  background: radial-gradient(circle at center, rgba(var(--c4),.8) 0, rgba(var(--c4),0) 50%) no-repeat;
+  transform-origin: calc(50% - 180px);
+  animation: moveHorizontal 36s ease infinite;
+  opacity: .7;
+}
+.o5 {
+  background: radial-gradient(circle at center, rgba(var(--c5),.85) 0, rgba(var(--c5),0) 50%) no-repeat;
+  transform-origin: calc(50% - 700px) calc(50% + 700px);
+  animation: moveInCircle 18s ease infinite;
+}
+.o-pointer {
+  position: absolute;
+  background: radial-gradient(circle at center, rgba(var(--cp),.7) 0, rgba(var(--cp),0) 50%) no-repeat;
+  mix-blend-mode: var(--blend);
+  width: 100%;
+  height: 100%;
+  top: -50%;
+  left: -50%;
+  opacity: .65;
+  transition: transform .05s linear;
+  will-change: transform;
+}
+
+/* ── KEYFRAMES ── */
+@keyframes moveVertical {
+  0%   { transform: translateY(-45%); }
+  50%  { transform: translateY(45%); }
+  100% { transform: translateY(-45%); }
+}
+@keyframes moveInCircle {
+  0%   { transform: rotate(0deg); }
+  50%  { transform: rotate(180deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes moveHorizontal {
+  0%   { transform: translateX(-45%) translateY(-8%); }
+  50%  { transform: translateX(45%) translateY(8%); }
+  100% { transform: translateX(-45%) translateY(-8%); }
+}
+
+/* ── VARIANT SWITCHER ── */
+.switcher {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  gap: 8px;
+  background: rgba(1,20,20,.55);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 40px;
+  padding: 6px 8px;
+  pointer-events: all;
+}
+.sw-btn {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  color: rgba(255,255,255,.5);
+  background: transparent;
+  transition: all .15s;
+}
+.sw-btn.active, .sw-btn:hover {
+  background: rgba(0,140,137,.7);
+  color: #fff;
+}
+</style>
+</head>
+<body>
+
+<!-- SVG GOO FILTER -->
+<svg style="display:none">
+  <defs>
+    <filter id="goo">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+      <feColorMatrix in="blur" mode="matrix"
+        values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"
+        result="goo"/>
+      <feBlend in="SourceGraphic" in2="goo"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- BG WRAP -->
+<div class="bg-wrap" id="bgWrap">
+
+  <!-- ANIMATED ORBS -->
+  <div class="gradients" id="gradients">
+    <div class="orb o1"></div>
+    <div class="orb o2"></div>
+    <div class="orb o3"></div>
+    <div class="orb o4"></div>
+    <div class="orb o5"></div>
+    <div class="o-pointer" id="pointer"></div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+    <div class="content-title">
+      Академія<br>ортопедічної освіти<br>для <em>подологів</em>
+    </div>
+    <div class="content-sub">
+      Авторські курси Євгенія Боровського — ортопеда-травматолога з 25-річним клінічним досвідом
+    </div>
+    <button class="content-btn">Записатися на курс →</button>
+  </div>
+</div>
+
+<!-- VARIANT SWITCHER -->
+<div class="switcher">
+  <button class="sw-btn active" onclick="setVariant('dark')">Темний</button>
+  <button class="sw-btn" onclick="setVariant('mid')">Середній</button>
+  <button class="sw-btn" onclick="setVariant('deep')">Глибокий</button>
+  <button class="sw-btn" onclick="setVariant('light')">М'ятний</button>
+</div>
+
+<script>
+// ── MOUSE TRACKING ──
+const pointer = document.getElementById('pointer');
+let curX = 0, curY = 0, tgX = 0, tgY = 0;
+
+document.getElementById('bgWrap').addEventListener('mousemove', e => {
+  tgX = e.clientX;
+  tgY = e.clientY;
+});
+
+function animatePointer() {
+  curX += (tgX - curX) / 22;
+  curY += (tgY - curY) / 22;
+  pointer.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
+  requestAnimationFrame(animatePointer);
+}
+animatePointer();
+
+// ── VARIANTS ──
+const variants = {
+  dark: {
+    bgStart: '#011818', bgEnd: '#013838',
+    c1: '0,140,137', c2: '50,138,138', c3: '198,238,104',
+    c4: '90,172,172', c5: '1,73,72', cp: '198,238,104',
+    blend: 'hard-light'
+  },
+  mid: {
+    bgStart: '#013838', bgEnd: '#026060',
+    c1: '0,140,137', c2: '198,238,104', c3: '90,172,172',
+    c4: '50,138,138', c5: '0,100,98', cp: '198,238,104',
+    blend: 'soft-light'
+  },
+  deep: {
+    bgStart: '#010808', bgEnd: '#012020',
+    c1: '0,140,137', c2: '50,138,138', c3: '198,238,104',
+    c4: '1,73,72', c5: '0,80,78', cp: '198,238,104',
+    blend: 'hard-light'
+  },
+  light: {
+    bgStart: '#EDF9F5', bgEnd: '#DCF1EC',
+    c1: '0,140,137', c2: '50,138,138', c3: '1,73,72',
+    c4: '198,238,104', c5: '90,172,172', cp: '1,73,72',
+    blend: 'multiply'
+  }
+};
+
+function setVariant(name) {
+  const v = variants[name];
+  const r = document.documentElement;
+  r.style.setProperty('--gradient-bg-start', v.bgStart);
+  r.style.setProperty('--gradient-bg-end', v.bgEnd);
+  r.style.setProperty('--c1', v.c1);
+  r.style.setProperty('--c2', v.c2);
+  r.style.setProperty('--c3', v.c3);
+  r.style.setProperty('--c4', v.c4);
+  r.style.setProperty('--c5', v.c5);
+  r.style.setProperty('--cp', v.cp);
+  r.style.setProperty('--blend', v.blend);
+
+  // update title color for light variant
+  const title = document.querySelector('.content-title');
+  const sub = document.querySelector('.content-sub');
+  if (name === 'light') {
+    title.style.background = 'linear-gradient(to bottom, #010E0E, rgba(1,14,14,.5))';
+    title.style.webkitBackgroundClip = 'text';
+    title.style.backgroundClip = 'text';
+    sub.style.color = 'rgba(1,73,72,.55)';
+  } else {
+    title.style.background = 'linear-gradient(to bottom, rgba(255,255,255,.95), rgba(255,255,255,.35))';
+    title.style.webkitBackgroundClip = 'text';
+    title.style.backgroundClip = 'text';
+    sub.style.color = 'rgba(255,255,255,.45)';
+  }
+
+  // Update wrap bg
+  document.getElementById('bgWrap').style.background =
+    `linear-gradient(135deg, ${v.bgStart}, ${v.bgEnd})`;
+
+  document.querySelectorAll('.sw-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`[onclick="setVariant('${name}')"]`).classList.add('active');
+}
+</script>
+
+</body>
+</html>

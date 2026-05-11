@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200">
+<title>Ortobor — Blocks & Glassmorphism Guide</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#014948;--teal:#328A8A;--teal-lt:#5AACAC;--lime:#C6EE68;--btn:#008C89;
+  --bg:#F4FAF8;--white:#fff;--s2:#F0F8F5;
+  --t1:#010E0E;--t2:#1F4A4A;--t3:#5A8888;--t4:#9ABEBE;
+  --b0:rgba(1,73,72,.07);--b1:rgba(1,73,72,.12);
+}
+html,body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;background:#011E1E;color:#fff;font-size:15px;line-height:1.6;margin:0}
+
+/* ─ DOC HEADER ─ */
+.doc-hdr{padding:56px 52px 48px;text-align:center;background:
+  radial-gradient(ellipse at 25% 0%,rgba(0,140,137,.24) 0%,transparent 55%),
+  radial-gradient(ellipse at 75% 100%,rgba(1,73,72,.22) 0%,transparent 50%),
+  radial-gradient(ellipse at 50% 50%,rgba(198,238,104,.04) 0%,transparent 60%),
+  #011E1E}
+.doc-hdr-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(198,238,104,.12);border:1px solid rgba(198,238,104,.22);color:#C6EE68;font-size:10.5px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:.8px;text-transform:uppercase;margin-bottom:18px}
+.doc-hdr h1{font-size:52px;font-weight:800;letter-spacing:-.7px;line-height:1.05;margin-bottom:12px}
+.doc-hdr h1 em{background:linear-gradient(to bottom,#C6EE68,rgba(198,238,104,.45));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal}
+.doc-hdr p{color:rgba(255,255,255,.42);font-size:16px;max-width:560px;margin:0 auto;line-height:1.7}
+
+/* ─ SECTION HEADING ─ */
+.section-heading{max-width:1100px;margin:0 auto;padding:52px 80px 8px;display:flex;align-items:center;gap:14px}
+.sh-line{flex:1;height:1px;background:rgba(255,255,255,.06)}
+.sh-text{color:rgba(255,255,255,.2);font-size:10.5px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;white-space:nowrap}
+
+/* ─ SHARED ─ */
+h3{color:rgba(255,255,255,.8);font-size:15.5px;font-weight:700;margin:24px 0 14px}
+p{color:rgba(255,255,255,.4);font-size:13px;line-height:1.7;margin-bottom:14px}
+.code-block{background:#000d0d;border:1px solid rgba(50,138,138,.18);color:#5AACAC;font-family:monospace;font-size:12.5px;padding:20px 22px;border-radius:12px;margin-top:12px;line-height:1.7;overflow-x:auto;white-space:pre}
+.code-block .c{color:rgba(255,255,255,.22)}.code-block .v{color:#C6EE68}.code-block .k{color:rgba(255,255,255,.78)}
+
+/* ─ BUTTONS ─ */
+.btn-lime{background:#008C89;border:2px solid rgba(255,255,255,.55);color:#fff;font-family:inherit;font-size:14px;font-weight:800;padding:14px 28px;border-radius:12px;cursor:pointer;box-shadow:0 0 0 1px rgba(0,140,137,.8),0 8px 28px rgba(0,140,137,.35);transition:all .16s}
+.btn-lime:hover{background:#00A09D;border-color:rgba(255,255,255,.8);transform:translateY(-2px)}
+.btn-ghost{background:rgba(255,255,255,.07);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:1px solid rgba(255,255,255,.18);border-top-color:rgba(255,255,255,.28);color:rgba(255,255,255,.9);font-family:inherit;font-size:14px;font-weight:600;padding:13px 26px;border-radius:12px;cursor:pointer;transition:all .16s}
+.btn-ghost:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28)}
+.btn-ink{background:var(--ink);border:none;color:#fff;font-family:inherit;font-size:14px;font-weight:700;padding:12px 22px;border-radius:11px;cursor:pointer;box-shadow:0 4px 16px rgba(1,73,72,.28);transition:all .14s}
+.btn-ink:hover{background:#012828;transform:translateY(-1px)}
+.btn-outline-lt{background:rgba(255,255,255,.75);backdrop-filter:blur(14px);border:1.5px solid rgba(1,73,72,.2);color:var(--ink);font-family:inherit;font-size:14px;font-weight:600;padding:12px 22px;border-radius:11px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.9);transition:all .14s}
+.btn-cta-lime{background:rgba(1,73,72,.88);backdrop-filter:blur(20px);border:1px solid rgba(1,73,72,.65);color:#fff;font-family:inherit;font-size:14px;font-weight:800;padding:14px 28px;border-radius:12px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 6px 24px rgba(1,73,72,.3);transition:all .16s}
+
+/* NEW BUTTON TYPES */
+.btn-icon-text{display:inline-flex;align-items:center;gap:9px;background:#008C89;border:2px solid rgba(255,255,255,.55);color:#fff;font-family:inherit;font-size:14px;font-weight:800;padding:13px 24px;border-radius:12px;cursor:pointer;box-shadow:0 0 0 1px rgba(0,140,137,.8),0 8px 28px rgba(0,140,137,.32);transition:all .16s}
+.btn-icon-text:hover{background:#00A09D;transform:translateY(-2px)}
+.btn-icon-circle{width:48px;height:48px;border-radius:50%;background:#008C89;border:2px solid rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 0 1px rgba(0,140,137,.8),0 6px 20px rgba(0,140,137,.3);transition:all .16s;flex-shrink:0}
+.btn-icon-circle:hover{background:#00A09D;transform:translateY(-2px) scale(1.04)}
+.btn-icon-sq{width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,.08);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.18);border-top-color:rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .14s;flex-shrink:0}
+.btn-icon-sq:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3)}
+.btn-fab{width:56px;height:56px;border-radius:16px;background:#008C89;border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 0 1px rgba(0,140,137,.7),0 10px 32px rgba(0,140,137,.38);transition:all .16s;flex-shrink:0}
+.btn-fab:hover{transform:translateY(-3px) scale(1.04)}
+.btn-loading{display:inline-flex;align-items:center;gap:10px;background:#008C89;border:2px solid rgba(255,255,255,.35);color:rgba(255,255,255,.7);font-family:inherit;font-size:14px;font-weight:800;padding:14px 28px;border-radius:12px;cursor:not-allowed;box-shadow:0 0 0 1px rgba(0,140,137,.5)}
+.btn-disabled{background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.1);color:rgba(255,255,255,.26);font-family:inherit;font-size:14px;font-weight:800;padding:14px 28px;border-radius:12px;cursor:not-allowed}
+.btn-ghost-icon{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.18);border-top-color:rgba(255,255,255,.26);color:rgba(255,255,255,.88);font-family:inherit;font-size:14px;font-weight:600;padding:13px 22px;border-radius:12px;cursor:pointer;transition:all .15s}
+.btn-social{width:42px;height:42px;border-radius:10px;background:rgba(255,255,255,.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .13s;flex-shrink:0}
+.btn-social:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);transform:translateY(-1px)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.25);border-top-color:rgba(255,255,255,.85);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+
+/* ─ HERO DARK ─ */
+.block-dark-hero{
+  position:relative;overflow:hidden;padding:96px 80px;
+  background:
+    radial-gradient(ellipse at 15% 20%,rgba(0,140,137,.32) 0%,transparent 50%),
+    radial-gradient(ellipse at 85% 75%,rgba(1,73,72,.28) 0%,transparent 45%),
+    radial-gradient(ellipse at 50% 100%,rgba(198,238,104,.05) 0%,transparent 55%),
+    #011E1E;
+}
+.block-dark-hero::before{content:"";position:absolute;top:-120px;right:-80px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,140,137,.14) 0%,transparent 65%);border-radius:50%;pointer-events:none}
+.block-dark-hero::after{content:"";position:absolute;bottom:-60px;left:10%;width:400px;height:400px;background:radial-gradient(circle,rgba(198,238,104,.05) 0%,transparent 60%);border-radius:50%;pointer-events:none}
+.bdh-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 420px;gap:60px;align-items:center;position:relative;z-index:2}
+.bdh-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(198,238,104,.11);border:1px solid rgba(198,238,104,.2);color:#C6EE68;font-size:10.5px;font-weight:700;padding:5px 14px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:20px}
+.bdh-h1{font-size:58px;font-weight:800;line-height:1.03;letter-spacing:-.8px;color:#fff;margin-bottom:18px}
+.bdh-h1 em{background:linear-gradient(to bottom,#C6EE68,rgba(198,238,104,.45));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal}
+.bdh-sub{color:rgba(255,255,255,.5);font-size:16.5px;line-height:1.7;max-width:500px;margin-bottom:32px}
+.bdh-stats{display:flex;align-items:center;padding-top:28px;border-top:1px solid rgba(255,255,255,.08);margin-top:32px}
+.bdh-stat{padding:0 24px;border-right:1px solid rgba(255,255,255,.08)}
+.bdh-stat:first-child{padding-left:0}
+.bdh-stat:last-child{border-right:none}
+.bdh-sn{font-size:26px;font-weight:800;color:#fff;line-height:1}
+.bdh-sn em{color:#C6EE68;font-style:normal}
+.bdh-sl{color:rgba(255,255,255,.35);font-size:11px;margin-top:4px}
+
+/* hero glass card */
+.hero-glass-card{background:rgba(255,255,255,.06);backdrop-filter:blur(32px) saturate(160%);-webkit-backdrop-filter:blur(32px) saturate(160%);border:1px solid rgba(255,255,255,.1);border-top-color:rgba(255,255,255,.18);box-shadow:0 24px 64px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.1);border-radius:24px;padding:28px}
+.hgc-img{width:100%;aspect-ratio:16/9;background:radial-gradient(ellipse at 22% 28%,rgba(50,138,138,.35) 0%,transparent 55%),#1A4848;border-radius:14px;margin-bottom:18px;overflow:hidden;position:relative}
+.hgc-img::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-130deg,transparent 0,transparent 18px,rgba(255,255,255,.015) 18px,rgba(255,255,255,.015) 19px)}
+.hgc-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;background:rgba(255,255,255,.14);backdrop-filter:blur(16px);border:1.5px solid rgba(255,255,255,.28);border-top-color:rgba(255,255,255,.45);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.hgc-title{color:#fff;font-size:15px;font-weight:700;margin-bottom:5px}
+.hgc-meta{color:rgba(255,255,255,.4);font-size:12.5px;margin-bottom:14px}
+.hgc-prog{height:3px;background:rgba(255,255,255,.12);border-radius:3px;margin-bottom:5px;overflow:hidden}
+.hgc-prog-fill{height:3px;background:#C6EE68;border-radius:3px;width:42%}
+.hgc-prog-lbl{display:flex;justify-content:space-between;color:rgba(255,255,255,.3);font-size:11px}
+
+/* ─ LIGHT BLOCK ─ */
+.block-light{
+  position:relative;overflow:hidden;padding:96px 80px;
+  background:
+    radial-gradient(ellipse at 5% 10%,rgba(0,140,137,.12) 0%,transparent 50%),
+    radial-gradient(ellipse at 95% 90%,rgba(1,73,72,.1) 0%,transparent 50%),
+    radial-gradient(ellipse at 55% 55%,rgba(198,238,238,.25) 0%,transparent 55%),
+    #F8FDFB;
+}
+.block-light::before{content:"";position:absolute;top:-200px;right:-100px;width:700px;height:700px;background:radial-gradient(circle,rgba(0,140,137,.07) 0%,transparent 60%);border-radius:50%;pointer-events:none}
+.bl-inner{max-width:1100px;margin:0 auto;position:relative;z-index:2}
+.bl-tag{color:var(--teal);font-size:10.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+.bl-h2{color:var(--t1);font-size:48px;font-weight:800;letter-spacing:-.5px;line-height:1.07;margin-bottom:14px}
+.bl-h2 em{color:var(--ink);font-style:normal}
+.bl-sub{color:var(--t3);font-size:16px;line-height:1.7;max-width:560px;margin-bottom:52px}
+.feat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feat-glass{background:rgba(255,255,255,.7);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,.9);border-bottom-color:rgba(1,73,72,.06);box-shadow:0 4px 24px rgba(1,73,72,.07),inset 0 1px 0 rgba(255,255,255,1);border-radius:20px;padding:26px 24px;transition:all .18s;cursor:pointer}
+.feat-glass:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(1,73,72,.1),inset 0 1px 0 rgba(255,255,255,1)}
+.fg-ic{width:46px;height:46px;border-radius:13px;background:rgba(1,73,72,.06);border:1px solid rgba(1,73,72,.09);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.fg-title{color:var(--t1);font-size:16px;font-weight:700;margin-bottom:7px}
+.fg-desc{color:var(--t3);font-size:13.5px;line-height:1.65}
+
+/* ─ DEEP DARK BLOCK ─ */
+.block-deep{
+  position:relative;overflow:hidden;padding:96px 80px;
+  background:
+    radial-gradient(ellipse at 20% 30%,rgba(0,140,137,.26) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 65%,rgba(1,73,72,.22) 0%,transparent 45%),
+    radial-gradient(ellipse at 50% 0%,rgba(50,138,138,.14) 0%,transparent 40%),
+    #011A1A;
+}
+.bd-inner{max-width:1100px;margin:0 auto;position:relative;z-index:2}
+.stats-glass-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.05);border-radius:20px;overflow:hidden;margin-top:48px}
+.sgc{background:rgba(255,255,255,.06);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:36px 28px;text-align:center;transition:background .15s;cursor:pointer}
+.sgc:hover{background:rgba(255,255,255,.09)}
+.sgc-n{font-size:50px;font-weight:800;color:#fff;line-height:1;letter-spacing:-1px}
+.sgc-n em{color:#C6EE68;font-style:normal}
+.sgc-l{color:rgba(255,255,255,.38);font-size:12.5px;margin-top:8px}
+.testi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+.tgc{background:rgba(255,255,255,.06);backdrop-filter:blur(28px) saturate(140%);-webkit-backdrop-filter:blur(28px) saturate(140%);border:1px solid rgba(255,255,255,.09);border-top-color:rgba(255,255,255,.14);box-shadow:0 8px 32px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.07);border-radius:20px;padding:26px 26px 24px}
+.tgc-stars{display:flex;gap:2px;margin-bottom:13px}
+.tgc-star{color:#C6EE68;font-size:13px}
+.tgc-text{color:rgba(255,255,255,.72);font-size:14px;line-height:1.7;font-style:italic;margin-bottom:18px}
+.tgc-author{display:flex;align-items:center;gap:10px}
+.tgc-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#328A8A,#014948);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;color:#fff;flex-shrink:0}
+.tgc-name{color:#fff;font-size:13px;font-weight:700}
+.tgc-role{color:rgba(255,255,255,.33);font-size:11.5px}
+
+/* ─ MINT BLOCK ─ */
+.block-mint{
+  position:relative;overflow:hidden;padding:96px 80px;
+  background:
+    radial-gradient(ellipse at 70% 20%,rgba(0,140,137,.14) 0%,transparent 50%),
+    radial-gradient(ellipse at 10% 80%,rgba(1,73,72,.08) 0%,transparent 50%),
+    radial-gradient(ellipse at 50% 50%,rgba(220,248,244,.6) 0%,transparent 60%),
+    #EDF9F5;
+}
+.bm-inner{max-width:1100px;margin:0 auto;position:relative;z-index:2}
+
+/* ─ CTA LIME BLOCK ─ */
+.block-cta{
+  position:relative;overflow:hidden;padding:96px 80px;
+  background:
+    radial-gradient(ellipse at 15% 50%,rgba(1,73,72,.12) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 30%,rgba(1,73,72,.08) 0%,transparent 50%),
+    #C6EE68;
+}
+.block-cta::before{content:"";position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(255,255,255,.2) 0%,transparent 60%);border-radius:50%;pointer-events:none}
+.bcta-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr auto;align-items:center;gap:48px;position:relative;z-index:2}
+.bcta-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(1,73,72,.1);border:1px solid rgba(1,73,72,.15);color:rgba(1,73,72,.8);font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.6px;text-transform:uppercase;margin-bottom:14px}
+.bcta-h2{color:var(--ink);font-size:44px;font-weight:800;letter-spacing:-.5px;line-height:1.07;margin-bottom:10px}
+.bcta-sub{color:rgba(1,73,72,.6);font-size:15.5px;line-height:1.7}
+
+/* ─ FOOTER BLOCK ─ */
+.block-footer{padding:72px 80px 48px;background:radial-gradient(ellipse at 10% 0%,rgba(0,140,137,.08) 0%,transparent 40%),#011010;border-top:1px solid rgba(255,255,255,.05)}
+.bf-inner{max-width:1100px;margin:0 auto}
+.bf-grid{display:grid;grid-template-columns:2.2fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.bf-logo img{height:30px;filter:brightness(0) invert(1);opacity:.85;display:block;margin-bottom:16px}
+.bf-tagline{color:rgba(255,255,255,.32);font-size:13.5px;line-height:1.65;max-width:240px;margin-bottom:20px}
+.bf-social-row{display:flex;gap:8px}
+.bf-col-title{color:rgba(255,255,255,.6);font-size:11.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:16px}
+.bf-link{color:rgba(255,255,255,.28);font-size:13.5px;margin-bottom:8px;cursor:pointer;transition:color .12s}
+.bf-link:hover{color:rgba(255,255,255,.65)}
+.bf-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:24px;display:flex;align-items:center;justify-content:space-between}
+.bf-copy{color:rgba(255,255,255,.2);font-size:12.5px}
+.bf-legal{display:flex;gap:22px}
+.bf-leg{color:rgba(255,255,255,.2);font-size:12.5px;cursor:pointer}
+
+/* ─ LIGHT ANIMATED BG ─ */
+.block-light-anim{
+  position:relative;overflow:hidden;padding:96px 80px;
+  background:
+    radial-gradient(ellipse at 8% 12%,rgba(0,140,137,.16) 0%,transparent 50%),
+    radial-gradient(ellipse at 92% 85%,rgba(50,138,138,.12) 0%,transparent 48%),
+    radial-gradient(ellipse at 50% 50%,rgba(198,238,238,.3) 0%,transparent 58%),
+    radial-gradient(ellipse at 30% 70%,rgba(1,73,72,.07) 0%,transparent 45%),
+    #F0FAF7;
+}
+.block-light-anim::before{content:"";position:absolute;top:-150px;right:-100px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(0,140,137,.09) 0%,transparent 60%);pointer-events:none}
+.bla-inner{max-width:1100px;margin:0 auto;position:relative;z-index:2;text-align:center}
+.bla-tag{color:#014948;font-size:10.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+.bla-h2{color:#011818;font-size:52px;font-weight:800;letter-spacing:-.6px;line-height:1.06;margin-bottom:14px}
+.bla-h2 em{color:#008C89;font-style:normal}
+.bla-sub{color:#1F4A4A;font-size:16px;line-height:1.7;max-width:520px;margin:0 auto 44px}
+
+/* ─ COURSE CARDS ─ */
+/* shared thumb */
+.ct1{background:radial-gradient(ellipse at 22% 28%,rgba(50,138,138,.30) 0%,transparent 55%),#C4EAE5}
+.ct2{background:radial-gradient(ellipse at 76% 24%,rgba(1,73,72,.22) 0%,transparent 55%),#BAE5DF}
+.ct3{background:radial-gradient(ellipse at 22% 76%,rgba(50,138,138,.25) 0%,transparent 50%),#BFE8E2}
+.c-thumb-pattern::before{content:"";position:absolute;inset:0;z-index:1;background:repeating-linear-gradient(-130deg,transparent 0,transparent 18px,rgba(255,255,255,.018) 18px,rgba(255,255,255,.018) 19px)}
+.c-ov{position:absolute;bottom:0;left:0;right:0;z-index:2;background:linear-gradient(to top,rgba(1,35,33,.62),transparent);padding:18px 16px 13px}
+.c-ov-e{color:rgba(255,255,255,.48);font-size:10.5px;margin-bottom:2px}
+.c-ov-n{color:rgba(255,255,255,.96);font-size:12.5px;font-weight:700;line-height:1.3}
+.c-tag{position:absolute;top:11px;left:11px;z-index:3;background:rgba(1,73,72,.88);color:#fff;font-size:9px;font-weight:800;padding:3px 10px;border-radius:4px}
+
+/* 3-col card */
+.card-3col{background:rgba(255,255,255,.78);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,.9);border-bottom-color:rgba(1,73,72,.06);box-shadow:0 4px 20px rgba(1,73,72,.07),inset 0 1px 0 rgba(255,255,255,1);border-radius:20px;overflow:hidden;cursor:pointer;transition:all .18s}
+.card-3col:hover{transform:translateY(-4px);box-shadow:0 18px 52px rgba(1,73,72,.12),inset 0 1px 0 rgba(255,255,255,1)}
+.c3-thumb{aspect-ratio:16/9;position:relative;overflow:hidden}
+.c-body{padding:18px 20px 22px}
+.c-title{color:#010E0E;font-size:15.5px;font-weight:800;line-height:1.3;margin-bottom:6px}
+.c-desc{color:#5A8888;font-size:13px;line-height:1.55;margin-bottom:11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.c-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.c-chip{background:rgba(1,73,72,.07);color:#328A8A;font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:20px}
+.c-foot{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid rgba(1,73,72,.07)}
+.c-from{color:#9ABEBE;font-size:10.5px}
+.c-price{color:#010E0E;font-size:20px;font-weight:800;line-height:1}
+.c-btn{background:#014948;color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 16px;border-radius:9px;border:none;cursor:pointer}
+
+/* 2-col card — thumb top, text bottom */
+.card-2col{background:rgba(255,255,255,.78);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,.9);border-bottom-color:rgba(1,73,72,.06);box-shadow:0 4px 20px rgba(1,73,72,.07),inset 0 1px 0 rgba(255,255,255,1);border-radius:22px;overflow:hidden;cursor:pointer;transition:all .18s}
+.card-2col:hover{transform:translateY(-4px);box-shadow:0 18px 52px rgba(1,73,72,.12),inset 0 1px 0 rgba(255,255,255,1)}
+.c2-thumb{aspect-ratio:16/9;position:relative;overflow:hidden}
+.c2-body{padding:20px 22px 24px}
+.c2-title{color:#010E0E;font-size:17px;font-weight:800;line-height:1.28;margin-bottom:7px}
+.c2-desc{color:#5A8888;font-size:13.5px;line-height:1.65;margin-bottom:13px}
+.c2-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.c2-foot{display:flex;align-items:center;justify-content:space-between;padding-top:13px;border-top:1px solid rgba(1,73,72,.07)}
+.c2-price-wrap{}
+.c2-from{color:#9ABEBE;font-size:11px}
+.c2-price{color:#010E0E;font-size:22px;font-weight:800;line-height:1}
+
+/* 1-col hero card */
+.card-1col{
+  background:linear-gradient(to bottom,#011818,#013838 30%,#015050 70%,#228888 100%);
+  border:1px solid rgba(255,255,255,.1);border-radius:24px;overflow:hidden;
+  display:grid;grid-template-columns:1fr 360px;
+  position:relative;cursor:pointer;transition:all .2s;
+}
+.card-1col:hover{box-shadow:0 20px 60px rgba(0,140,137,.22);transform:translateY(-2px)}
+.c1-body{padding:48px 52px;display:flex;flex-direction:column;position:relative;z-index:2}
+.c1-eyebrow{display:inline-flex;align-items:center;gap:6px;background:rgba(198,238,104,.12);border:1px solid rgba(198,238,104,.22);color:#C6EE68;font-size:10px;font-weight:700;padding:4px 13px;border-radius:20px;letter-spacing:.6px;text-transform:uppercase;margin-bottom:18px;align-self:flex-start}
+.c1-title{color:#fff;font-size:38px;font-weight:800;line-height:1.1;letter-spacing:-.4px;margin-bottom:10px}
+.c1-desc{color:rgba(255,255,255,.5);font-size:15px;line-height:1.7;margin-bottom:22px;flex:1}
+.c1-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.c1-chip{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.7);font-size:11.5px;font-weight:600;padding:4px 13px;border-radius:20px}
+.c1-foot{display:flex;align-items:center;gap:16px}
+.c1-price-from{color:rgba(255,255,255,.32);font-size:12px;margin-bottom:2px}
+.c1-price{color:#fff;font-size:28px;font-weight:800;line-height:1}
+.c1-photo{position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 30%,rgba(0,140,137,.4) 0%,transparent 65%),#014040;display:flex;align-items:center;justify-content:center}
+.c1-photo-hint{color:rgba(255,255,255,.15);font-size:12px;text-align:center;padding:20px;line-height:1.6}
+.card-1col::before{content:"";position:absolute;top:-60px;left:0;right:0;height:300px;background:radial-gradient(ellipse at 30% 0%,rgba(0,140,137,.12) 0%,transparent 55%);pointer-events:none}
+
+/* ─ GLASS GUIDE ─ */
+.glass-guide{padding:72px 80px;background:
+  radial-gradient(ellipse at 20% 10%,rgba(0,140,137,.14) 0%,transparent 48%),
+  #011E1E}
+.gg-inner{max-width:1100px;margin:0 auto}
+.gg-title{font-size:32px;font-weight:800;letter-spacing:-.4px;margin-bottom:8px;color:#fff}
+.gg-sub{color:rgba(255,255,255,.38);font-size:14.5px;margin-bottom:40px}
+.gg-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:40px}
+.glass-recipe{border-radius:20px;padding:28px;position:relative;overflow:hidden}
+.gr-1{background:linear-gradient(135deg,#013838,#026060);border:1px solid rgba(255,255,255,.08)}
+.gr-2{background:#F4FAF8;border:1px solid rgba(1,73,72,.1)}
+.gr-3{background:linear-gradient(135deg,#011010,#012828);border:1px solid rgba(255,255,255,.07)}
+.gr-4{background:#C6EE68;border:none}
+.gr-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;opacity:.55}
+.gr-1 .gr-label,.gr-3 .gr-label{color:#fff}.gr-2 .gr-label{color:#5A8888}.gr-4 .gr-label{color:rgba(1,73,72,.6)}
+.gr-demo{background:rgba(255,255,255,.09);backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.14);border-top-color:rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 4px 16px rgba(0,0,0,.15);border-radius:14px;padding:18px 20px;margin-bottom:12px}
+.gr-demo-lt{background:rgba(255,255,255,.72);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,.9);border-bottom-color:rgba(1,73,72,.06);box-shadow:inset 0 1px 0 rgba(255,255,255,1),0 4px 16px rgba(1,73,72,.07);border-radius:14px;padding:18px 20px;margin-bottom:12px}
+.gr-demo-lime{background:rgba(1,73,72,.85);backdrop-filter:blur(20px);border:1px solid rgba(1,73,72,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 4px 14px rgba(1,73,72,.25);border-radius:14px;padding:18px 20px;margin-bottom:12px}
+.gr-demo-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.gr-1 .gr-demo-title,.gr-3 .gr-demo-title{color:#fff}.gr-2 .gr-demo-title{color:#010E0E}.gr-4 .gr-demo-title{color:#014948}
+.gr-demo-text{font-size:12.5px;opacity:.55;line-height:1.55}
+.gr-1 .gr-demo-text,.gr-3 .gr-demo-text{color:#fff}.gr-2 .gr-demo-text{color:#1F4A4A}.gr-4 .gr-demo-text{color:#014948}
+
+/* ─ KEYFRAMES ─ */
+@keyframes moveV{0%,100%{transform:translateY(-45%)}50%{transform:translateY(45%)}}
+@keyframes moveC{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes moveH{0%,100%{transform:translateX(-45%) translateY(-8%)}50%{transform:translateX(45%) translateY(8%)}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="doc-hdr">
+  <div class="doc-hdr-badge"><svg width="6" height="6" viewBox="0 0 6 6"><circle cx="3" cy="3" r="3" fill="#C6EE68"/></svg>Затверджено</div>
+  <h1>Blocks &amp; <em>Glass</em> Guide</h1>
+  <p>Живі приклади всіх блоків сайту — aurora mesh градієнти, glassmorphism компоненти, кнопки всіх типів, формати карток.</p>
+</div>
+
+<!-- ── BLOCK 1: DARK HERO ── -->
+<div class="section-heading"><div class="sh-line"></div><div class="sh-text">Блок 1 · Темний Hero · Aurora mesh</div><div class="sh-line"></div></div>
+<div class="block-dark-hero">
+  <div class="bdh-inner">
+    <div>
+      <div class="bdh-tag"><span style="width:5px;height:5px;border-radius:50%;background:#C6EE68;display:inline-block"></span> Курс з куратором · 7 потік</div>
+      <div class="bdh-h1">Діагностика стопи<br>в кабінеті<br><em>подолога</em></div>
+      <div class="bdh-sub">Системний ортопедічний підхід для подологів. Від клінічного протоколу до складних патологій — від практикуючого лікаря.</div>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <button class="btn-lime">Записатися на курс →</button>
+        <button class="btn-ghost">Програма курсу</button>
+      </div>
+      <div class="bdh-stats">
+        <div class="bdh-stat"><div class="bdh-sn">1 500<em>+</em></div><div class="bdh-sl">випускників</div></div>
+        <div class="bdh-stat"><div class="bdh-sn">4.<em>9</em></div><div class="bdh-sl">рейтинг</div></div>
+        <div class="bdh-stat"><div class="bdh-sn">25<em>р.</em></div><div class="bdh-sl">досвід</div></div>
+        <div class="bdh-stat"><div class="bdh-sn">8</div><div class="bdh-sl">модулів</div></div>
+      </div>
+    </div>
+    <div class="hero-glass-card">
+      <div class="hgc-img"><div class="hgc-play"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5l10 5.5-10 5.5V2.5z" fill="white"/></svg></div></div>
+      <div class="hgc-title">Модуль 1 — Вступний урок</div>
+      <div class="hgc-meta">Євгеній Боровський · 24 хв</div>
+      <div class="hgc-prog"><div class="hgc-prog-fill"></div></div>
+      <div class="hgc-prog-lbl"><span>42%</span><span>3 / 8 модулів</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── BLOCK 2: LIGHT ── -->
+<div class="section-heading"><div class="sh-line"></div><div class="sh-text">Блок 2 · Світлий · Glass cards on white</div><div class="sh-line"></div></div>
+<div class="block-light">
+  <div class="bl-inner">
+    <div class="bl-tag">Для кого цей курс</div>
+    <div class="bl-h2">Для тих, хто хоче<br><em>розуміти причину</em></div>
+    <div class="bl-sub">Курс розроблений для подологів і майстрів педикюру, які прагнуть давати обґрунтовані ортопедічні рекомендації клієнтам.</div>
+    <div class="feat-row">
+      <div class="feat-glass"><div class="fg-ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#014948" stroke-width="1.4"/><path d="M10 6v4.5L12.5 13" stroke="#014948" stroke-width="1.4" stroke-linecap="round"/></svg></div><div class="fg-title">Подологи та майстри</div><div class="fg-desc">Розберетесь в ортопедічній природі патологій, які бачите щодня.</div></div>
+      <div class="feat-glass"><div class="fg-ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16V8l6-4 6 4v8M8 16v-5h4v5" stroke="#014948" stroke-width="1.4" stroke-linejoin="round"/></svg></div><div class="fg-title">Без медичної освіти</div><div class="fg-desc">Доступна мова, практичні приклади. Зрозуміло навіть якщо ви не лікар.</div></div>
+      <div class="feat-glass"><div class="fg-ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l1.5 4.5H16l-3.5 2.5 1.5 4.5L10 11l-4 2.5 1.5-4.5L4 6.5h4.5z" stroke="#014948" stroke-width="1.3" stroke-linejoin="round"/></svg></div><div class="fg-title">Подологи за кордоном</div><div class="fg-desc">Системні знання, які відповідають міжнародним стандартам роботи.</div></div>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:36px;align-items:center">
+      <button class="btn-ink">Записатися на курс →</button>
+      <button class="btn-outline-lt">Дивитися програму</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── BLOCK 3: DEEP DARK ── -->
+<div class="section-heading"><div class="sh-line"></div><div class="sh-text">Блок 3 · Темний · Glass stats + відгуки</div><div class="sh-line"></div></div>
+<div class="block-deep">
+  <div class="bd-inner">
+    <div style="text-align:center;margin-bottom:4px">
+      <div style="color:#C6EE68;font-size:10.5px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:12px">Результати академії</div>
+      <div style="font-size:46px;font-weight:800;letter-spacing:-.5px;color:#fff;line-height:1.05">Цифри говорять самі</div>
+    </div>
+    <div class="stats-glass-row">
+      <div class="sgc"><div class="sgc-n">1 500<em>+</em></div><div class="sgc-l">Випускників курсів</div></div>
+      <div class="sgc"><div class="sgc-n">25</div><div class="sgc-l">Років досвіду</div></div>
+      <div class="sgc"><div class="sgc-n">4.<em>9</em></div><div class="sgc-l">Середня оцінка</div></div>
+      <div class="sgc"><div class="sgc-n">8</div><div class="sgc-l">Авторських курсів</div></div>
+    </div>
+    <div style="text-align:center;margin:72px 0 4px">
+      <div style="color:rgba(255,255,255,.28);font-size:10.5px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:12px">Відгуки</div>
+      <div style="font-size:42px;font-weight:800;letter-spacing:-.4px;color:#fff">Що кажуть випускники</div>
+    </div>
+    <div class="testi-row">
+      <div class="tgc"><div class="tgc-stars"><span class="tgc-star">&#9733;</span><span class="tgc-star">&#9733;</span><span class="tgc-star">&#9733;</span><span class="tgc-star">&#9733;</span><span class="tgc-star">&#9733;</span></div><div class="tgc-text">"Після курсу я нарешті розумію причину, а не просто прибираю мозолі. Це змінило підхід до роботи повністю."</div><div class="tgc-author"><div class="tgc-av">ОК</div><div><div class="tgc-name">Оксана Коваль</div><div class="tgc-role">Подолог · Київ</div></div></div></div>
+      <div class="tgc"><div class="tgc-stars"><span class="tgc-star">&#9733;</span><span class="tgc-star">&#9733;</span><span class="tgc-star">&#9733;</span><span class="tgc-star">&#9733;</span><span class="tgc-star">&#9733;</span></div><div class="tgc-text">"Нарешті пояснення від ортопеда, а не від колеги. Структурно, клінічно, практично — рекомендую всім."</div><div class="tgc-author"><div class="tgc-av" style="background:linear-gradient(135deg,#5AACAC,#014948)">МС</div><div><div class="tgc-name">Марина Сич</div><div class="tgc-role">Майстер педикюру · Харків</div></div></div></div>
+      <div class="tgc"><div class="tgc-stars"><span class="tgc-star">&#9733;</span><span class="tgc-star">&#9733;</span><span class="tgc-star">&#9733;</span><span class="tgc-star">&#9733;</span><span class="tgc-star">&#9733;</span></div><div class="tgc-text">"Тепер можу пояснити клієнту чому ніготь вростає знову. Розстрочка дуже допомогла прийняти рішення."</div><div class="tgc-author"><div class="tgc-av" style="background:linear-gradient(135deg,#228888,#013838)">ЛВ</div><div><div class="tgc-name">Людмила Власенко</div><div class="tgc-role">Подолог · Польща</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── BLOCK 4: SOFT MINT + COURSE CARDS 3-COL ── -->
+<div class="section-heading"><div class="sh-line"></div><div class="sh-text">Блок 4 · М'ятний · Картки курсів 3 колонки</div><div class="sh-line"></div></div>
+<div class="block-mint">
+  <div class="bm-inner">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:44px">
+      <div>
+        <div style="color:#328A8A;font-size:10.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:11px">Каталог курсів</div>
+        <div style="color:#010E0E;font-size:48px;font-weight:800;letter-spacing:-.5px;line-height:1.06">Усі курси академії</div>
+      </div>
+      <button class="btn-ink" style="margin-bottom:8px">Переглянути всі →</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <div class="card-3col"><div class="c3-thumb ct1 c-thumb-pattern"><div class="c-tag">Курс з куратором</div><div class="c-ov"><div class="c-ov-e">Євгеній Боровський</div><div class="c-ov-n">Діагностика стопи в кабінеті подолога</div></div></div><div class="c-body"><div class="c-title">Діагностика стопи в кабінеті подолога</div><div class="c-desc">Системний підхід від практикуючого ортопеда-травматолога з 25-річним досвідом.</div><div class="c-chips"><span class="c-chip">8 модулів</span><span class="c-chip">6 міс.</span><span class="c-chip">Ефіри</span></div><div class="c-foot"><div><div class="c-from">від</div><div class="c-price">3 200 &#8372;</div></div><button class="c-btn">Детальніше</button></div></div></div>
+      <div class="card-3col"><div class="c3-thumb ct2 c-thumb-pattern"><div class="c-tag">Курс з куратором</div><div class="c-ov"><div class="c-ov-e">Юлія Діденко</div><div class="c-ov-n">Особистий бренд подолога</div></div></div><div class="c-body"><div class="c-title">Особистий бренд подолога</div><div class="c-desc">Побудуйте впізнаваний бренд і залучайте клієнтів через соцмережі.</div><div class="c-chips"><span class="c-chip">6 модулів</span><span class="c-chip">3 міс.</span></div><div class="c-foot"><div><div class="c-from">від</div><div class="c-price">2 400 &#8372;</div></div><button class="c-btn">Детальніше</button></div></div></div>
+      <div class="card-3col"><div class="c3-thumb ct3 c-thumb-pattern"><div class="c-tag" style="background:rgba(50,138,138,.85)">Незабаром</div><div class="c-ov"><div class="c-ov-e">Євгеній Боровський</div><div class="c-ov-n">Анатомія стопи та біомеханіка</div></div></div><div class="c-body"><div class="c-title">Анатомія стопи та біомеханіка</div><div class="c-desc">Поглиблений курс з будови стопи та механіки ходи.</div><div class="c-chips"><span class="c-chip">6 модулів</span><span class="c-chip">Старт: 2 черв.</span></div><div class="c-foot"><div><div class="c-from">від</div><div class="c-price">2 800 &#8372;</div></div><button class="c-btn">Записатися</button></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── BLOCK 4b: COURSE CARDS 2-COL ── -->
+<div class="section-heading"><div class="sh-line"></div><div class="sh-text">Блок 4б · Картки курсів · 2 колонки</div><div class="sh-line"></div></div>
+<div class="block-mint" style="padding-top:52px">
+  <div class="bm-inner">
+    <div style="color:#010E0E;font-size:36px;font-weight:800;letter-spacing:-.4px;margin-bottom:28px">Рекомендовані курси</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+      <div class="card-2col"><div class="c2-thumb ct1 c-thumb-pattern"><div class="c-tag">Курс з куратором</div><div class="c-ov"><div class="c-ov-e">Євгеній Боровський</div><div class="c-ov-n">Діагностика стопи в кабінеті подолога</div></div></div><div class="c2-body"><div class="c2-title">Діагностика стопи в кабінеті подолога</div><div class="c2-desc">Системний ортопедічний підхід від практикуючого лікаря з 25-річним досвідом. 1 500+ випускників.</div><div class="c2-chips"><span class="c-chip">8 модулів</span><span class="c-chip">6 міс. доступу</span><span class="c-chip">Прямі ефіри</span></div><div class="c2-foot"><button class="c-btn" style="padding:11px 20px;font-size:13.5px">Детальніше →</button><div class="c2-price-wrap"><div class="c2-from">від</div><div class="c2-price">3 200 &#8372;</div></div></div></div></div>
+      <div class="card-2col"><div class="c2-thumb ct2 c-thumb-pattern"><div class="c-tag">Курс з куратором</div><div class="c-ov"><div class="c-ov-e">Юлія Діденко</div><div class="c-ov-n">Особистий бренд подолога</div></div></div><div class="c2-body"><div class="c2-title">Особистий бренд подолога</div><div class="c2-desc">Побудуйте впізнаваний бренд і залучайте клієнтів через соцмережі. Практичні інструменти.</div><div class="c2-chips"><span class="c-chip">6 модулів</span><span class="c-chip">3 міс. доступу</span></div><div class="c2-foot"><button class="c-btn" style="padding:11px 20px;font-size:13.5px">Детальніше →</button><div class="c2-price-wrap"><div class="c2-from">від</div><div class="c2-price">2 400 &#8372;</div></div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── BLOCK 4c: COURSE CARD 1-COL ── -->
+<div class="section-heading"><div class="sh-line"></div><div class="sh-text">Блок 4в · Картка курсу · Hero banner (1 колонка)</div><div class="sh-line"></div></div>
+<div class="block-mint" style="padding-top:52px">
+  <div class="bm-inner">
+    <div style="color:#010E0E;font-size:36px;font-weight:800;letter-spacing:-.4px;margin-bottom:28px">Флагманський курс</div>
+    <div class="card-1col">
+      <div class="c1-body">
+        <div class="c1-eyebrow"><svg width="5" height="5" viewBox="0 0 5 5"><circle cx="2.5" cy="2.5" r="2.5" fill="#C6EE68"/></svg>Курс з куратором · 7 потік</div>
+        <div class="c1-title">Діагностика стопи<br>в кабінеті подолога</div>
+        <div class="c1-desc">Системний ортопедічний підхід від практикуючого лікаря. 1 500+ випускників.</div>
+        <div class="c1-chips"><span class="c1-chip">8 модулів</span><span class="c1-chip">6 міс.</span><span class="c1-chip">Прямі ефіри</span><span class="c1-chip">Сертифікат</span></div>
+        <div class="c1-foot">
+          <button class="btn-lime" style="font-size:14px;padding:14px 26px">Записатися →</button>
+          <div><div class="c1-price-from">від</div><div class="c1-price">3 200 &#8372;</div></div>
+        </div>
+      </div>
+      <div class="c1-photo"><div class="c1-photo-hint">Фото лектора<br>PNG на прозорому фоні<br>обрізати по пояс</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── BLOCK 5: CTA LIME ── -->
+<div class="section-heading"><div class="sh-line"></div><div class="sh-text">Блок 5 · CTA Lime · Один на сторінці</div><div class="sh-line"></div></div>
+<div class="block-cta">
+  <div class="bcta-inner">
+    <div>
+      <div class="bcta-tag">Старт 20 квітня 2026</div>
+      <div class="bcta-h2">Приєднуйтесь до<br>7-го потоку.</div>
+      <div class="bcta-sub">Ціна передзапису діє до 15 квітня. Розстрочка 2–6 місяців без відсотків.</div>
+    </div>
+    <button class="btn-cta-lime" style="font-size:15px;padding:17px 36px;border-radius:14px">Записатися на курс →</button>
+  </div>
+</div>
+
+<!-- ── BLOCK 6: FOOTER ── -->
+<div class="section-heading"><div class="sh-line"></div><div class="sh-text">Блок 6 · Footer · #011010</div><div class="sh-line"></div></div>
+<div class="block-footer">
+  <div class="bf-inner">
+    <div class="bf-grid">
+      <div><div class="bf-logo"><img src="/mnt/user-data/uploads/ORTOBOR_ACADEjMY.png" alt="Ortobor Academy"></div><div class="bf-tagline">Академія ортопедічної освіти для подологів та майстрів педикюру.</div><div class="bf-social-row"><div class="btn-social"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="2.5" stroke="rgba(255,255,255,.4)" stroke-width="1.2"/><circle cx="7" cy="7" r="2.5" stroke="rgba(255,255,255,.4)" stroke-width="1.2"/><circle cx="10.5" cy="3.5" r=".8" fill="rgba(255,255,255,.4)"/></svg></div><div class="btn-social"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M13 2L8 7M13 2L4 5.5l3 1.5 5-4-3 4.5 1.5 3L13 2z" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-linejoin="round"/></svg></div></div></div>
+      <div><div class="bf-col-title">Навчання</div><div class="bf-link">Всі курси</div><div class="bf-link">Онлайн-лекції</div><div class="bf-link">Вебінари</div><div class="bf-link">Марафони</div></div>
+      <div><div class="bf-col-title">Академія</div><div class="bf-link">Про Боровського</div><div class="bf-link">Відгуки</div><div class="bf-link">Сертифікати</div></div>
+      <div><div class="bf-col-title">Контакти</div><div class="bf-link">@ortobor.academy</div><div class="bf-link">Telegram</div><div class="bf-link">Особистий кабінет →</div></div>
+    </div>
+    <div class="bf-bottom"><div class="bf-copy">© 2026 Ortobor Academy. Всі права захищено.</div><div class="bf-legal"><span class="bf-leg">Публічна оферта</span><span class="bf-leg">Конфіденційність</span></div></div>
+  </div>
+</div>
+
+<!-- ── BLOCK 7: LIGHT ANIMATED ── -->
+<div class="section-heading"><div class="sh-line"></div><div class="sh-text">Блок 7 · Світла анімація · Multiply blend</div><div class="sh-line"></div></div>
+<div class="block-light-anim">
+  <!-- subtle animated orbs -->
+  <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1">
+    <div style="position:absolute;width:600px;height:600px;top:-80px;left:-80px;border-radius:50%;background:radial-gradient(circle,rgba(0,140,137,.18) 0%,transparent 55%);mix-blend-mode:multiply;animation:moveV 28s ease infinite"></div>
+    <div style="position:absolute;width:500px;height:500px;top:50px;right:-100px;border-radius:50%;background:radial-gradient(circle,rgba(50,138,138,.14) 0%,transparent 55%);mix-blend-mode:multiply;animation:moveC 20s reverse infinite"></div>
+    <div style="position:absolute;width:450px;height:450px;bottom:-60px;left:200px;border-radius:50%;background:radial-gradient(circle,rgba(1,73,72,.1) 0%,transparent 55%);mix-blend-mode:multiply;animation:moveH 36s ease infinite"></div>
+  </div>
+  <div class="bla-inner">
+    <div class="bla-tag">Про автора</div>
+    <div class="bla-h2">Євгеній <em>Боровський</em></div>
+    <div class="bla-sub">Ортопед-травматолог з 25-річним клінічним досвідом. Засновник Ortobor Academy і автор усіх курсів.</div>
+    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
+      <button class="btn-ink">Детальніше про автора</button>
+      <button class="btn-outline-lt">Всі курси →</button>
+    </div>
+    <div style="display:flex;justify-content:center;gap:0;margin-top:40px">
+      <div style="padding:0 28px;border-right:1px solid rgba(1,73,72,.12);text-align:center"><div style="font-size:32px;font-weight:800;color:#011818;line-height:1">25</div><div style="color:#5A8888;font-size:12px;margin-top:4px">Років досвіду</div></div>
+      <div style="padding:0 28px;border-right:1px solid rgba(1,73,72,.12);text-align:center"><div style="font-size:32px;font-weight:800;color:#011818;line-height:1">1 500+</div><div style="color:#5A8888;font-size:12px;margin-top:4px">Випускників</div></div>
+      <div style="padding:0 28px;text-align:center"><div style="font-size:32px;font-weight:800;color:#011818;line-height:1">4.9</div><div style="color:#5A8888;font-size:12px;margin-top:4px">Рейтинг курсів</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── NEW BUTTONS ── -->
+<div class="section-heading"><div class="sh-line"></div><div class="sh-text">Кнопки · Всі типи</div><div class="sh-line"></div></div>
+<div class="glass-guide" style="padding-top:52px">
+  <div class="gg-inner">
+    <div class="gg-title">Кнопки — всі затверджені типи</div>
+    <div class="gg-sub">Основна: #008C89 + білий бордер 2px. Решта — варіанти для різних контекстів.</div>
+
+    <h3>На темному фоні</h3>
+    <div style="background:radial-gradient(ellipse at 15% 20%,rgba(0,140,137,.3) 0%,transparent 50%),#013838;border-radius:16px;padding:32px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:24px">
+      <button class="btn-lime">Записатися →</button>
+      <button class="btn-icon-text"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5l10 5.5-10 5.5V2.5z" fill="white"/></svg>Дивитися курс</button>
+      <button class="btn-ghost-icon"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 7.5h11M9 4l3.5 3.5L9 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Програма</button>
+      <button class="btn-ghost">Ghost кнопка</button>
+      <button class="btn-icon-circle" title="Play"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 3l11 6-11 6V3z" fill="white"/></svg></button>
+      <button class="btn-icon-sq" title="Download"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 7l3 3 3-3" stroke="rgba(255,255,255,.8)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12h12" stroke="rgba(255,255,255,.5)" stroke-width="1.3" stroke-linecap="round"/></svg></button>
+      <button class="btn-icon-sq" title="Share"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="12" cy="3" r="1.8" stroke="rgba(255,255,255,.8)" stroke-width="1.2"/><circle cx="12" cy="13" r="1.8" stroke="rgba(255,255,255,.8)" stroke-width="1.2"/><circle cx="4" cy="8" r="1.8" stroke="rgba(255,255,255,.8)" stroke-width="1.2"/><path d="M10.3 4.5l-4.6 2.4M10.3 11.5l-4.6-2.4" stroke="rgba(255,255,255,.55)" stroke-width="1.2" stroke-linecap="round"/></svg></button>
+      <button class="btn-fab" title="FAB +"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 4v14M4 11h14" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      <button class="btn-loading" disabled><div class="spinner"></div>Обробка…</button>
+      <button class="btn-disabled" disabled>Недоступно</button>
+    </div>
+
+    <h3>Соціальні іконки (42×42)</h3>
+    <div style="background:radial-gradient(ellipse at 15% 20%,rgba(0,140,137,.3) 0%,transparent 50%),#013838;border-radius:16px;padding:24px;display:flex;gap:10px;align-items:center;margin-bottom:24px">
+      <button class="btn-social" title="Instagram"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="4" stroke="rgba(255,255,255,.65)" stroke-width="1.3"/><circle cx="9" cy="9" r="3" stroke="rgba(255,255,255,.65)" stroke-width="1.3"/><circle cx="13.5" cy="4.5" r="1" fill="rgba(255,255,255,.65)"/></svg></button>
+      <button class="btn-social" title="Telegram"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M16 2L2.5 7.5l4.5 1.5 7-5-4 5.5 2 4 2.5-3.5L17 13 16 2z" stroke="rgba(255,255,255,.65)" stroke-width="1.2" stroke-linejoin="round"/></svg></button>
+      <button class="btn-social" title="Globe"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="rgba(255,255,255,.65)" stroke-width="1.3"/><path d="M9 2c0 0-3.5 3-3.5 7s3.5 7 3.5 7M9 2c0 0 3.5 3 3.5 7s-3.5 7-3.5 7" stroke="rgba(255,255,255,.65)" stroke-width="1.3" stroke-linecap="round"/><path d="M2 9h14" stroke="rgba(255,255,255,.65)" stroke-width="1.3" stroke-linecap="round"/></svg></button>
+      <button class="btn-social" title="Play"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="rgba(255,255,255,.65)" stroke-width="1.3"/><path d="M7.5 6l5 3-5 3V6z" fill="rgba(255,255,255,.65)"/></svg></button>
+      <div style="color:rgba(255,255,255,.3);font-size:12px;margin-left:6px">← 42×42 · border-radius 10px</div>
+    </div>
+
+    <h3>На світлому фоні</h3>
+    <div style="background:radial-gradient(ellipse at 70% 20%,rgba(0,140,137,.1) 0%,transparent 50%),#EDF9F5;border-radius:16px;padding:32px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:24px">
+      <button class="btn-ink">Записатися на курс →</button>
+      <button style="display:inline-flex;align-items:center;gap:8px;background:#014948;border:none;color:#fff;font-family:inherit;font-size:14px;font-weight:800;padding:13px 24px;border-radius:12px;cursor:pointer;box-shadow:0 4px 18px rgba(1,73,72,.25)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2.5l10 5.5-10 5.5V2.5z" fill="white"/></svg>Почати навчання</button>
+      <button class="btn-outline-lt">Дивитися програму</button>
+      <button style="display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:#008C89;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;padding:0">Всі курси <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7.5 4l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+
+    <h3>На lime CTA блоці</h3>
+    <div style="background:#C6EE68;border-radius:16px;padding:28px;display:flex;gap:12px;align-items:center;margin-bottom:32px">
+      <button class="btn-cta-lime">Записатися на курс →</button>
+      <button style="background:rgba(255,255,255,.65);backdrop-filter:blur(12px);border:1.5px solid rgba(1,73,72,.18);color:#014948;font-family:inherit;font-size:14px;font-weight:600;padding:13px 24px;border-radius:12px;cursor:pointer">Дивитися програму</button>
+    </div>
+
+    <!-- GLASSMORPHISM RECIPES -->
+    <div class="gg-title" style="margin-top:16px">Glassmorphism рецепти</div>
+    <div class="gg-sub">Готові CSS значення для кожного типу фону.</div>
+    <div class="gg-grid">
+      <div class="glass-recipe gr-1">
+        <div class="gr-label">На темному teal фоні</div>
+        <div class="gr-demo"><div class="gr-demo-title">Glass card on dark</div><div class="gr-demo-text">Компонент поверх темного градієнту.</div></div>
+        <div class="code-block"><span class="k">background</span>: rgba(255,255,255,<span class="v">0.07</span>);
+<span class="k">backdrop-filter</span>: blur(<span class="v">28px</span>) saturate(<span class="v">150%</span>);
+<span class="k">border</span>: 1px solid rgba(255,255,255,<span class="v">0.10</span>);
+<span class="k">border-top-color</span>: rgba(255,255,255,<span class="v">0.18</span>);
+<span class="k">box-shadow</span>: inset 0 1px 0 rgba(255,255,255,<span class="v">0.09</span>),
+            0 8px 32px rgba(0,0,0,<span class="v">0.2</span>);</div>
+      </div>
+      <div class="glass-recipe gr-2">
+        <div class="gr-label">На білому/м'ятному фоні</div>
+        <div class="gr-demo-lt"><div class="gr-demo-title" style="color:#010E0E">Glass card on light</div><div class="gr-demo-text" style="color:#5A8888">Скляна картка на світлому фоні.</div></div>
+        <div class="code-block"><span class="k">background</span>: rgba(255,255,255,<span class="v">0.72</span>);
+<span class="k">backdrop-filter</span>: blur(<span class="v">24px</span>) saturate(<span class="v">180%</span>);
+<span class="k">border</span>: 1px solid rgba(255,255,255,<span class="v">0.90</span>);
+<span class="k">border-bottom-color</span>: rgba(1,73,72,<span class="v">0.06</span>);
+<span class="k">box-shadow</span>: inset 0 1px 0 rgba(255,255,255,<span class="v">1</span>),
+            0 4px 20px rgba(1,73,72,<span class="v">0.07</span>);</div>
+      </div>
+      <div class="glass-recipe gr-3">
+        <div class="gr-label">На найтемнішому фоні</div>
+        <div class="gr-demo"><div class="gr-demo-title">Stat card on deep dark</div><div class="gr-demo-text">Статистика, тестимонали.</div></div>
+        <div class="code-block"><span class="k">background</span>: rgba(255,255,255,<span class="v">0.06</span>);
+<span class="k">backdrop-filter</span>: blur(<span class="v">20px</span>);
+<span class="k">border</span>: 1px solid rgba(255,255,255,<span class="v">0.09</span>);
+<span class="k">border-top-color</span>: rgba(255,255,255,<span class="v">0.14</span>);
+<span class="k">box-shadow</span>: 0 12px 40px rgba(0,0,0,<span class="v">0.25</span>),
+            inset 0 1px 0 rgba(255,255,255,<span class="v">0.07</span>);</div>
+      </div>
+      <div class="glass-recipe gr-4">
+        <div class="gr-label">На lime CTA блоці</div>
+        <div class="gr-demo-lime"><div class="gr-demo-title" style="color:#fff">CTA Button on lime</div><div class="gr-demo-text" style="color:rgba(255,255,255,.6)">Темна кнопка на lime фоні.</div></div>
+        <div class="code-block"><span class="k">background</span>: rgba(1,73,72,<span class="v">0.88</span>);
+<span class="k">backdrop-filter</span>: blur(<span class="v">20px</span>);
+<span class="k">border</span>: 1px solid rgba(1,73,72,<span class="v">0.65</span>);
+<span class="k">box-shadow</span>: inset 0 1px 0 rgba(255,255,255,<span class="v">0.12</span>),
+            0 6px 24px rgba(1,73,72,<span class="v">0.28</span>);</div>
+      </div>
+    </div>
+
+    <!-- AURORA MESH RECIPE -->
+    <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:32px">
+      <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">Aurora mesh gradient — рецепт</div>
+      <div style="color:rgba(255,255,255,.38);font-size:13.5px;margin-bottom:20px">М'який фон без різких ліній. Кілька radial-gradient накладених одне на одне. opacity 10–30%, ніколи не більше 35%.</div>
+      <div class="code-block"><span class="c">/* Темний hero block */</span>
+<span class="k">background</span>:
+  radial-gradient(ellipse at <span class="v">15%</span> <span class="v">20%</span>, rgba(0,140,137,<span class="v">.32</span>) 0%, transparent 50%),
+  radial-gradient(ellipse at <span class="v">85%</span> <span class="v">75%</span>, rgba(1,73,72,<span class="v">.28</span>)   0%, transparent 45%),
+  radial-gradient(ellipse at <span class="v">50%</span> <span class="v">100%</span>, rgba(198,238,104,<span class="v">.05</span>) 0%, transparent 55%),
+  <span class="v">#011E1E</span>;
+
+<span class="c">/* Світлий block */</span>
+<span class="k">background</span>:
+  radial-gradient(ellipse at <span class="v">5%</span>  <span class="v">10%</span>, rgba(0,140,137,<span class="v">.12</span>)  0%, transparent 50%),
+  radial-gradient(ellipse at <span class="v">95%</span> <span class="v">90%</span>, rgba(1,73,72,<span class="v">.10</span>)   0%, transparent 50%),
+  radial-gradient(ellipse at <span class="v">55%</span> <span class="v">55%</span>, rgba(198,238,238,<span class="v">.25</span>) 0%, transparent 55%),
+  <span class="v">#F8FDFB</span>;
+
+<span class="c">/* Світла анімована версія — multiply blend для орбів */</span>
+<span class="c">/* orb opacity: 10-18%, mix-blend-mode: multiply */</span>
+<span class="c">/* Підказка: непарні orbs зліва, парні справа і знизу */</span></div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
