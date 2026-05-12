@@ -131,11 +131,12 @@ logging.basicConfig(
     WAIT_TITLE,
     WAIT_PRESET,
     WAIT_FORMAT,
+    GENERATING,
     READY,
     WAIT_COVER,
     WAIT_FEEDBACK,
     IMPROVE_LOOP,
-) = range(8)
+) = range(9)
 
 # ──────────────────────────────────────────────────────────────────────────
 # Per-chat data lives in context.chat_data; this is just typed access.
