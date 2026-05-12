@@ -72,8 +72,48 @@ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
 MODEL = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-6")
 DATA_DIR = Path(os.getenv("BOT_DATA_DIR", "/home/exedev/wb-data")).expanduser()
 WORKBOOKS_DIR = DATA_DIR / "workbooks"
-ALLOWED_IDS = {int(x) for x in os.getenv("ALLOWED_TG_IDS", "").split(",") if x.strip()}
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+
+
+def _parse_admin_ids(raw: str) -> set[int]:
+    """Tolerant: skip non-numeric entries with a warning instead of crashing."""
+    out: set[int] = set()
+    for x in (raw or "").split(","):
+        x = x.strip()
+        if not x:
+            continue
+        try:
+            out.add(int(x))
+        except ValueError:
+            logging.warning("ignoring non-numeric ALLOWED_TG_IDS entry: %r", x)
+    return out
+
+
+BOOTSTRAP_ADMINS = _parse_admin_ids(os.getenv("ALLOWED_TG_IDS", ""))
+RUNTIME_ADMINS_FILE = DATA_DIR / "admins.json"
+
+
+def _load_runtime_admins() -> set[int]:
+    if not RUNTIME_ADMINS_FILE.exists():
+        return set()
+    try:
+        data = json.loads(RUNTIME_ADMINS_FILE.read_text(encoding="utf-8"))
+        return {int(x) for x in data}
+    except Exception as exc:
+        logging.warning("admins.json unreadable (%s) — treating as empty", exc)
+        return set()
+
+
+def _save_runtime_admins(ids: set[int]) -> None:
+    RUNTIME_ADMINS_FILE.write_text(
+        json.dumps(sorted(ids), ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+
+def allowed_ids() -> set[int]:
+    """Union of bootstrap (env) and runtime (admins.json) admin IDs."""
+    return BOOTSTRAP_ADMINS | _load_runtime_admins()
 
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 WORKBOOKS_DIR.mkdir(parents=True, exist_ok=True)
@@ -123,10 +163,15 @@ def session(ctx: ContextTypes.DEFAULT_TYPE) -> Session:
 # Auth gate
 # ──────────────────────────────────────────────────────────────────────────
 def auth_ok(update: Update) -> bool:
-    if not ALLOWED_IDS:
+    ids = allowed_ids()
+    if not ids:
         return True
     uid = update.effective_user.id if update.effective_user else 0
-    return uid in ALLOWED_IDS
+    return uid in ids
+
+
+def is_bootstrap_admin(uid: int) -> bool:
+    return uid in BOOTSTRAP_ADMINS
 
 
 # ──────────────────────────────────────────────────────────────────────────
@@ -333,6 +378,7 @@ HELP_TEXT = (
     "/new — створити новий зошит\n"
     "/list — мої зошити\n"
     "/improve `<slug>` — режим ітеративного покращення\n"
+    "/admin — керування доступом\n"
     "/cancel — скасувати поточну дію\n"
     "/help — ця довідка"
 )
@@ -353,6 +399,81 @@ async def cmd_cancel(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> int:
     ctx.chat_data.pop("session", None)
     await update.message.reply_text("Скасовано. /new щоб почати знову.")
     return ConversationHandler.END
+
+
+# ── /admin — manage allowed Telegram user IDs at runtime ────────────────
+async def cmd_admin(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
+    """`/admin` show; `/admin add <id>`; `/admin remove <id>`; `/admin list`."""
+    if not auth_ok(update):
+        return
+    uid = update.effective_user.id if update.effective_user else 0
+    args = ctx.args or []
+    runtime = _load_runtime_admins()
+    env = BOOTSTRAP_ADMINS
+
+    def render() -> str:
+        env_str = ", ".join(str(i) for i in sorted(env)) or "(none)"
+        rt_str = ", ".join(str(i) for i in sorted(runtime)) or "(none)"
+        return (
+            "*Адміни*\n"
+            f"`env` (з .env, незмінні): {env_str}\n"
+            f"`runtime` (через /admin): {rt_str}\n\n"
+            "Команди:\n"
+            "`/admin add <tg_id>` — додати\n"
+            "`/admin remove <tg_id>` — прибрати (тільки runtime)\n"
+            "`/admin list` — показати"
+        )
+
+    if not args or args[0] == "list":
+        await update.message.reply_text(render(), parse_mode=ParseMode.MARKDOWN)
+        return
+
+    action = args[0]
+    if action in {"add", "remove"} and len(args) < 2:
+        await update.message.reply_text(f"Використання: /admin {action} <numeric_tg_id>")
+        return
+
+    # Only existing admins (from env or runtime) can mutate. auth_ok already gated; here
+    # additionally require that the actor is among current admins (covers the "no env, no
+    # runtime, open mode" case — first mutation creates the first runtime admin).
+    if action == "add":
+        try:
+            new_id = int(args[1])
+        except ValueError:
+            await update.message.reply_text("ID має бути числом.")
+            return
+        if new_id in env or new_id in runtime:
+            await update.message.reply_text(f"`{new_id}` вже у списку.", parse_mode=ParseMode.MARKDOWN)
+            return
+        runtime.add(new_id)
+        _save_runtime_admins(runtime)
+        await update.message.reply_text(f"✓ Додано `{new_id}`.", parse_mode=ParseMode.MARKDOWN)
+        return
+
+    if action == "remove":
+        try:
+            del_id = int(args[1])
+        except ValueError:
+            await update.message.reply_text("ID має бути числом.")
+            return
+        if del_id in env:
+            await update.message.reply_text(
+                f"`{del_id}` встановлено через .env — приберіть `ALLOWED_TG_IDS` і перезапустіть сервіс.",
+                parse_mode=ParseMode.MARKDOWN,
+            )
+            return
+        if del_id not in runtime:
+            await update.message.reply_text(f"`{del_id}` не знайдено в runtime-списку.", parse_mode=ParseMode.MARKDOWN)
+            return
+        if del_id == uid and len(env) == 0 and len(runtime) == 1:
+            await update.message.reply_text("Не можна прибрати себе як єдиного адміна — спершу додайте іншого.")
+            return
+        runtime.remove(del_id)
+        _save_runtime_admins(runtime)
+        await update.message.reply_text(f"✓ Прибрано `{del_id}`.", parse_mode=ParseMode.MARKDOWN)
+        return
+
+    await update.message.reply_text(render(), parse_mode=ParseMode.MARKDOWN)
 
 
 # ── /new flow ───────────────────────────────────────────────────────────
@@ -710,6 +831,7 @@ def build_app() -> Application:
 
     app.add_handler(CommandHandler(["start", "help"], cmd_help))
     app.add_handler(CommandHandler("list", cmd_list))
+    app.add_handler(CommandHandler("admin", cmd_admin))
     app.add_handler(CommandHandler("done", cmd_done))
     app.add_handler(new_flow)
     app.add_handler(improve_flow)
